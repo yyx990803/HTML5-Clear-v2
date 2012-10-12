@@ -1,0 +1,33 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+#fork-ribbon {
+  display: none;
+}
+#wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: #000;
+  overflow: hidden;
+  -webkit-user-select: none;
+}
+body.desktop {
+  background: url(../img/bg.png) center center no-repeat;
+}
+body.desktop #wrapper {
+  width: 320px;
+  height: 505px;
+  top: 50%;
+  left: 50%;
+  margin-top: -216px;
+  margin-left: -160px;
+}
+body.desktop #fork-ribbon {
+  display: inline;
+}

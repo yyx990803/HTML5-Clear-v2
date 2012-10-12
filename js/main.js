@@ -1,6 +1,12 @@
 var C = {
 
-	//states
+	debug: true,
+
+	// dom elements
+	$wrapper: 		$('#wrapper'),
+	$main: 			$('#main'),
+
+	// states
 	states: {
 		MENU: 		0,
 		LIST: 		1,
@@ -11,8 +17,14 @@ var C = {
 	init: function () {
 
 		this.client.init();
-		this.data.init();
+		this.db.init();
 		this.menu.init();
+
+	},
+
+	log: function (msg) {
+
+		if (this.debug) console.log(msg);
 
 	}
 
