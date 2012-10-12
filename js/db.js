@@ -4,9 +4,9 @@ C.db = (function () {
 
 	var db = {
 
-		init: function () {
+		init: function (force) {
 
-			if (supported) {
+			if (supported && !force) {
 				var raw = localStorage.getItem('html5clear');
 				if (raw) {
 					this.data = JSON.parse(raw);
@@ -39,7 +39,7 @@ C.db = (function () {
 			this.data = {
 
 				state: {
-					view: C.LISTS
+					view: C.states.LISTS
 				},
 
 				theme: 'heatmap',
@@ -73,6 +73,8 @@ C.db = (function () {
 				]
 
 			};
+
+			this.save();
 
 		}
 
