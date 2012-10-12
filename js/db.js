@@ -38,10 +38,15 @@ C.db = (function () {
 
 			this.data = {
 
+				state: {
+					view: C.LISTS
+				},
+
 				theme: 'heatmap',
 
 				lists: [
 					{
+
 						title: 'Hello',
 						todos: [
 							{
