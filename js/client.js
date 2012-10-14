@@ -6,10 +6,13 @@ C.client = (function () {
 
 		init: function () {
 
+			C.log('Client: init');
+			
+			this.update();
+
 			if (!this.isTouch) {
 				$(document.body).addClass('desktop');
 			} else {
-				this.update();
 				$(window).resize(function () {
 					C.client.update();
 				});

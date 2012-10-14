@@ -1,4 +1,4 @@
-(function () {
+;(function () {
 
 	window.C = {
 
@@ -6,7 +6,6 @@
 
 		// dom elements
 		$wrapper: 		$('#wrapper'),
-		$main: 			$('#main'),
 
 		// states
 		states: {
@@ -22,41 +21,49 @@
 
 			// init some components
 			C.client.init();
-			C.db.init(true);
+			C.db.init();
+			C.touch.init();
+
 			C.menu.init();
+			C.listView.init();
 
 			// set theme
-			C.setTheme(C.db.data.theme, true);
+			C.$wrapper.addClass(C.db.data.theme);
 
 			// restore state
 			var state = C.db.data.state;
-
 			switch (state.view) {
 
 				case C.states.MENU:
-					initAtMenu();
+					C.log('App: init at menu.');
+					C.currentView = C.menu;
 					break;
 
 				case C.states.LISTS:
-					initAtLists();
+					C.log('App: init at lists.');
+					C.currentView = C.listView;
 					break;
 
 				case C.states.TODOS:
-					initAtTodos(state.listID);
+					C.log('App: init at list with ID: ' + state.listID);
+					C.currentView = new C.TodoList(C.db.data.lists[state.listID]);
 					break;
 
 				default:
-					initAtMenu();
+					C.log('App: init at lists.');
+					C.currentView = C.listView;
 					break;
 
 			}
 
+			C.$wrapper.append(C.currentView.el);
+
 		},
 
-		setTheme: function (newTheme, force) {
+		setTheme: function (newTheme) {
 
 			var curTheme = C.db.data.theme;
-			if (newTheme == curTheme && !force) return;
+			if (newTheme == curTheme) return;
 
 			C.$wrapper
 				.removeClass(curTheme)
@@ -65,7 +72,7 @@
 			C.db.data.theme = newTheme;
 			C.db.save();
 
-			C.log('Set theme: ' + newTheme);
+			C.log('App: set theme: ' + newTheme);
 
 		},
 
@@ -77,24 +84,6 @@
 		}
 
 	};
-
-	function initAtMenu () {
-
-		C.log('init at menu.');
-
-	}
-
-	function initAtLists () {
-
-		C.log('init at lists.');
-
-	}
-
-	function initAtTodos (listID) {
-
-		C.log('init at todos, list ID: ' + listID);
-		
-	}
 
 }());
 

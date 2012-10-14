@@ -6,6 +6,8 @@ C.db = (function () {
 
 		init: function (force) {
 
+			C.log('DB: init');
+
 			if (supported && !force) {
 				var raw = localStorage.getItem('html5clear');
 				if (raw) {
@@ -13,7 +15,7 @@ C.db = (function () {
 					if (!this.data) {
 						this.useDefaultData();
 					} else {
-						 C.log('Using stored data.');
+						 C.log('DB: using stored data.');
 					}
 				} else {
 					this.useDefaultData();
@@ -30,11 +32,13 @@ C.db = (function () {
 			var raw = JSON.stringify(this.data);
 			localStorage.setItem('html5clear', raw);
 
+			C.log('DB: saved.');
+
 		},
 
 		useDefaultData: function () {
 
-			C.log('Using default data.');
+			C.log('DB: using default data.');
 
 			this.data = {
 
@@ -48,6 +52,7 @@ C.db = (function () {
 					{
 
 						title: 'Hello',
+						order: 0,
 						todos: [
 							{
 								title: 'Test'
@@ -56,6 +61,7 @@ C.db = (function () {
 					},
 					{
 						title: 'This is a demo',
+						order: 1,
 						todos: [
 							{
 								title: 'Test'
@@ -64,6 +70,7 @@ C.db = (function () {
 					},
 					{
 						title: 'By Evan You',
+						order: 2,
 						todos: [
 							{
 								title: 'Test'
