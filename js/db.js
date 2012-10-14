@@ -69,6 +69,18 @@ C.db = (function () {
 							{
 								order: 3,
 								title: 'Test4'
+							},
+							{
+								order: 4,
+								title: 'Test4'
+							},
+							{
+								order: 5,
+								title: 'Test4'
+							},
+							{
+								order: 6,
+								title: 'Test4'
 							}
 						]
 					},
@@ -82,6 +94,7 @@ C.db = (function () {
 						order: 2,
 						todos: [
 							{
+								order: 0,
 								title: 'Test'
 							}
 						]
@@ -91,6 +104,7 @@ C.db = (function () {
 						order: 3,
 						todos: [
 							{
+								order: 0,
 								title: 'Test'
 							}
 						]
@@ -100,6 +114,7 @@ C.db = (function () {
 						order: 4,
 						todos: [
 							{
+								order: 0,
 								title: 'Test'
 							}
 						]

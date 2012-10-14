@@ -4,9 +4,12 @@ C.View = (function () {
 
 		update: function () {
 
-			var i = this.items.length;
+			var i = this.items.length,
+				item;
 			while (i--) {
-				this.items[i].update();
+				item = this.items[i];
+				item.updateColor();
+				item.updatePosition();
 			}
 
 		},
@@ -18,6 +21,8 @@ C.View = (function () {
 		},
 
 		onDragStart: function () {
+
+			this.el.addClass('drag');
 
 		},
 
@@ -51,9 +56,11 @@ C.View = (function () {
 				if (Math.abs(view.y - view.upperBound) < 0.1) {
 					view.y = view.upperBound;
 					view.style.webkitTransform = 'translate3d(0,' + view.y + 'px, 0)';
+					view.el.removeClass('drag');
 				} else if (Math.abs(view.y) < 0.1) {
 					view.y = view.lowerBound;
 					view.style.webkitTransform = 'translate3d(0,' + view.y + 'px, 0)';
+					view.el.removeClass('drag');
 				} else if (!C.touch.data.dragging) {
 					setTimeout(loop, 16);
 				}

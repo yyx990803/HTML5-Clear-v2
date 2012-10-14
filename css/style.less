@@ -1,7 +1,8 @@
 @itemHeight: 64px;
+@ease: cubic-bezier(.64, .16, .39, .83);
 
 .drag {
-	-webkit-transition: -webkit-transform 0s linear !important;
+	-webkit-transition: -webkit-transform 0s linear, opacity 0s linear !important;
 }
 
 html, body {
@@ -28,16 +29,28 @@ html, body {
 	overflow: hidden;
 }
 
+#list-view {
+	z-index: 1;
+}
+
 .list {
 	-webkit-transform: translate3d(0,0,0);
-	-webkit-transition: -webkit-transform 0s linear;
-	position: relative;
+	-webkit-transition: opacity .3s @ease;
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 0;
+
+	&.fade {
+		opacity: 0;
+	}
 }
 
 .item {
 	text-shadow: 0 1px 1px rgba(0,0,0,.25);
-	-webkit-transition: -webkit-transform .2s ease-in-out,
-						background-color .2s ease-in-out;
+	-webkit-transition: -webkit-transform .3s @ease,
+						background-color .3s @ease;
 	position: absolute;
 	width: 100%;
 	top: 0;

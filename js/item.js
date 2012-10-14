@@ -5,6 +5,17 @@ C.Item = (function () {
 
 	return {
 
+		init: function (data) {
+
+			this.x = 0;
+			this.y = data.order * 64;
+			this.data = data;
+
+			this.render();
+			this.updateColor();
+
+		},
+
 		onDragStart: function () {
 
 			this.el.addClass('drag');
@@ -12,6 +23,9 @@ C.Item = (function () {
 		},
 
 		onDragMove: function (dx) {
+
+			if (this.noDragRight && this.x + dx > 0) return;
+			if (this.noDragLeft && this.x + dx < 0) return;
 
 			if (this.x + dx < leftBound || this.x + dx > rightBound) {
 				dx /= 3;
@@ -25,6 +39,12 @@ C.Item = (function () {
 		onDragEnd: function () {
 
 			var item = this;
+
+			if (item.x < leftBound) {
+				this.del();
+			} else if (item.x > rightBound) {
+				this.done();
+			}
 
 			loop();
 

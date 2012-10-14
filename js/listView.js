@@ -5,10 +5,9 @@ C.listView = {
 
 	init: function () {
 
-		C.log('ListList: init');
+		C.log('ListView: init');
 
 		this.items = [];
-
 		this.render();
 		this.populateItems();
 
@@ -16,7 +15,7 @@ C.listView = {
 
 	render: function () {
 
-		this.el = $('<div class="list"></div>');
+		this.el = $('<div id="list-view" class="list"></div>');
 		this.style = this.el[0].style;
 
 	},
@@ -40,7 +39,7 @@ C.listView = {
 	},
 
 	update: function () {
-		C.view.update.apply(this);
+		C.View.update.apply(this);
 	},
 
 	onDragStart: function () {
@@ -53,7 +52,15 @@ C.listView = {
 
 	onDragEnd: function () {
 		C.View.onDragEnd.apply(this);
-	}
+	},
 
+	fade: function (at) {
+		//TODO implement this
+		var t = this;
+		t.el.addClass('fade');
+		setTimeout(function () {
+			t.el.css('display', 'none');
+		}, 300);
+	}
 
 };

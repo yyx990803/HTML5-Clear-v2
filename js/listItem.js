@@ -10,12 +10,11 @@ C.listItem.prototype = {
 
 	init: function (data) {
 
-		this.x = 0;
-		this.y = data.order * 64;
-		this.data = data;
+		C.Item.init.apply(this, arguments);
 
-		this.render();
-		this.update();
+		if (data.todos.length === 0) {
+			this.noDragRight = true;
+		}
 
 	},
 
@@ -34,7 +33,13 @@ C.listItem.prototype = {
 
 	},
 
-	update: function () {
+	updatePosition: function () {
+
+		this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
+
+	},
+
+	updateColor: function () {
 
 		this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
 
@@ -48,26 +53,30 @@ C.listItem.prototype = {
 
 	onTap: function () {
 
-		console.log(this.data.title);
+		C.listView.fade(this.data.order);
+		var todoView = new C.TodoView(this.data);
+		todoView.load();
 
 	},
 
 	onDragStart: function () {
-
 		C.Item.onDragStart.apply(this);
-
 	},
 
 	onDragMove: function (dx) {
-
 		C.Item.onDragMove.apply(this, arguments);
-
 	},
 
 	onDragEnd: function () {
-		
 		C.Item.onDragEnd.apply(this);
+	},
 
+	del: function () {
+		console.log("delete");
+	},
+
+	done: function () {
+		console.log("done");
 	}
 
 };
