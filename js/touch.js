@@ -93,6 +93,7 @@ C.touch = (function () {
 		C.$wrapper
 			.on(start, '.item', function (e) {
 
+				if (item) return;
 				item = C.currentView.items[this.dataset.id];
 
 			})
@@ -113,11 +114,12 @@ C.touch = (function () {
 			})
 			.on(end, function (e) {
 
+				if (t && e.touches.length > 0) return;
 				if (data.draggingItem) {
 					item.onDragEnd();
 					data = touch.data = {};
 				}
-
+				
 				item = null;
 
 			});

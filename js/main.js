@@ -4,6 +4,7 @@ var C = {
 
 	// dom elements
 	$wrapper: 		$('#wrapper'),
+	$log: 			$('#log'),
 
 	// states
 	states: {
@@ -15,18 +16,17 @@ var C = {
 
 	init: function () {
 
-		C.start = new Date().getTime();
+		C.start = Date.now();
 
 		// init some components
 		C.client.init();
-		C.db.init();
+		C.db.init(true);
 		C.touch.init();
+
+		C.setTheme();
 
 		C.menu.init();
 		C.listView.init();
-
-		// set theme
-		C.$wrapper.addClass(C.db.data.theme);
 
 		// restore state
 		var state = C.db.data.state;
@@ -61,14 +61,14 @@ var C = {
 	setTheme: function (newTheme) {
 
 		var curTheme = C.db.data.theme;
-		if (newTheme == curTheme) return;
+		newTheme = newTheme || curTheme;
 
-		C.$wrapper
-			.removeClass(curTheme)
-			.addClass(newTheme);
+		// TODO switch theme by changing base HSL
 
-		C.db.data.theme = newTheme;
-		C.db.save();
+		if (newTheme != curTheme) {
+			C.db.data.theme = newTheme;
+			C.db.save();
+		}
 
 		C.log('App: set theme: ' + newTheme);
 
@@ -76,8 +76,18 @@ var C = {
 
 	log: function (msg) {
 
-		msg = '[' + (new Date().getTime() - C.start) + 'ms] ' + msg;
-		if (this.debug) console.log(msg);
+		if (!this.debug) return;
+
+		//$('#log').text(msg);
+
+		var time = Date.now() - C.start;
+		if (time < 1000) {
+			time = '[' + time + 'ms] ';
+		} else {
+			time = '[' + time / 1000 + 's]';
+		}
+		msg = time + msg;
+		console.log(msg);
 
 	}
 

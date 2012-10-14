@@ -1,5 +1,9 @@
 @itemHeight: 64px;
 
+.drag {
+	-webkit-transition: -webkit-transform 0s linear !important;
+}
+
 html, body {
 	margin: 0;
 	padding: 0;
@@ -31,6 +35,9 @@ html, body {
 }
 
 .item {
+	text-shadow: 0 1px 1px rgba(0,0,0,.25);
+	-webkit-transition: -webkit-transform .2s ease-in-out,
+						background-color .2s ease-in-out;
 	position: absolute;
 	width: 100%;
 	top: 0;
@@ -38,20 +45,34 @@ html, body {
 	height: @itemHeight;
 	.inner {
 		cursor: pointer;
+		position: relative;
 		-webkit-transform: translate3d(0,0,0);
-		-webkit-transition: -webkit-transform 0s linear;
 		height: @itemHeight;
 		line-height: @itemHeight;
 		box-sizing: border-box;
 		padding-left: 12px;
 		border-top: 1px solid rgba(255,255,255,.07);
 		border-bottom: 1px solid rgba(0,0,0,.1);
-		text-shadow: 0 1px 1px rgba(0,0,0,.25);
 	}
 }
 
 .list-item {
 	background-color: #0086F3;
+
+	.count {
+		position: absolute;
+		width: 64px;
+		height: 63px;
+		right: 0;
+		top: -1px;
+		background-color: rgba(255,255,255,.15);
+		text-align: center;
+	}
+
+	&.empty {
+		color: rgba(255,255,255,.5);
+		text-shadow: 0 1px 1px rgba(0,0,0,.13);
+	}
 }
 
 // Desktop
@@ -83,8 +104,11 @@ body.desktop {
 
 }
 
-// Themes
-
-#wrapper {
-
+#log {
+	position: absolute;
+	bottom: 5px;
+	width: 100%;
+	left: 0;
+	text-align: center;
+	font-size: 14px;
 }

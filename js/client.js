@@ -7,7 +7,7 @@ C.client = (function () {
 		init: function () {
 
 			C.log('Client: init');
-			
+
 			this.update();
 
 			if (!this.isTouch) {
@@ -24,6 +24,9 @@ C.client = (function () {
 
 			this.width = window.innerWidth,
 			this.height = window.innerHeight;
+			if (C.currentView) {
+				C.currentView.updateBounds();
+			}
 
 		}
 

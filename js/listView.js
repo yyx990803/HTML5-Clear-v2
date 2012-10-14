@@ -35,32 +35,24 @@ C.listView = {
 			this.items.push(li);
 		}
 
-		this.updateBounds();
+		C.View.updateBounds.apply(this);
 
 	},
 
-	updateBounds: function () {
-
-		this.upperBound = Math.min(0, C.client.height - this.items.length * 64);
-
+	update: function () {
+		C.view.update.apply(this);
 	},
 
 	onDragStart: function () {
-
 		C.View.onDragStart.apply(this);
-
 	},
 
 	onDragMove: function (dy) {
-
 		C.View.onDragMove.apply(this, arguments);
-
 	},
 
 	onDragEnd: function () {
-		
 		C.View.onDragEnd.apply(this);
-
 	}
 
 

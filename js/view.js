@@ -2,6 +2,21 @@ C.View = (function () {
 
 	return {
 
+		update: function () {
+
+			var i = this.items.length;
+			while (i--) {
+				this.items[i].update();
+			}
+
+		},
+
+		updateBounds: function () {
+
+			this.upperBound = Math.min(0, C.client.height - this.items.length * 64);
+
+		},
+
 		onDragStart: function () {
 
 		},

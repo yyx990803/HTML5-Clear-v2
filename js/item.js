@@ -7,6 +7,8 @@ C.Item = (function () {
 
 		onDragStart: function () {
 
+			this.el.addClass('drag');
+
 		},
 
 		onDragMove: function (dx) {
@@ -36,6 +38,7 @@ C.Item = (function () {
 				} else {
 					item.x = 0;
 					item.style.webkitTransform = 'translate3d(' + item.x + 'px,' + item.y + 'px, 0)';
+					item.el.removeClass('drag');
 				}
 
 			}
