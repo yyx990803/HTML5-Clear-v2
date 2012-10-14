@@ -2,15 +2,15 @@
 
 BASEDIR=$(dirname $0)
 
-#remove and copy assets folder
+#copy stuff to deploy folder
 
 echo -e "\033[36m[update]\033[0m copying assets into deploy folder..."
 rm -rf $BASEDIR/deploy
 mkdir $BASEDIR/deploy
-cp -R $BASEDIR/js $BASEDIR/deploy/js
-cp -R $BASEDIR/css $BASEDIR/deploy/css
+mkdir $BASEDIR/deploy/js
+mkdir $BASEDIR/deploy/css
+cp $BASEDIR/css/style.css $BASEDIR/deploy/css/style.css
 cp -R $BASEDIR/img $BASEDIR/deploy/img
-#copy and replace index file
 cp $BASEDIR/index.html $BASEDIR/deploy/index.html
 
 #rewrite index.html for min.js
@@ -41,19 +41,11 @@ $BASEDIR/js/todoItem.js \
 
 #remove stuff no longer needed for deploy
 
-#1. remove less files
-echo -e "\033[33m[cleanup]\033[0m removing LESS files..."
-find $BASEDIR/deploy/css -name *.less -exec rm {} \;
-
-#2. remove uncompressed javascript files
-echo -e "\033[33m[cleanup]\033[0m removing uncompressed js files..."
-find $BASEDIR/deploy/js -type f ! -name min.js -exec rm {} \;
-
-#3. remove index.html backup
+#1. remove index.html backup
 echo -e "\033[33m[cleanup]\033[0m removing index.html backup..."
 rm $BASEDIR/deploy/index.html.bak
 
-#4. remove .DS_Store (if any)
+#2. remove .DS_Store (if any)
 echo -e "\033[33m[cleanup]\033[0m removing .DS_Store if any..."
 find $BASEDIR/deploy -name .DS_Store -exec rm {} \;
 
