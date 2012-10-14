@@ -46,6 +46,12 @@ C.listItem.prototype = {
 
 	},
 
+	onTap: function () {
+
+		console.log(this.data.title);
+
+	},
+
 	onDragStart: function () {
 
 		C.Item.onDragStart.apply(this);

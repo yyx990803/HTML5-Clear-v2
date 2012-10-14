@@ -19,8 +19,8 @@ C.touch = (function () {
 				e.preventDefault();
 			});
 
-			initListDrag();
-			initItemDrag();
+			initListEvents();
+			initItemEvents();
 
 		},
 
@@ -28,7 +28,7 @@ C.touch = (function () {
 
 	};
 
-	function initListDrag () {
+	function initListEvents () {
 
 		C.$wrapper
 			.on(start, function (e) {
@@ -84,9 +84,32 @@ C.touch = (function () {
 				
 			});
 
+		// Fix for mouseout on desktop
+
+		if (!t) {
+			C.$wrapper.on('mouseout', function (e) {
+
+				var x = e.pageX,
+					y = e.pageY,
+					c = C.client;
+
+				if (x <= c.left ||
+					x >= c.right ||
+					y <= c.top ||
+					y >= c.bottom) {
+
+					C.$wrapper.trigger(end);
+
+				}
+
+			});
+		}
+
 	}
 
-	function initItemDrag () {
+	function initItemEvents () {
+
+		// Horizontal drag
 
 		var item;
 
@@ -115,13 +138,33 @@ C.touch = (function () {
 			.on(end, function (e) {
 
 				if (t && e.touches.length > 0) return;
+
 				if (data.draggingItem) {
 					item.onDragEnd();
 					data = touch.data = {};
 				}
-				
+
 				item = null;
 
+			});
+
+		// Tap
+		var tapTarget,
+			moved;
+
+		C.$wrapper
+			.on(start, '.item', function () {
+				moved = false;
+				tapTarget = this;
+			})
+			.on(move, '.item', function () {
+				moved = true;
+			})
+			.on(end, '.item', function () {
+				if (!moved && tapTarget === this) {
+					var target = C.currentView.items[this.dataset.id];
+					target.onTap();
+				}
 			});
 
 	}

@@ -8,22 +8,34 @@ C.client = (function () {
 
 			C.log('Client: init');
 
-			this.update();
-
 			if (!this.isTouch) {
+
+				this.width = 320;
+				this.height = 548;
 				$(document.body).addClass('desktop');
-			} else {
-				$(window).resize(function () {
-					C.client.update();
-				});
+
 			}
+
+			this.update();
+			$(window).resize(function () {
+				C.client.update();
+			});
 
 		},
 
 		update: function () {
 
-			this.width = window.innerWidth,
-			this.height = window.innerHeight;
+			if (this.isTouch) {
+				this.width = window.innerWidth,
+				this.height = window.innerHeight;	
+			} else {
+				var wrapper = C.$wrapper[0];
+				this.top = wrapper.offsetTop;
+				this.left = wrapper.offsetLeft;
+				this.right = this.left + this.width;
+				this.bottom = this.top + this.height;
+			}
+
 			if (C.currentView) {
 				C.currentView.updateBounds();
 			}
