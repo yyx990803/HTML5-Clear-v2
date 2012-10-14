@@ -13,6 +13,7 @@ The original iphone app by Realmac: [http://www.realmacsoftware.com/clear/](http
 What's New?
 ===
 
+- Local storage!
 - More robust structure
 - More robust touch events handling
 - More features such as long drag up/down (WIP)
