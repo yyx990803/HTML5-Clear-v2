@@ -7,7 +7,7 @@
 		stepH = 7,
 		stepL = 2.5,
 
-		maxColorSpan = 8,
+		maxColorSpan = 7,
 
 		spanH = stepH * maxColorSpan,
 		spanL = stepL * maxColorSpan;

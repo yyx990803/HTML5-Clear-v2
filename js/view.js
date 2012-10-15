@@ -34,7 +34,7 @@ C.View = (function () {
 
 		updateBounds: function () {
 
-			this.upperBound = Math.min(0, C.client.height - this.items.length * 64);
+			this.upperBound = Math.min(0, C.client.height - (this.items.length + 1) * 64);
 
 		},
 
@@ -57,6 +57,14 @@ C.View = (function () {
 		},
 
 		onDragEnd: function (speed) {
+
+			if (this.y > 120) {
+				console.log("up one level");
+			} else if (this.y > 64) {
+				console.log("create new item");
+			} else if (this.y < this.upperBound - 64) {
+				console.log("pulled up");
+			}
 
 			var view = this;
 			speed = Math.max(-maxSpeed, Math.min(maxSpeed, speed * speedMultiplier));

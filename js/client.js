@@ -31,6 +31,7 @@ C.client = (function () {
 				this.height = window.innerHeight;
 				if (C.currentView) {
 					C.currentView.updateBounds();
+					C.currentView.onDragEnd(0);
 				}
 
 			} else {
@@ -40,7 +41,7 @@ C.client = (function () {
 				this.left = wrapper.offsetLeft;
 				this.right = this.left + this.width;
 				this.bottom = this.top + this.height;
-				
+
 			}
 
 		}
