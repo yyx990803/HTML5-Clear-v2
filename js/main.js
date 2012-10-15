@@ -22,9 +22,6 @@ var C = {
 		C.client.init();
 		C.db.init(true);
 		C.touch.init();
-
-		C.setTheme();
-
 		C.menu.init();
 		C.listView.init();
 
@@ -55,22 +52,6 @@ var C = {
 		}
 
 		C.$wrapper.append(C.currentView.el);
-
-	},
-
-	setTheme: function (newTheme) {
-
-		var curTheme = C.db.data.theme;
-		newTheme = newTheme || curTheme;
-
-		// TODO switch theme by changing base HSL
-
-		if (newTheme != curTheme) {
-			C.db.data.theme = newTheme;
-			C.db.save();
-		}
-
-		C.log('App: set theme: ' + newTheme);
 
 	},
 

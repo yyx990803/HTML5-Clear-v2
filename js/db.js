@@ -46,8 +46,6 @@ C.db = (function () {
 					view: C.states.LISTS
 				},
 
-				theme: 'heatmap',
-
 				lists: [
 					{
 
@@ -81,6 +79,34 @@ C.db = (function () {
 							{
 								order: 6,
 								title: 'Test4'
+							},
+							{
+								order: 7,
+								title: 'Test4'
+							},
+							{
+								order: 8,
+								title: 'Test4'
+							},
+							{
+								order: 9,
+								title: 'Test4'
+							},
+							{
+								order: 10,
+								title: 'Test4'
+							},
+							{
+								order: 11,
+								title: 'Test4'
+							},
+							{
+								order: 12,
+								title: 'Test4'
+							},
+							{
+								order: 13,
+								title: 'Test4'
 							}
 						]
 					},
@@ -112,6 +138,39 @@ C.db = (function () {
 					{
 						title: 'This is a demo',
 						order: 4,
+						todos: [
+							{
+								order: 0,
+								title: 'Test'
+							}
+						]
+					},
+					{
+						title: 'This is a demo',
+						order: 5,
+						todos: []
+					},
+					{
+						title: 'This is a demo',
+						order: 6,
+						todos: []
+					},
+					{
+						title: 'This is a demo',
+						order: 7,
+						todos: []
+					},
+					{
+						title: 'This is a demo',
+						order: 8,
+						todos: []
+					},{
+						title: 'This is a demo',
+						order: 9,
+						todos: []
+					},{
+						title: 'This is a demo',
+						order: 10,
 						todos: [
 							{
 								order: 0,

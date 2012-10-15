@@ -33,6 +33,7 @@ C.TodoView.prototype = {
 
 		while (i--) {
 			li = new C.TodoItem(todos[i]);
+			li.list = this;
 			li.el
 				.data('id', this.items.length)
 				.appendTo(this.el);
@@ -47,9 +48,10 @@ C.TodoView.prototype = {
 
 		var t = this;
 		C.currentView = t;
+		t.updateColor();
 		t.el.appendTo(C.$wrapper);
 		setTimeout(function () {
-			t.update();
+			t.updatePosition();
 		}, 1);
 
 	},
@@ -58,20 +60,28 @@ C.TodoView.prototype = {
 
 	},
 
-	update: function () {
-		C.View.update.apply(this);
+	updateBounds: function () {
+		C.View.updateBounds.apply(this, arguments);
+	},
+
+	updateColor: function () {
+		C.View.updateColor.apply(this, arguments);
+	},
+
+	updatePosition: function () {
+		C.View.updatePosition.apply(this, arguments);
 	},
 
 	onDragStart: function () {
-		C.View.onDragStart.apply(this);
+		C.View.onDragStart.apply(this, arguments);
 	},
 
-	onDragMove: function (dy) {
+	onDragMove: function () {
 		C.View.onDragMove.apply(this, arguments);
 	},
 
 	onDragEnd: function () {
-		C.View.onDragEnd.apply(this);
+		C.View.onDragEnd.apply(this, arguments);
 	}
 
 }

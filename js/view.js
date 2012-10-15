@@ -1,14 +1,32 @@
 C.View = (function () {
 
+	var friction = .95,
+		interval = 16,
+		speedMultiplier = 10,
+		maxSpeed = 25,
+		diff = 0.5;
+
 	return {
 
-		update: function () {
+		updateColor: function () {
 
 			var i = this.items.length,
 				item;
+
 			while (i--) {
 				item = this.items[i];
 				item.updateColor();
+			}
+
+		},
+
+		updatePosition: function () {
+
+			var i = this.items.length,
+				item;
+
+			while (i--) {
+				item = this.items[i];
 				item.updatePosition();
 			}
 
@@ -38,33 +56,52 @@ C.View = (function () {
 
 		},
 
-		onDragEnd: function () {
+		onDragEnd: function (speed) {
 
 			var view = this;
+			speed = Math.max(-maxSpeed, Math.min(maxSpeed, speed * speedMultiplier));
+
+			view.inMomentum = true;
 			loop();
 
 			function loop () {
 
-				if (view.y < view.upperBound) {
-					view.y += (view.upperBound - view.y) / 5;	
-				} else if (view.y > 0) {
-					view.y += (0 - view.y) / 5;
-				}
+				if (C.touch.data.dragging) return;
 
+				view.y += speed;
+				speed *= friction;
 				view.style.webkitTransform = 'translate3d(0,' + view.y + 'px, 0)';
 
-				if (Math.abs(view.y - view.upperBound) < 0.1) {
-					view.y = view.upperBound;
-					view.style.webkitTransform = 'translate3d(0,' + view.y + 'px, 0)';
-					view.el.removeClass('drag');
-				} else if (Math.abs(view.y) < 0.1) {
-					view.y = view.lowerBound;
-					view.style.webkitTransform = 'translate3d(0,' + view.y + 'px, 0)';
-					view.el.removeClass('drag');
-				} else if (!C.touch.data.dragging) {
-					setTimeout(loop, 16);
+				if (view.y < view.upperBound - diff) {
+					view.y += (view.upperBound - view.y) / 5;
+					speed *= .85;
+					if (view.y < view.upperBound - diff) {
+						setTimeout(loop, interval);
+					} else {
+						view.y = view.upperBound;
+						endLoop();
+					}
+				} else if (view.y > diff) {
+					view.y *= .8;
+					speed *= .85;
+					if (view.y > diff) {
+						setTimeout(loop, interval);
+					} else {
+						view.y = 0;
+						endLoop();
+					}
+				} else if (Math.abs(speed) > 0.1) {
+					setTimeout(loop, interval);
+				} else {
+					endLoop();
 				}
 
+			}
+
+			function endLoop () {
+				view.style.webkitTransform = 'translate3d(0,' + view.y + 'px, 0)';
+				view.el.removeClass('drag');
+				view.inMomentum = false;
 			}
 
 		}

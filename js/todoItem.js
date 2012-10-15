@@ -1,63 +1,86 @@
-C.TodoItem = function (data) {
-	C.Item.init.apply(this, arguments);
-};
+;(function () {
 
-C.TodoItem.prototype = {
+	var baseH = 354,
+		baseS = 100,
+		baseL = 46,
 
-	baseH: 354,
-	baseS: 100,
-	baseL: 46,
+		stepH = 7,
+		stepL = 2.5,
 
-	render: function () {
+		maxColorSpan = 8,
 
-		this.el = $('<div class="item todo-item">'
-				+ '<div class="inner">'
-					+ this.data.title
-				+ '</div>'
-			+ '</div>');
+		spanH = stepH * maxColorSpan,
+		spanL = stepL * maxColorSpan;
 
-		this.style = this.el[0].style;
 
-	},
+	C.TodoItem = function (data) {
+		C.Item.init.apply(this, arguments);
+	};
 
-	updatePosition: function () {
 
-		this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
+	C.TodoItem.prototype = {
 
-	},
+		render: function () {
 
-	updateColor: function () {
+			this.el = $('<div class="item todo-item">'
+					+ '<div class="inner">'
+						+ this.data.title
+					+ '</div>'
+				+ '</div>');
 
-		var o = this.data.order;
-		this.style.backgroundColor = 'hsl('
-			+ (this.baseH + o * 7) + ','
-			+ (o ? (this.baseS - 10 - o * .4) : this.baseS)  + '%,'
-			+ (this.baseL + o * 3) + '%)';
+			this.style = this.el[0].style;
 
-	},
+		},
 
-	onTap: function () {
-		console.log(this.data.title);
-	},
+		updatePosition: function () {
 
-	onDragStart: function () {
-		C.Item.onDragStart.apply(this);
-	},
+			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
 
-	onDragMove: function (dx) {
-		C.Item.onDragMove.apply(this, arguments);
-	},
+		},
 
-	onDragEnd: function () {
-		C.Item.onDragEnd.apply(this);
-	},
+		updateColor: function () {
 
-	del: function () {
-		console.log("delete");
-	},
+			var o = this.data.order,
+				n = this.list.items.length,
+				sH = stepH,
+				sL = stepL;
 
-	done: function () {
-		console.log("done");
-	}
+			if (n > maxColorSpan) {
+				sH = spanH / n;
+				sL = spanL / n;
+			}
 
-};
+			this.style.backgroundColor = 'hsl('
+				+ (baseH + o * sH) + ','
+				+ (o ? (baseS - 10) : baseS)  + '%,'
+				+ (baseL + o * sL) + '%)';
+
+		},
+
+		onTap: function () {
+			console.log(this.data.title);
+		},
+
+		onDragStart: function () {
+			C.Item.onDragStart.apply(this);
+		},
+
+		onDragMove: function (dx) {
+			C.Item.onDragMove.apply(this, arguments);
+		},
+
+		onDragEnd: function () {
+			C.Item.onDragEnd.apply(this);
+		},
+
+		del: function () {
+			console.log("delete");
+		},
+
+		done: function () {
+			console.log("done");
+		}
+
+	};
+
+}());

@@ -77,7 +77,8 @@ C.touch = (function () {
 
 				if (data.dragging) {
 					data.dragging = false;
-					C.currentView.onDragEnd(data);
+					var speed = data.dy / data.dt;
+					C.currentView.onDragEnd(speed);
 				}
 
 				data = touch.data = {};

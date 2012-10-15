@@ -26,18 +26,21 @@ C.client = (function () {
 		update: function () {
 
 			if (this.isTouch) {
+
 				this.width = window.innerWidth,
-				this.height = window.innerHeight;	
+				this.height = window.innerHeight;
+				if (C.currentView) {
+					C.currentView.updateBounds();
+				}
+
 			} else {
+
 				var wrapper = C.$wrapper[0];
 				this.top = wrapper.offsetTop;
 				this.left = wrapper.offsetLeft;
 				this.right = this.left + this.width;
 				this.bottom = this.top + this.height;
-			}
-
-			if (C.currentView) {
-				C.currentView.updateBounds();
+				
 			}
 
 		}

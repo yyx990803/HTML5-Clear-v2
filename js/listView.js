@@ -10,6 +10,8 @@ C.listView = {
 		this.items = [];
 		this.render();
 		this.populateItems();
+		this.updateColor();
+		this.updatePosition();
 
 	},
 
@@ -28,6 +30,7 @@ C.listView = {
 
 		while (i--) {
 			li = new C.listItem(lists[i]);
+			li.list = this;
 			li.el
 				.data('id', this.items.length)
 				.appendTo(this.el);
@@ -38,20 +41,28 @@ C.listView = {
 
 	},
 
-	update: function () {
-		C.View.update.apply(this);
+	updateBounds: function () {
+		C.View.updateBounds.apply(this, arguments);
+	},
+
+	updateColor: function () {
+		C.View.updateColor.apply(this, arguments);
+	},
+
+	updatePosition: function () {
+		C.View.updatePosition.apply(this, arguments);
 	},
 
 	onDragStart: function () {
-		C.View.onDragStart.apply(this);
+		C.View.onDragStart.apply(this, arguments);
 	},
 
-	onDragMove: function (dy) {
+	onDragMove: function () {
 		C.View.onDragMove.apply(this, arguments);
 	},
 
 	onDragEnd: function () {
-		C.View.onDragEnd.apply(this);
+		C.View.onDragEnd.apply(this, arguments);
 	},
 
 	fade: function (at) {

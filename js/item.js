@@ -12,7 +12,6 @@ C.Item = (function () {
 			this.data = data;
 
 			this.render();
-			this.updateColor();
 
 		},
 
