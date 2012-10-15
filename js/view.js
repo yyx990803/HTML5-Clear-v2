@@ -10,25 +10,34 @@ C.View = (function () {
 
 		updateColor: function () {
 
-			var i = this.items.length,
-				item;
+			var i = this.items.length;
 
 			while (i--) {
-				item = this.items[i];
-				item.updateColor();
+				this.items[i].updateColor();
 			}
 
 		},
 
 		updatePosition: function () {
 
-			var i = this.items.length,
-				item;
+			var i = this.items.length;
 
 			while (i--) {
-				item = this.items[i];
-				item.updatePosition();
+				this.items[i].updatePosition();
 			}
+
+		},
+
+		countIncomplete: function () {
+
+			var i = this.items.length,
+				count = 0;
+
+			while (i--) {
+				if (!this.items[i].data.done) count++;
+			}
+			
+			return count;
 
 		},
 

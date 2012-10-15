@@ -60,6 +60,33 @@ C.TodoView.prototype = {
 
 	},
 
+	onDone: function (doneTodo) {
+
+		var todos = this.items,
+			i = todos.length,
+			incomplete = this.countIncomplete(),
+			doneOrder = doneTodo.data.order,
+			todo;
+
+		while (i--) {
+			todo = todos[i];
+			if (todo === doneTodo) {
+				todo.data.order = incomplete;
+			} else if (todo.data.order > doneOrder && !todo.data.done) {
+				todo.data.order -= 1;
+			} else {
+				continue;
+			}
+			todo.updateColor();
+			todo.updatePosition();
+		}
+
+	},
+
+	countIncomplete: function () {
+		return C.View.countIncomplete.apply(this, arguments);
+	},
+
 	updateBounds: function () {
 		C.View.updateBounds.apply(this, arguments);
 	},

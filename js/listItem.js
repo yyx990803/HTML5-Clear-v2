@@ -35,20 +35,18 @@
 			this.el = $('<div class="item list-item'
 				+ (this.data.todos.length ? '' : ' empty')
 				+ '">'
-					+ '<div class="inner">'
-						+ this.data.title
-						+ '<div class="count">' + this.data.todos.length + '</div>'
+					+ '<div class="slider">'
+						+ '<div class="inner">'
+							+ this.data.title
+							+ '<div class="count">' + this.data.todos.length + '</div>'
+						+ '</div>'
 					+ '</div>'
 				+ '</div>');
-
-			this.style = this.el[0].style;
 
 		},
 
 		updatePosition: function () {
-
-			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
-
+			C.Item.updatePosition.apply(this, arguments);
 		},
 
 		updateColor: function () {
@@ -65,7 +63,7 @@
 				sL = spanL / n;
 			}
 
-			this.style.backgroundColor = 'hsl('
+			this.sliderStyle.backgroundColor = 'hsl('
 				+ (baseH + o * sH) + ','
 				+ Math.min(100, (baseS + o * sS)) + '%,'
 				+ Math.min(100, (baseL + o * sL)) + '%)';
@@ -100,6 +98,10 @@
 
 		done: function () {
 			console.log("done");
+		},
+
+		cancel: function () {
+
 		}
 
 	};

@@ -41,6 +41,19 @@ C.listView = {
 
 	},
 
+	fade: function (at) {
+		//TODO implement this
+		var t = this;
+		t.el.addClass('fade');
+		setTimeout(function () {
+			t.el.css('display', 'none');
+		}, 300);
+	},
+
+	countIncomplete: function () {
+		return C.View.countIncomplete.apply(this, arguments);
+	},
+
 	updateBounds: function () {
 		C.View.updateBounds.apply(this, arguments);
 	},
@@ -63,15 +76,6 @@ C.listView = {
 
 	onDragEnd: function () {
 		C.View.onDragEnd.apply(this, arguments);
-	},
-
-	fade: function (at) {
-		//TODO implement this
-		var t = this;
-		t.el.addClass('fade');
-		setTimeout(function () {
-			t.el.css('display', 'none');
-		}, 300);
 	}
 
 };

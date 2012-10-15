@@ -50,28 +50,52 @@ html, body {
 .item {
 	text-shadow: 0 1px 1px rgba(0,0,0,.25);
 	-webkit-transition: -webkit-transform .3s @ease,
-						background-color .3s @ease,
 						opacity .3s @ease;
 	position: absolute;
+	z-index: 0;
 	width: 100%;
 	top: 0;
 	left: 0;
 	height: @itemHeight;
-	.inner {
+
+	.slider {
+		-webkit-transition: background-color .15s @ease,
+							color .15s @ease;
 		cursor: pointer;
 		position: relative;
-		-webkit-transform: translate3d(0,0,0);
+		z-index: 1;
 		height: @itemHeight;
-		line-height: @itemHeight;
-		box-sizing: border-box;
-		padding-left: 12px;
-		border-top: 1px solid rgba(255,255,255,.07);
-		border-bottom: 1px solid rgba(0,0,0,.1);
+		
+		.inner {
+			-webkit-transform: translate3d(0,0,0);
+			box-sizing: border-box;
+			padding-left: 12px;
+			border-top: 1px solid rgba(255,255,255,.07);
+			border-bottom: 1px solid rgba(0,0,0,.1);
+			height: @itemHeight;
+			line-height: @itemHeight;
+		}
+	}
+
+	.check, .cross {
+		width: 64px;
+		height: 64px;
+		position: absolute;
+		z-index: 0;
+		top: 0;
+		opacity: 0;
+	}
+
+	.check {
+		left: 0;
+	}
+
+	.cross {
+		right: 0;
 	}
 }
 
 .list-item {
-	background-color: #0086F3;
 
 	.count {
 		position: absolute;
@@ -86,6 +110,37 @@ html, body {
 	&.empty {
 		color: rgba(255,255,255,.5);
 		text-shadow: 0 1px 1px rgba(0,0,0,.13);
+	}
+}
+
+.todo-item {
+
+	.line {
+		position: absolute;
+		height: 2px;
+		left: 10px;
+		top: 31px;
+		width: 0;
+		background-color: #fff;
+		-webkit-transition: width 0s linear,
+							background-color .15s @ease;
+	}
+
+	&.done {
+		z-index: 1;
+		color: #666;
+		.slider {
+			background-color: #000 !important;
+		}
+		.line {
+			background-color: #666;
+		}
+	}
+
+	&.green {
+		.slider {
+			background-color: #0A3 !important;
+		}
 	}
 }
 
