@@ -27,24 +27,27 @@ C.TodoCollection.prototype = {
 
 	populateItems: function () {
 
-		this.count = 0;
-
 		var todos = this.data.todos,
 			i = todos.length,
 			li;
 
+		this.count = 0; // number of items not done
+		this.hash = {}; // hash for getting items based on ID
+		this.newIdFrom = i; // newly created item ID start from this
+
+
 		while (i--) {
 			li = new C.TodoItem(todos[i]);
 			li.collection = this;
-			li.id = this.items.length;
+			//li.id = this.items.length;
 			li.el
-				.data('id', li.id)
+				.data('id', i)
 				.appendTo(this.el);
 			this.items.push(li);
+			this.hash[i] = li;
 			if (!li.data.done) this.count++;
 		}
-
-		this.newIdFrom = this.items.length; // newly created item id start from this
+		
 		C.Collection.updateBounds.apply(this);
 
 	},

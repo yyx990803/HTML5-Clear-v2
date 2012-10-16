@@ -25,17 +25,21 @@ C.listCollection = {
 	populateItems: function () {
 
 		var lists = C.db.data.lists,
-			i = this.count = lists.length,
+			i = lists.length,
 			li;
+
+		this.count = i; // total number of lists
+		this.hash = {}; // hash for accessing list item based on ID
 
 		while (i--) {
 			li = new C.listItem(lists[i]);
 			li.collection = this;
-			li.id = this.items.length;
+			//li.id = this.items.length;
 			li.el
-				.data('id', li.id)
+				.data('id', i)
 				.appendTo(this.el);
 			this.items.push(li);
+			this.hash[i] = li;
 		}
 
 		C.Collection.updateBounds.apply(this);

@@ -92,6 +92,18 @@
 			C.Item.onDragEnd.apply(this);
 		},
 
+		onLongTap: function () {
+			C.Item.onLongTap.apply(this);
+		},
+
+		onLongTapDrag: function () {
+			C.Item.onLongTapDrag.apply(this);
+		},
+
+		onLongTapEnd: function () {
+			C.Item.onLongTapEnd.apply(this);
+		},
+
 		del: function () {
 			
 			C.Item.del.apply(this);

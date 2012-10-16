@@ -166,11 +166,23 @@ C.Item = (function () {
 			var t = this;
 			t.style.webkitTransform = 'translate3d(' + (-C.client.width - 64) + 'px,' + this.y + 'px, 0)';
 			setTimeout(function () {
-				if (!t.data.done) t.list.count--;
+				if (!t.data.done) t.collection.count--;
 				t.el.remove();
-				t.list.collapseAt(t.data.order, t, true);
+				t.collection.collapseAt(t.data.order, t, true);
 			}, 300);
 
+		},
+
+		onLongTap: function () {
+			console.log('long tap');
+		},
+
+		onLongTapDrag: function () {
+			console.log('long tap drag');
+		},
+
+		onLongTapEnd: function () {
+			console.log('long tap end');
 		}
 
 	};

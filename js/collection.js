@@ -9,15 +9,7 @@ C.Collection = (function () {
 	return {
 
 		getItem: function (id) {
-
-			var i = this.items.length,
-				item;
-
-			while (i--) {
-				item = this.items[i];
-				if (item.id === id) return item;
-			}
-
+			return this.hash[id];
 		},
 
 		updateColor: function () {
@@ -121,7 +113,7 @@ C.Collection = (function () {
 
 			function loop () {
 
-				if (C.touch.data.dragging) return;
+				if (C.touch.data.dragging || C.touch.data.draggingItem) return;
 
 				col.y += speed;
 				speed *= friction;
@@ -145,7 +137,7 @@ C.Collection = (function () {
 						col.y = 0;
 						endLoop();
 					}
-				} else if (Math.abs(speed) > 0.1) {
+				} else if (Math.abs(speed) > 0.1 && !C.touch.data.isDown) {
 					setTimeout(loop, interval);
 				} else {
 					endLoop();
