@@ -39,10 +39,11 @@ C.TodoCollection.prototype = {
 		while (i--) {
 			li = new C.TodoItem(todos[i]);
 			li.collection = this;
-			//li.id = this.items.length;
+
 			li.el
 				.data('id', i)
 				.appendTo(this.el);
+
 			this.items.push(li);
 			this.hash[i] = li;
 			if (!li.data.done) this.count++;
@@ -58,8 +59,15 @@ C.TodoCollection.prototype = {
 		C.currentCollection = t;
 		t.updateColor();
 		t.el.appendTo(C.$wrapper);
+		
 		setTimeout(function () {
-			t.updatePosition();
+			
+			var i = t.items.length;
+			while (i--) {
+				t.items[i].updateContentWidth();
+				t.items[i].updatePosition();
+			}
+
 		}, 1);
 
 	},

@@ -1,5 +1,5 @@
 @itemHeight: 64px;
-@ease: cubic-bezier(.64, .16, .39, .83);
+@ease: cubic-bezier(.67, .18, .30, .86);
 
 .drag {
 	-webkit-transition: -webkit-transform 0s linear, opacity 0s linear !important;
@@ -50,8 +50,8 @@ html, body {
 .item {
 	text-shadow: 0 1px 1px rgba(0,0,0,.25);
 	-webkit-transform-origin: center center;
-	-webkit-transition: -webkit-transform .3s @ease,
-						opacity .3s @ease;
+	-webkit-transition: -webkit-transform .25s @ease,
+						opacity .25s @ease;
 	position: absolute;
 	z-index: 0;
 	width: 100%;
@@ -99,12 +99,12 @@ html, body {
 		-webkit-transition: -webkit-transform 0s linear !important;
 		.slider {
 			box-shadow: 0 0 16px rgba(0,0,0,.2);
-			-webkit-transform: scale(1.05);
+			-webkit-transform: scale(1.05) !important;
 		}
 	}
 
 	&.sorting-trans {
-		z-index: 1;
+		z-index: 2 !important;
 		-webkit-transition: -webkit-transform .12s ease-out;
 		.slider {
 			-webkit-transition: -webkit-transform .12s ease-out;

@@ -37,6 +37,10 @@
 
 		},
 
+		updateContentWidth: function () {
+			this.contentWidth = this.el.find('.title').width() + 7;
+		},
+
 		updatePosition: function () {
 			C.Item.updatePosition.apply(this, arguments);
 		},
@@ -66,7 +70,6 @@
 
 		onDragStart: function () {
 			C.Item.onDragStart.apply(this);
-			this.contentWidth = this.el.find('.title').width() + 7;
 		},
 
 		onDragMove: function (dx) {
@@ -78,7 +81,7 @@
 				if (!this.activated) {
 					this.activated = true;
 					if (this.data.done) {
-						this.updateColor(maxColorSpan);
+						this.updateColor(Math.min(this.data.order, maxColorSpan));
 						this.el.removeClass('done');
 					} else {
 						this.el.addClass('green');
@@ -122,6 +125,17 @@
 		},
 
 		onLongTapEnd: function () {
+
+			if (!this.data.done) {
+				if (this.data.order >= this.collection.count) { // dragged into done zone
+					this.beDone();
+				}
+			} else {
+				if (this.data.order < this.collection.count) { // dragged back into undone zone!
+					this.unDone();
+				}
+			}
+
 			C.Item.onLongTapEnd.apply(this);
 		},
 
@@ -136,31 +150,45 @@
 			//TODO: data manipulation
 
 			if (!this.data.done) {
-
-				this.data.done = true;
-				this.collection.count--;
+				
+				//modify state
+				this.el.removeClass('green');
+				this.beDone();
 
 				//move myself
 				var at = this.data.order;
 				this.data.order = this.collection.count;
 				this.updatePosition(true);
-				this.el
-					.removeClass('green')
-					.addClass('done');
 
 				//move others
 				this.collection.collapseAt(at, this);
 
 			} else {
 
-				this.data.done = false;
-				this.el.removeClass('done');
-				this.collection.count++;
+				this.unDone();
 
 				//float this one up from done ones, this is a todoCollection only method.
 				this.collection.floatUp(this);
 
 			}
+
+		},
+
+		beDone: function () {
+
+			this.data.done = true;
+			this.lineStyle.width = this.contentWidth + 'px';
+			this.el.addClass('done');
+			this.collection.count--;
+
+		},
+
+		unDone: function () {
+
+			this.data.done = false;
+			this.lineStyle.width = '0px';
+			this.el.removeClass('done');
+			this.collection.count++;
 
 		}
 

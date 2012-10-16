@@ -113,7 +113,20 @@ C.db = (function () {
 					{
 						title: 'This is a demo',
 						order: 1,
-						todos: []
+						todos: [
+							{
+								order: 0,
+								title: 'Test'
+							},
+							{
+								order: 1,
+								title: 'Test'
+							},
+							{
+								order: 2,
+								title: 'Test'
+							}
+						]
 					},
 					{
 						title: 'By Evan You',

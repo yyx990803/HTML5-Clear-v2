@@ -28,7 +28,7 @@ body {
 }
 .collection {
   -webkit-transform: translate3d(0, 0, 0);
-  -webkit-transition: opacity 0.3s cubic-bezier(0.64, 0.16, 0.39, 0.83);
+  -webkit-transition: opacity 0.3s cubic-bezier(0.67, 0.18, 0.3, 0.86);
   position: absolute;
   width: 100%;
   top: 0;
@@ -41,7 +41,7 @@ body {
 .item {
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
   -webkit-transform-origin: center center;
-  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.64, 0.16, 0.39, 0.83), opacity 0.3s cubic-bezier(0.64, 0.16, 0.39, 0.83);
+  -webkit-transition: -webkit-transform 0.25s cubic-bezier(0.67, 0.18, 0.3, 0.86), opacity 0.25s cubic-bezier(0.67, 0.18, 0.3, 0.86);
   position: absolute;
   z-index: 0;
   width: 100%;
@@ -50,7 +50,7 @@ body {
   height: 64px;
 }
 .item .slider {
-  -webkit-transition: background-color 0.15s cubic-bezier(0.64, 0.16, 0.39, 0.83), color 0.15s cubic-bezier(0.64, 0.16, 0.39, 0.83);
+  -webkit-transition: background-color 0.15s cubic-bezier(0.67, 0.18, 0.3, 0.86), color 0.15s cubic-bezier(0.67, 0.18, 0.3, 0.86);
   cursor: pointer;
   position: relative;
   z-index: 1;
@@ -85,10 +85,10 @@ body {
 }
 .item.sorting .slider {
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
-  -webkit-transform: scale(1.05);
+  -webkit-transform: scale(1.05) !important;
 }
 .item.sorting-trans {
-  z-index: 1;
+  z-index: 2 !important;
   -webkit-transition: -webkit-transform 0.12s ease-out;
 }
 .item.sorting-trans .slider {
@@ -114,7 +114,7 @@ body {
   top: 31px;
   width: 0;
   background-color: #fff;
-  -webkit-transition: width 0s linear, background-color 0.15s cubic-bezier(0.64, 0.16, 0.39, 0.83);
+  -webkit-transition: width 0s linear, background-color 0.15s cubic-bezier(0.67, 0.18, 0.3, 0.86);
 }
 .todo-item.done {
   color: #666;

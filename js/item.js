@@ -184,7 +184,7 @@ C.Item = (function () {
 			this.y += dy;
 			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
 
-			var currentAt = ~~((this.y + 32) / 64);
+			var currentAt = Math.min(this.collection.items.length - 1, ~~((this.y + 32) / 64));
 			if (currentAt != this.data.order) {
 				var target = this.collection.getItemByOrder(currentAt);
 				target.data.order = this.data.order;
