@@ -97,7 +97,7 @@
 		},
 
 		onLongTapDrag: function () {
-			C.Item.onLongTapDrag.apply(this);
+			C.Item.onLongTapDrag.apply(this, arguments);
 		},
 
 		onLongTapEnd: function () {

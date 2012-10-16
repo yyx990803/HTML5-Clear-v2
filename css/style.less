@@ -49,6 +49,7 @@ html, body {
 
 .item {
 	text-shadow: 0 1px 1px rgba(0,0,0,.25);
+	-webkit-transform-origin: center center;
 	-webkit-transition: -webkit-transform .3s @ease,
 						opacity .3s @ease;
 	position: absolute;
@@ -92,6 +93,22 @@ html, body {
 
 	.cross {
 		right: 0;
+	}
+
+	&.sorting {
+		-webkit-transition: -webkit-transform 0s linear !important;
+		.slider {
+			box-shadow: 0 0 16px rgba(0,0,0,.2);
+			-webkit-transform: scale(1.05);
+		}
+	}
+
+	&.sorting-trans {
+		z-index: 1;
+		-webkit-transition: -webkit-transform .12s ease-out;
+		.slider {
+			-webkit-transition: -webkit-transform .12s ease-out;
+		}
 	}
 }
 

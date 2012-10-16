@@ -47,16 +47,21 @@ C.listCollection = {
 	},
 
 	fade: function (at) {
-		//TODO implement this
+
 		var t = this;
 		t.el.addClass('fade');
 		setTimeout(function () {
 			t.el.css('display', 'none');
 		}, 300);
+
 	},
 
-	getItem: function () {
-		return C.Collection.getItem.apply(this, arguments);
+	getItemById: function () {
+		return C.Collection.getItemById.apply(this, arguments);
+	},
+
+	getItemByOrder: function () {
+		return C.Collection.getItemByOrder.apply(this, arguments);
 	},
 
 	collapseAt: function () {

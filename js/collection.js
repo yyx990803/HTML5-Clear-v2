@@ -8,8 +8,20 @@ C.Collection = (function () {
 
 	return {
 
-		getItem: function (id) {
+		getItemById: function (id) {
 			return this.hash[id];
+		},
+
+		getItemByOrder: function (order) {
+
+			var i = this.items.length,
+				item;
+			while (i--) {
+				item = this.items[i];
+				if (item.data.order === order) {
+					return item;
+				}
+			}
 		},
 
 		updateColor: function () {

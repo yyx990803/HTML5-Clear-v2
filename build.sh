@@ -32,11 +32,11 @@ $BASEDIR/js/db.js \
 $BASEDIR/js/touch.js \
 $BASEDIR/js/menu.js \
 $BASEDIR/js/item.js \
-$BASEDIR/js/view.js \
-$BASEDIR/js/listView.js \
-$BASEDIR/js/listItem.js \
-$BASEDIR/js/todoView.js \
-$BASEDIR/js/todoItem.js \
+$BASEDIR/js/collection.js \
+$BASEDIR/js/list-collection.js \
+$BASEDIR/js/list-item.js \
+$BASEDIR/js/todo-collection.js \
+$BASEDIR/js/todo-item.js \
 | uglifyjs -v -o $BASEDIR/deploy/js/min.js
 
 #remove stuff no longer needed for deploy

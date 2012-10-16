@@ -40,6 +40,7 @@ body {
 }
 .item {
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  -webkit-transform-origin: center center;
   -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.64, 0.16, 0.39, 0.83), opacity 0.3s cubic-bezier(0.64, 0.16, 0.39, 0.83);
   position: absolute;
   z-index: 0;
@@ -78,6 +79,20 @@ body {
 }
 .item .cross {
   right: 0;
+}
+.item.sorting {
+  -webkit-transition: -webkit-transform 0s linear !important;
+}
+.item.sorting .slider {
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(1.05);
+}
+.item.sorting-trans {
+  z-index: 1;
+  -webkit-transition: -webkit-transform 0.12s ease-out;
+}
+.item.sorting-trans .slider {
+  -webkit-transition: -webkit-transform 0.12s ease-out;
 }
 .list-item .count {
   position: absolute;

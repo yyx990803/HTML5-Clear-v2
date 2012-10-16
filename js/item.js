@@ -174,15 +174,35 @@ C.Item = (function () {
 		},
 
 		onLongTap: function () {
-			console.log('long tap');
+			this.el
+				.addClass('sorting-trans')
+				.addClass('sorting');
 		},
 
-		onLongTapDrag: function () {
-			console.log('long tap drag');
+		onLongTapDrag: function (dy) {
+
+			this.y += dy;
+			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
+
+			var currentAt = ~~((this.y + 32) / 64);
+			if (currentAt != this.data.order) {
+				var target = this.collection.getItemByOrder(currentAt);
+				target.data.order = this.data.order;
+				this.data.order = currentAt;
+				target.updatePosition();
+			}
+
 		},
 
 		onLongTapEnd: function () {
-			console.log('long tap end');
+			this.updatePosition();
+			this.el.removeClass('sorting');
+			this.collection.updateColor();
+
+			var t = this;
+			setTimeout(function () {
+				t.el.removeClass('sorting-trans');
+			}, 150);
 		}
 
 	};

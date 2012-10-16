@@ -53,13 +53,13 @@ C.touch = (function () {
 				data.cy = e.pageY;
 				data.tdy = data.cy - data.oy;
 
-				if (data.draggingItem) return;
+				if (data.draggingItem || data.longTapDragging) return;
 
 				var now = Date.now();
 				data.dt = now - data.ct;
 				data.ct = now;
 
-				if (!data.dragging && !data.longTapDragging && Math.abs(data.tdy) > dragThreshold) {
+				if (!data.dragging && Math.abs(data.tdy) > dragThreshold) {
 					data.dragging = true;
 					C.currentCollection.onDragStart();
 					return;
@@ -119,7 +119,7 @@ C.touch = (function () {
 			.on(start, '.item', function (e) {
 
 				if (item) return;
-				item = C.currentCollection.getItem(+this.dataset.id);
+				item = C.currentCollection.getItemById(+this.dataset.id);
 
 			})
 			.on(move, function (e) {
@@ -156,7 +156,7 @@ C.touch = (function () {
 			startTime,
 			ltTimeout,
 			ltTarget,
-			ltDelay = 400;
+			ltDelay = 300;
 
 		function cancelLongTap () {
 			if (ltTimeout) {
@@ -168,7 +168,7 @@ C.touch = (function () {
 		function longTap () {
 			if (tapTarget) {
 				data.longTapDragging = true;
-				ltTarget = C.currentCollection.getItem(+tapTarget.dataset.id);
+				ltTarget = C.currentCollection.getItemById(+tapTarget.dataset.id);
 				ltTarget.onLongTap();
 				ltTimeout = null;
 			}
@@ -185,7 +185,7 @@ C.touch = (function () {
 				moved = true;
 				cancelLongTap();
 				if (data.longTapDragging) {
-					ltTarget.onLongTapDrag();
+					ltTarget.onLongTapDrag(data.dy);
 				}
 			})
 			.on(end, function (e) {
@@ -195,7 +195,7 @@ C.touch = (function () {
 				if (!moved &&
 					(Date.now() - startTime < ltDelay) &&
 					!C.currentCollection.inMomentum) {
-					var target = C.currentCollection.getItem(+tapTarget.dataset.id);
+					var target = C.currentCollection.getItemById(+tapTarget.dataset.id);
 					target.onTap();
 					tapTarget = null;
 					data = touch.data = {};
