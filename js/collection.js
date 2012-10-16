@@ -1,4 +1,4 @@
-C.View = (function () {
+C.Collection = (function () {
 
 	var friction = .95,
 		interval = 16,
@@ -8,10 +8,21 @@ C.View = (function () {
 
 	return {
 
+		getItem: function (id) {
+
+			var i = this.items.length,
+				item;
+
+			while (i--) {
+				item = this.items[i];
+				if (item.id === id) return item;
+			}
+
+		},
+
 		updateColor: function () {
 
 			var i = this.items.length;
-
 			while (i--) {
 				this.items[i].updateColor();
 			}
@@ -21,7 +32,6 @@ C.View = (function () {
 		updatePosition: function () {
 
 			var i = this.items.length;
-
 			while (i--) {
 				this.items[i].updatePosition();
 			}
@@ -36,8 +46,36 @@ C.View = (function () {
 			while (i--) {
 				if (!this.items[i].data.done) count++;
 			}
-			
+
+			this.count = count;
 			return count;
+
+		},
+
+		collapseAt: function (at, target, del) {
+
+			var items = this.items,
+				i = items.length,
+				item,
+				delIndex;
+
+			while (i--) {
+				item = items[i];
+				if (item === target) {
+					if (del) delIndex = i;
+					continue;
+				} else if (item.data.order > at && (!item.data.done || del)) {
+					item.data.order--;
+					item.updateColor();
+					item.updatePosition();
+				} else {
+					item.updateColor();
+				}
+			}
+
+			if (delIndex) {
+				items.splice(delIndex, 1);
+			}
 
 		},
 
@@ -75,36 +113,36 @@ C.View = (function () {
 				console.log("pulled up");
 			}
 
-			var view = this;
+			var col = this;
 			speed = Math.max(-maxSpeed, Math.min(maxSpeed, speed * speedMultiplier));
 
-			view.inMomentum = true;
+			col.inMomentum = true;
 			loop();
 
 			function loop () {
 
 				if (C.touch.data.dragging) return;
 
-				view.y += speed;
+				col.y += speed;
 				speed *= friction;
-				view.style.webkitTransform = 'translate3d(0,' + view.y + 'px, 0)';
+				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
 
-				if (view.y < view.upperBound - diff) {
-					view.y += (view.upperBound - view.y) / 5;
+				if (col.y < col.upperBound - diff) {
+					col.y += (col.upperBound - col.y) / 5;
 					speed *= .85;
-					if (view.y < view.upperBound - diff) {
+					if (col.y < col.upperBound - diff) {
 						setTimeout(loop, interval);
 					} else {
-						view.y = view.upperBound;
+						col.y = col.upperBound;
 						endLoop();
 					}
-				} else if (view.y > diff) {
-					view.y *= .8;
+				} else if (col.y > diff) {
+					col.y *= .8;
 					speed *= .85;
-					if (view.y > diff) {
+					if (col.y > diff) {
 						setTimeout(loop, interval);
 					} else {
-						view.y = 0;
+						col.y = 0;
 						endLoop();
 					}
 				} else if (Math.abs(speed) > 0.1) {
@@ -116,9 +154,9 @@ C.View = (function () {
 			}
 
 			function endLoop () {
-				view.style.webkitTransform = 'translate3d(0,' + view.y + 'px, 0)';
-				view.el.removeClass('drag');
-				view.inMomentum = false;
+				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
+				col.el.removeClass('drag');
+				col.inMomentum = false;
 			}
 
 		}

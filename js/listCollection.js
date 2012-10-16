@@ -1,11 +1,11 @@
-C.listView = {
+C.listCollection = {
 
 	y: 0,
 	upperBound: 0,
 
 	init: function () {
 
-		C.log('ListView: init');
+		C.log('ListCollection: init');
 
 		this.items = [];
 		this.render();
@@ -17,7 +17,7 @@ C.listView = {
 
 	render: function () {
 
-		this.el = $('<div id="list-view" class="list"></div>');
+		this.el = $('<div id="list-collection" class="collection"></div>');
 		this.style = this.el[0].style;
 
 	},
@@ -25,19 +25,20 @@ C.listView = {
 	populateItems: function () {
 
 		var lists = C.db.data.lists,
-			i = lists.length,
+			i = this.count = lists.length,
 			li;
 
 		while (i--) {
 			li = new C.listItem(lists[i]);
-			li.list = this;
+			li.collection = this;
+			li.id = this.items.length;
 			li.el
-				.data('id', this.items.length)
+				.data('id', li.id)
 				.appendTo(this.el);
 			this.items.push(li);
 		}
 
-		C.View.updateBounds.apply(this);
+		C.Collection.updateBounds.apply(this);
 
 	},
 
@@ -50,32 +51,40 @@ C.listView = {
 		}, 300);
 	},
 
+	getItem: function () {
+		return C.Collection.getItem.apply(this, arguments);
+	},
+
+	collapseAt: function () {
+		C.Collection.collapseAt.apply(this, arguments);
+	},
+
 	countIncomplete: function () {
-		return C.View.countIncomplete.apply(this, arguments);
+		C.Collection.countIncomplete.apply(this, arguments);
 	},
 
 	updateBounds: function () {
-		C.View.updateBounds.apply(this, arguments);
+		C.Collection.updateBounds.apply(this, arguments);
 	},
 
 	updateColor: function () {
-		C.View.updateColor.apply(this, arguments);
+		C.Collection.updateColor.apply(this, arguments);
 	},
 
 	updatePosition: function () {
-		C.View.updatePosition.apply(this, arguments);
+		C.Collection.updatePosition.apply(this, arguments);
 	},
 
 	onDragStart: function () {
-		C.View.onDragStart.apply(this, arguments);
+		C.Collection.onDragStart.apply(this, arguments);
 	},
 
 	onDragMove: function () {
-		C.View.onDragMove.apply(this, arguments);
+		C.Collection.onDragMove.apply(this, arguments);
 	},
 
 	onDragEnd: function () {
-		C.View.onDragEnd.apply(this, arguments);
+		C.Collection.onDragEnd.apply(this, arguments);
 	}
 
 };

@@ -5,7 +5,7 @@
 		baseL = 46,
 
 		stepH = 7,
-		stepL = 2.5,
+		stepL = 2,
 
 		maxColorSpan = 7,
 
@@ -41,14 +41,14 @@
 			C.Item.updatePosition.apply(this, arguments);
 		},
 
-		updateColor: function () {
+		updateColor: function (order) {
 
-			var o = this.data.order,
-				n = this.list.items.length,
+			var o = order || this.data.order,
+				n = this.collection.count,
 				sH = stepH,
 				sL = stepL;
 
-			if (n > maxColorSpan) {
+			if (n > maxColorSpan && !order) {
 				sH = spanH / n;
 				sL = spanL / n;
 			}
@@ -71,16 +71,27 @@
 
 		onDragMove: function (dx) {
 
-			this.lineStyle.width = Math.min(this.contentWidth, Math.max(0, ~~(this.x / 64 * this.contentWidth))) + 'px';
+			var w = Math.min(this.contentWidth, Math.max(0, ~~(this.x / 64 * this.contentWidth)));
+			this.lineStyle.width = (this.data.done ? this.contentWidth - w : w) + 'px';
+
 			if (this.x >= rightBound) {
-				if (!this.green) {
-					this.green = true;
-					this.el.addClass('green');
+				if (!this.activated) {
+					this.activated = true;
+					if (this.data.done) {
+						this.updateColor(maxColorSpan);
+						this.el.removeClass('done');
+					} else {
+						this.el.addClass('green');
+					}
 				}
 			} else {
-				if (this.green) {
-					this.green = false;
-					this.el.removeClass('green');
+				if (this.activated) {
+					this.activated = false;
+					if (this.data.done) {
+						this.el.addClass('done');
+					} else {
+						this.el.removeClass('green');
+					}
 				}
 			}
 
@@ -91,7 +102,11 @@
 		onDragEnd: function () {
 
 			if (this.x < rightBound) {
-				this.lineStyle.width = 0;
+				if (this.data.done) {
+					this.lineStyle.width = this.contentWidth;
+				} else {
+					this.lineStyle.width = 0;
+				}
 			}
 
 			C.Item.onDragEnd.apply(this);
@@ -99,24 +114,41 @@
 		},
 
 		del: function () {
-			console.log("delete");
+			
+			C.Item.del.apply(this);
+
 		},
 
 		done: function () {
 
 			//TODO: data manipulation
 
-			this.data.done = true;
+			if (!this.data.done) {
 
-			this.el
-				.removeClass('green')
-				.addClass('done');
+				this.data.done = true;
+				this.collection.count--;
 
-			this.list.onDone(this);
+				//move myself
+				var at = this.data.order;
+				this.data.order = this.collection.count;
+				this.updatePosition(true);
+				this.el
+					.removeClass('green')
+					.addClass('done');
 
-		},
+				//move others
+				this.collection.collapseAt(at, this);
 
-		cancel: function () {
+			} else {
+
+				this.data.done = false;
+				this.el.removeClass('done');
+				this.collection.count++;
+
+				//float this one up from done ones, this is a todoCollection only method.
+				this.collection.floatUp(this);
+
+			}
 
 		}
 

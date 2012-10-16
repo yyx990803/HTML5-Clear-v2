@@ -52,7 +52,7 @@
 		updateColor: function () {
 
 			var o = this.data.order,
-				n = this.list.items.length,
+				n = this.collection.count,
 				sH = stepH,
 				sS = stepS,
 				sL = stepL;
@@ -72,11 +72,11 @@
 
 		onTap: function () {
 
-			if (this.list.inMomentum) return;
+			if (this.collection.inMomentum) return;
 
-			C.listView.fade(this.data.order);
-			var todoView = new C.TodoView(this.data);
-			todoView.load();
+			C.listCollection.fade(this.data.order);
+			var todoCollection = new C.TodoCollection(this.data);
+			todoCollection.load();
 
 		},
 
@@ -93,15 +93,13 @@
 		},
 
 		del: function () {
-			console.log("delete");
+			
+			C.Item.del.apply(this);
+
 		},
 
 		done: function () {
 			console.log("done");
-		},
-
-		cancel: function () {
-
 		}
 
 	};

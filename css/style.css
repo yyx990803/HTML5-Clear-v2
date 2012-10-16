@@ -23,10 +23,10 @@ body {
   background: #000;
   overflow: hidden;
 }
-#list-view {
+#list-collection {
   z-index: 1;
 }
-.list {
+.collection {
   -webkit-transform: translate3d(0, 0, 0);
   -webkit-transition: opacity 0.3s cubic-bezier(0.64, 0.16, 0.39, 0.83);
   position: absolute;
@@ -35,7 +35,7 @@ body {
   left: 0;
   z-index: 0;
 }
-.list.fade {
+.collection.fade {
   opacity: 0;
 }
 .item {
@@ -102,7 +102,6 @@ body {
   -webkit-transition: width 0s linear, background-color 0.15s cubic-bezier(0.64, 0.16, 0.39, 0.83);
 }
 .todo-item.done {
-  z-index: 1;
   color: #666;
 }
 .todo-item.done .slider {

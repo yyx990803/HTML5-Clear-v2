@@ -33,10 +33,21 @@ C.Item = (function () {
 
 		},
 
-		updatePosition: function () {
+		updatePosition: function (top) {
 
+			
 			this.y = this.data.order * 64;
+
+			if (top) this.style.zIndex = 1; // make sure the item acted upon moves on top
+
 			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
+
+			if (top) {
+				var t = this;
+				setTimeout(function () {
+					t.style.zIndex = 0;		
+				}, 300);
+			}
 
 		},
 
@@ -60,7 +71,8 @@ C.Item = (function () {
 				if (this.noDragRight) return;
 				if (tx <= rightBound) {
 
-					this.checkO = tx / rightBound;
+					var o = tx / rightBound;
+					this.checkO = this.data.done ? 1 - o : o;
 					this.checkStyle.opacity = this.checkO;
 
 					if (this.checkX != 0) {
@@ -74,9 +86,10 @@ C.Item = (function () {
 					this.checkX = Math.max(0, (this.x + dx) - rightBound);
 					this.checkStyle.webkitTransform = 'translate3d(' + this.checkX + 'px, 0, 0)';
 
-					if (this.checkO != 1) {
-						this.checkO = 1;
-						this.checkStyle.opacity = 1;
+					var targetO = this.data.done ? 0 : 1;
+					if (this.checkO != targetO) {
+						this.checkO = targetO;
+						this.checkStyle.opacity = targetO;
 					}
 
 				}
@@ -117,14 +130,13 @@ C.Item = (function () {
 		onDragEnd: function () {
 
 			var item = this,
-				complete;
+				done = false;
 
 			if (item.x < leftBound) {
-				complete = this.del;
+				this.del();
+				return;
 			} else if (item.x > rightBound) {
-				complete = this.done;
-			} else {
-				complete = this.cancel;
+				done = true;
 			}
 
 			loop();
@@ -141,7 +153,7 @@ C.Item = (function () {
 					item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';
 					item.slider.removeClass('drag');
 
-					complete.call(item);
+					if (done) item.done();
 
 				}
 
@@ -149,7 +161,17 @@ C.Item = (function () {
 
 		},
 
+		del: function () {
 
+			var t = this;
+			t.style.webkitTransform = 'translate3d(' + (-C.client.width - 64) + 'px,' + this.y + 'px, 0)';
+			setTimeout(function () {
+				if (!t.data.done) t.list.count--;
+				t.el.remove();
+				t.list.collapseAt(t.data.order, t, true);
+			}, 300);
+
+		}
 
 	};
 

@@ -61,12 +61,12 @@ C.touch = (function () {
 
 				if (!data.dragging && Math.abs(data.tdy) > dragThreshold) {
 					data.dragging = true;
-					C.currentView.onDragStart();
+					C.currentCollection.onDragStart();
 					return;
 				}
 
 				if (data.dragging) {
-					C.currentView.onDragMove(data.dy);
+					C.currentCollection.onDragMove(data.dy);
 				}
 				
 			})
@@ -78,7 +78,7 @@ C.touch = (function () {
 				if (data.dragging) {
 					data.dragging = false;
 					var speed = data.dy / data.dt;
-					C.currentView.onDragEnd(speed);
+					C.currentCollection.onDragEnd(speed);
 				}
 
 				data = touch.data = {};
@@ -118,7 +118,7 @@ C.touch = (function () {
 			.on(start, '.item', function (e) {
 
 				if (item) return;
-				item = C.currentView.items[this.dataset.id];
+				item = C.currentCollection.getItem(+this.dataset.id);
 
 			})
 			.on(move, function (e) {
@@ -163,7 +163,7 @@ C.touch = (function () {
 			})
 			.on(end, '.item', function () {
 				if (!moved && tapTarget === this) {
-					var target = C.currentView.items[this.dataset.id];
+					var target = C.currentCollection.getItem(+this.dataset.id);
 					target.onTap();
 				}
 			});

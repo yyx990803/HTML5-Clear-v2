@@ -23,7 +23,7 @@ var C = {
 		C.db.init(true);
 		C.touch.init();
 		C.menu.init();
-		C.listView.init();
+		C.listCollection.init();
 
 		// restore state
 		var state = C.db.data.state;
@@ -31,27 +31,27 @@ var C = {
 
 			case C.states.MENU:
 				C.log('App: init at menu.');
-				C.currentView = C.menu;
+				C.currentCollection = C.menu;
 				break;
 
 			case C.states.LISTS:
 				C.log('App: init at lists.');
-				C.currentView = C.listView;
+				C.currentCollection = C.listCollection;
 				break;
 
 			case C.states.TODOS:
 				C.log('App: init at list with ID: ' + state.listID);
-				C.currentView = new C.TodoList(C.db.data.lists[state.listID]);
+				C.currentCollection = new C.TodoCollection(C.db.data.lists[state.listID]);
 				break;
 
 			default:
 				C.log('App: init at lists.');
-				C.currentView = C.listView;
+				C.currentCollection = C.listCollection;
 				break;
 
 		}
 
-		C.$wrapper.append(C.currentView.el);
+		C.$wrapper.append(C.currentCollection.el);
 
 	},
 
