@@ -22,26 +22,38 @@
 
 		init: function (data) {
 
-			C.Item.init.apply(this, arguments);
+			this.count = 0;
 
-			if (data.items.length === 0) {
+			var i = data.items.length,
+				item;
+
+			while (i--) {
+				item = data.items[i];
+				if (!item.done) this.count++;
+			}
+
+			if (this.count === 0) {
 				this.noDragRight = true;
 			}
+
+			C.Item.init.apply(this, arguments);
 
 		},
 
 		render: function () {
 
 			this.el = $('<div class="item list-item'
-				+ (this.data.items.length ? '' : ' empty')
+				+ (this.count ? '' : ' empty')
 				+ '">'
 					+ '<div class="slider">'
 						+ '<div class="inner">'
 							+ this.data.title
-							+ '<div class="count">' + this.data.items.length + '</div>'
+							+ '<div class="count">' + this.count + '</div>'
 						+ '</div>'
 					+ '</div>'
 				+ '</div>');
+
+			this.countEl =this.el.find('.count');
 
 		},
 
@@ -72,16 +84,32 @@
 
 			C.listCollection.fade(this.data.order);
 			var todoCollection = new C.TodoCollection(this.data);
+			todoCollection.itemEl = this;
 			todoCollection.load();
 
 		},
 
-		del: function () {
-			C.Item.del.apply(this);
+		done: function () {
+			
+			var i = this.data.items.length;
+			while (i--) {
+				this.data.items[i].done = true;
+			}
+			this.count = 0;
+			this.updateCount();
+
+			C.log('Completed entire list:' + this.data.title);
+			C.db.save();
+
 		},
 
-		done: function () {
-			console.log("done");
+		updateCount: function () {
+
+			console.log(this.count);
+
+			this.countEl.text(this.count);
+			if (this.count === 0) this.el.addClass('empty');
+
 		}
 
 	};
@@ -94,7 +122,8 @@
 		'onSortStart',
 		'onSortMove',
 		'onSortEnd',
-		'checkSwap'
+		'checkSwap',
+		'del'
 	]);
 
 }());

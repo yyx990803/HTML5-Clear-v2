@@ -12,8 +12,8 @@
 		spanH = stepH * maxColorSpan,
 		spanL = stepL * maxColorSpan;
 
-	var leftBound = -64,
-		rightBound = 64;
+	var leftBound = -62,
+		rightBound = 62;
 
 	C.TodoItem = function (data) {
 		this.init(data);
@@ -71,7 +71,7 @@
 
 		onDragMove: function (dx) {
 
-			var w = Math.min(this.contentWidth, Math.max(0, ~~(this.x / 64 * this.contentWidth)));
+			var w = Math.min(this.contentWidth, Math.max(0, ~~(this.x / 62 * this.contentWidth)));
 			this.lineStyle.width = (this.data.done ? this.contentWidth - w : w) + 'px';
 
 			if (this.x >= rightBound) {
@@ -169,6 +169,7 @@
 			this.lineStyle.width = this.contentWidth + 'px';
 			this.el.addClass('done');
 			this.collection.count--;
+			this.collection.updateCount();
 
 		},
 
@@ -178,6 +179,7 @@
 			this.lineStyle.width = '0px';
 			this.el.removeClass('done');
 			this.collection.count++;
+			this.collection.updateCount();
 
 		}
 

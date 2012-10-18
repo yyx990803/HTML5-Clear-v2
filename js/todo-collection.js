@@ -96,6 +96,13 @@ C.TodoCollection.prototype = {
 			}
 		}
 
+	},
+
+	updateCount: function () {
+
+		this.itemEl.count = this.count;
+		this.itemEl.updateCount();
+
 	}
 
 };

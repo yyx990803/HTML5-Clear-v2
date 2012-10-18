@@ -45,7 +45,7 @@ C.db = (function () {
 				item = list.items[i];
 				if (item === target) {
 					list.items.splice(i, 1);
-					C.log('DB: deleted item <' + item.title + '> from collection <' + list.title + '>');
+					C.log('DB: deleted item <' + item.title + '> from collection <' + (list.title || 'Lists')+ '>');
 					break;
 				}
 			}

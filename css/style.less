@@ -1,4 +1,4 @@
-@itemHeight: 64px;
+@itemHeight: 62px;
 @ease: cubic-bezier(.67, .18, .30, .86);
 
 .drag {
@@ -60,8 +60,8 @@ html, body {
 	height: @itemHeight;
 
 	.slider {
-		-webkit-transition: background-color .25s @ease,
-							color .25s @ease;
+		-webkit-transition: background-color .15s @ease,
+							color .15s @ease;
 		cursor: pointer;
 		position: relative;
 		z-index: 1;
@@ -79,8 +79,8 @@ html, body {
 	}
 
 	.check, .cross {
-		width: 64px;
-		height: 64px;
+		width: @itemHeight;
+		height: @itemHeight;
 		position: absolute;
 		z-index: 0;
 		top: 0;
@@ -116,8 +116,8 @@ html, body {
 
 	.count {
 		position: absolute;
-		width: 64px;
-		height: 63px;
+		width: @itemHeight;
+		height: @itemHeight - 1px;
 		right: 0;
 		top: -1px;
 		background-color: rgba(255,255,255,.15);
@@ -136,7 +136,7 @@ html, body {
 		position: absolute;
 		height: 2px;
 		left: 10px;
-		top: 31px;
+		top: 30px;
 		width: 0;
 		background-color: #fff;
 		-webkit-transition: width 0s linear,

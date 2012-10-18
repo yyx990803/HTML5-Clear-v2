@@ -5,7 +5,7 @@ C.Collection = (function () {
 		speedMultiplier 	= 10,
 		maxSpeed 			= 25,
 		diff 				= 0.5,
-		sortMoveSpeed 		= 4;
+		sortMoveSpeed 		= 5;
 
 	return {
 
@@ -44,6 +44,8 @@ C.Collection = (function () {
 		},
 
 		countIncomplete: function () {
+
+			console.log("!");
 
 			var i = this.items.length,
 				count = 0;

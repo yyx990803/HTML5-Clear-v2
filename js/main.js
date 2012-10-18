@@ -22,7 +22,6 @@ var C = {
 		C.client.init();
 		C.db.init();
 		C.touch.init();
-		C.menu.init();
 		C.listCollection.init();
 
 		// restore state

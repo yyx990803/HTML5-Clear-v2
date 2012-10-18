@@ -1,14 +1,14 @@
 C.Item = (function () {
 
-	var leftBound = -64,
-		rightBound = 64;
+	var leftBound = -62,
+		rightBound = 62;
 
 	return {
 
 		init: function (data) {
 
 			this.x = 0;
-			this.y = data.order * 64;
+			this.y = data.order * 62;
 			this.data = data;
 
 			this.render();
@@ -39,7 +39,7 @@ C.Item = (function () {
 
 		updatePosition: function (top) {
 			
-			this.y = this.data.order * 64;
+			this.y = this.data.order * 62;
 
 			if (top) this.style.zIndex = 1; // make sure the item acted upon moves on top
 
@@ -167,7 +167,7 @@ C.Item = (function () {
 		del: function () {
 
 			var t = this;
-			t.style.webkitTransform = 'translate3d(' + (-C.client.width - 64) + 'px,' + this.y + 'px, 0)';
+			t.style.webkitTransform = 'translate3d(' + (-C.client.width - 62) + 'px,' + this.y + 'px, 0)';
 			setTimeout(function () {
 				if (!t.data.done) t.collection.count--;
 				t.el.remove();
@@ -191,11 +191,11 @@ C.Item = (function () {
 				cy = c.y,
 				ay = this.y + cy; // the actual on screen y
 
-			if (cy < 0 && ay < 92) {
-				// upper move trigger is 1.5x line height = 96px
+			if (cy < 0 && ay < 93) {
+				// upper move trigger is 1.5x line height = 93px
 				if (!c.sortMoving) c.sortMove(1, this);
-			} else if (cy > this.collection.upperBound && ay > C.client.height - 156) {
-				// the lower move trigger needs to count in the extra one line of space, thus an extra 64px
+			} else if (cy > this.collection.upperBound && ay > C.client.height - 155) {
+				// the lower move trigger needs to count in the extra one line of space, thus an extra 62px
 				if (!c.sortMoving) c.sortMove(-1, this);
 			} else {
 				c.sortMoving = false;
@@ -206,7 +206,7 @@ C.Item = (function () {
 
 		checkSwap: function () {
 
-			var currentAt = Math.min(this.collection.items.length - 1, ~~((this.y + 32) / 64));
+			var currentAt = Math.min(this.collection.items.length - 1, ~~((this.y + 31) / 62));
 			if (currentAt != this.data.order) {
 				var target = this.collection.getItemByOrder(currentAt);
 				target.data.order = this.data.order;
