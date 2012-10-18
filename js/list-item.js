@@ -92,16 +92,16 @@
 			C.Item.onDragEnd.apply(this);
 		},
 
-		onLongTap: function () {
-			C.Item.onLongTap.apply(this);
+		onSortStart: function () {
+			C.Item.onSortStart.apply(this);
 		},
 
-		onLongTapDrag: function () {
-			C.Item.onLongTapDrag.apply(this, arguments);
+		onSortMove: function () {
+			C.Item.onSortMove.apply(this, arguments);
 		},
 
-		onLongTapEnd: function () {
-			C.Item.onLongTapEnd.apply(this);
+		onSortEnd: function () {
+			C.Item.onSortEnd.apply(this);
 		},
 
 		del: function () {

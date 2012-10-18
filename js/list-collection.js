@@ -39,7 +39,7 @@ C.listCollection = {
 				.data('id', i)
 				.appendTo(this.el);
 			this.items.push(li);
-			this.hash[i] = li;
+			this.hash[i] = li; // assign pointer in hash
 		}
 
 		C.Collection.updateBounds.apply(this);

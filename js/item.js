@@ -171,15 +171,17 @@ C.Item = (function () {
 				t.collection.collapseAt(t.data.order, t, true);
 			}, 300);
 
+			C.db.save();
+
 		},
 
-		onLongTap: function () {
+		onSortStart: function () {
 			this.el
 				.addClass('sorting-trans')
 				.addClass('sorting');
 		},
 
-		onLongTapDrag: function (dy) {
+		onSortMove: function (dy) {
 
 			this.y += dy;
 			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
@@ -194,7 +196,8 @@ C.Item = (function () {
 
 		},
 
-		onLongTapEnd: function () {
+		onSortEnd: function () {
+
 			this.updatePosition();
 			this.el.removeClass('sorting');
 			this.collection.updateColor();
@@ -203,6 +206,9 @@ C.Item = (function () {
 			setTimeout(function () {
 				t.el.removeClass('sorting-trans');
 			}, 150);
+
+			C.db.save();
+			
 		}
 
 	};

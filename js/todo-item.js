@@ -39,6 +39,7 @@
 
 		updateContentWidth: function () {
 			this.contentWidth = this.el.find('.title').width() + 7;
+			if (this.data.done) this.lineStyle.width = this.contentWidth + 'px';
 		},
 
 		updatePosition: function () {
@@ -116,15 +117,15 @@
 
 		},
 
-		onLongTap: function () {
-			C.Item.onLongTap.apply(this);
+		onSortStart: function () {
+			C.Item.onSortStart.apply(this);
 		},
 
-		onLongTapDrag: function () {
-			C.Item.onLongTapDrag.apply(this, arguments);
+		onSortMove: function () {
+			C.Item.onSortMove.apply(this, arguments);
 		},
 
-		onLongTapEnd: function () {
+		onSortEnd: function () {
 
 			if (!this.data.done) {
 				if (this.data.order >= this.collection.count) { // dragged into done zone
@@ -136,7 +137,7 @@
 				}
 			}
 
-			C.Item.onLongTapEnd.apply(this);
+			C.Item.onSortEnd.apply(this);
 		},
 
 		del: function () {
@@ -145,9 +146,7 @@
 
 		},
 
-		done: function () {
-
-			//TODO: data manipulation
+		done: function () {  // this is todoItem specific
 
 			if (!this.data.done) {
 				
@@ -171,6 +170,8 @@
 				this.collection.floatUp(this);
 
 			}
+
+			C.db.save();
 
 		},
 
