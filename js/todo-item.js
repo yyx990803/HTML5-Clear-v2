@@ -16,11 +16,15 @@
 		rightBound = 64;
 
 	C.TodoItem = function (data) {
-		C.Item.init.apply(this, arguments);
+		this.init(data);
 	};
 
 
 	C.TodoItem.prototype = {
+
+		init: function (data) {
+			C.Item.init.apply(this, arguments);
+		},
 
 		render: function () {
 
@@ -40,10 +44,6 @@
 		updateContentWidth: function () {
 			this.contentWidth = this.el.find('.title').width() + 7;
 			if (this.data.done) this.lineStyle.width = this.contentWidth + 'px';
-		},
-
-		updatePosition: function () {
-			C.Item.updatePosition.apply(this, arguments);
 		},
 
 		updateColor: function (order) {
@@ -67,10 +67,6 @@
 
 		onTap: function () {
 			console.log(this.data.title);
-		},
-
-		onDragStart: function () {
-			C.Item.onDragStart.apply(this);
 		},
 
 		onDragMove: function (dx) {
@@ -115,14 +111,6 @@
 
 			C.Item.onDragEnd.apply(this);
 
-		},
-
-		onSortStart: function () {
-			C.Item.onSortStart.apply(this);
-		},
-
-		onSortMove: function () {
-			C.Item.onSortMove.apply(this, arguments);
 		},
 
 		onSortEnd: function () {
@@ -194,5 +182,14 @@
 		}
 
 	};
+
+	// Inherit methods
+	C.utils.extend(C.TodoItem.prototype, C.Item, [
+		'updatePosition',
+		'onDragStart',
+		'onSortStart',
+		'onSortMove',
+		'del'
+	]);
 
 }());

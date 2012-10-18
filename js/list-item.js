@@ -14,17 +14,17 @@
 		spanS = maxColorSpan * stepS,
 		spanL = maxColorSpan * stepL;
 
-	C.listItem = function (data) {
+	C.ListItem = function (data) {
 		this.init(data);
 	};
 
-	C.listItem.prototype = {
+	C.ListItem.prototype = {
 
 		init: function (data) {
 
 			C.Item.init.apply(this, arguments);
 
-			if (data.todos.length === 0) {
+			if (data.items.length === 0) {
 				this.noDragRight = true;
 			}
 
@@ -33,20 +33,16 @@
 		render: function () {
 
 			this.el = $('<div class="item list-item'
-				+ (this.data.todos.length ? '' : ' empty')
+				+ (this.data.items.length ? '' : ' empty')
 				+ '">'
 					+ '<div class="slider">'
 						+ '<div class="inner">'
 							+ this.data.title
-							+ '<div class="count">' + this.data.todos.length + '</div>'
+							+ '<div class="count">' + this.data.items.length + '</div>'
 						+ '</div>'
 					+ '</div>'
 				+ '</div>');
 
-		},
-
-		updatePosition: function () {
-			C.Item.updatePosition.apply(this, arguments);
 		},
 
 		updateColor: function () {
@@ -80,34 +76,8 @@
 
 		},
 
-		onDragStart: function () {
-			C.Item.onDragStart.apply(this);
-		},
-
-		onDragMove: function (dx) {
-			C.Item.onDragMove.apply(this, arguments);
-		},
-
-		onDragEnd: function () {
-			C.Item.onDragEnd.apply(this);
-		},
-
-		onSortStart: function () {
-			C.Item.onSortStart.apply(this);
-		},
-
-		onSortMove: function () {
-			C.Item.onSortMove.apply(this, arguments);
-		},
-
-		onSortEnd: function () {
-			C.Item.onSortEnd.apply(this);
-		},
-
 		del: function () {
-			
 			C.Item.del.apply(this);
-
 		},
 
 		done: function () {
@@ -115,5 +85,15 @@
 		}
 
 	};
+
+	C.utils.extend(C.ListItem.prototype, C.Item, [
+		'updatePosition',
+		'onDragStart',
+		'onDragMove',
+		'onDragEnd',
+		'onSortStart',
+		'onSortMove',
+		'onDragEnd'
+	]);
 
 }());

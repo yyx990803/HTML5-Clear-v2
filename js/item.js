@@ -13,9 +13,13 @@ C.Item = (function () {
 
 			this.render();
 
+			// cache references to elements and styles
+
 			this.style = this.el[0].style;
 			this.slider = this.el.find('.slider');
 			this.sliderStyle = this.slider[0].style;
+
+			// init cross and check
 
 			this.check = $('<img class="check drag" src="img/check.png">');
 			this.cross = $('<img class="cross drag" src="img/cross.png">');
@@ -34,7 +38,6 @@ C.Item = (function () {
 		},
 
 		updatePosition: function (top) {
-
 			
 			this.y = this.data.order * 64;
 
@@ -171,8 +174,6 @@ C.Item = (function () {
 				t.collection.collapseAt(t.data.order, t, true);
 			}, 300);
 
-			C.db.save();
-
 		},
 
 		onSortStart: function () {
@@ -208,7 +209,7 @@ C.Item = (function () {
 			}, 150);
 
 			C.db.save();
-			
+
 		}
 
 	};

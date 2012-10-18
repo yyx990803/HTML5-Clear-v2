@@ -7,6 +7,7 @@ C.listCollection = {
 
 		C.log('ListCollection: init');
 
+		this.data = C.db.data;
 		this.items = [];
 		this.render();
 		this.populateItems();
@@ -24,7 +25,7 @@ C.listCollection = {
 
 	populateItems: function () {
 
-		var lists = C.db.data.lists,
+		var lists = this.data.items,
 			i = lists.length,
 			li;
 
@@ -32,9 +33,8 @@ C.listCollection = {
 		this.hash = {}; // hash for accessing list item based on ID
 
 		while (i--) {
-			li = new C.listItem(lists[i]);
+			li = new C.ListItem(lists[i]);
 			li.collection = this;
-			//li.id = this.items.length;
 			li.el
 				.data('id', i)
 				.appendTo(this.el);
@@ -42,7 +42,7 @@ C.listCollection = {
 			this.hash[i] = li; // assign pointer in hash
 		}
 
-		C.Collection.updateBounds.apply(this);
+		this.updateBounds();
 
 	},
 
@@ -54,46 +54,20 @@ C.listCollection = {
 			t.el.css('display', 'none');
 		}, 300);
 
-	},
-
-	getItemById: function () {
-		return C.Collection.getItemById.apply(this, arguments);
-	},
-
-	getItemByOrder: function () {
-		return C.Collection.getItemByOrder.apply(this, arguments);
-	},
-
-	collapseAt: function () {
-		C.Collection.collapseAt.apply(this, arguments);
-	},
-
-	countIncomplete: function () {
-		C.Collection.countIncomplete.apply(this, arguments);
-	},
-
-	updateBounds: function () {
-		C.Collection.updateBounds.apply(this, arguments);
-	},
-
-	updateColor: function () {
-		C.Collection.updateColor.apply(this, arguments);
-	},
-
-	updatePosition: function () {
-		C.Collection.updatePosition.apply(this, arguments);
-	},
-
-	onDragStart: function () {
-		C.Collection.onDragStart.apply(this, arguments);
-	},
-
-	onDragMove: function () {
-		C.Collection.onDragMove.apply(this, arguments);
-	},
-
-	onDragEnd: function () {
-		C.Collection.onDragEnd.apply(this, arguments);
 	}
 
 };
+
+// Inherit methods
+C.utils.extend(C.listCollection, C.Collection, [
+	'getItemById',
+	'getItemByOrder',
+	'collapseAt',
+	'countIncomplete',
+	'updateBounds',
+	'updateColor',
+	'updatePosition',
+	'onDragStart',
+	'onDragMove',
+	'onDragEnd'
+]);

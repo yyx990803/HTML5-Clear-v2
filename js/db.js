@@ -36,6 +36,24 @@ C.db = (function () {
 
 		},
 
+		deleteItem: function (target, list) {
+
+			var i = list.items.length,
+				item;
+
+			while (i--) {
+				item = list.items[i];
+				if (item === target) {
+					list.items.splice(i, 1);
+					C.log('DB: deleted item <' + item.title + '> from collection <' + list.title + '>');
+					break;
+				}
+			}
+
+			C.db.save();
+
+		},
+
 		useDefaultData: function () {
 
 			C.log('DB: using default data.');
@@ -46,12 +64,12 @@ C.db = (function () {
 					view: C.states.LISTS
 				},
 
-				lists: [
+				items: [
 					{
 
 						title: 'Hello',
 						order: 0,
-						todos: [
+						items: [
 							{
 								order: 0,
 								title: 'Test1'
@@ -113,7 +131,7 @@ C.db = (function () {
 					{
 						title: 'This is a demo',
 						order: 1,
-						todos: [
+						items: [
 							{
 								order: 0,
 								title: 'Test'
@@ -131,7 +149,7 @@ C.db = (function () {
 					{
 						title: 'By Evan You',
 						order: 2,
-						todos: [
+						items: [
 							{
 								order: 0,
 								title: 'Test'
@@ -141,7 +159,7 @@ C.db = (function () {
 					{
 						title: 'This is a demo',
 						order: 3,
-						todos: [
+						items: [
 							{
 								order: 0,
 								title: 'Test'
@@ -151,7 +169,7 @@ C.db = (function () {
 					{
 						title: 'This is a demo',
 						order: 4,
-						todos: [
+						items: [
 							{
 								order: 0,
 								title: 'Test'
@@ -161,30 +179,30 @@ C.db = (function () {
 					{
 						title: 'This is a demo',
 						order: 5,
-						todos: []
+						items: []
 					},
 					{
 						title: 'This is a demo',
 						order: 6,
-						todos: []
+						items: []
 					},
 					{
 						title: 'This is a demo',
 						order: 7,
-						todos: []
+						items: []
 					},
 					{
 						title: 'This is a demo',
 						order: 8,
-						todos: []
+						items: []
 					},{
 						title: 'This is a demo',
 						order: 9,
-						todos: []
+						items: []
 					},{
 						title: 'This is a demo',
 						order: 10,
-						todos: [
+						items: [
 							{
 								order: 0,
 								title: 'Test'

@@ -77,8 +77,15 @@ C.Collection = (function () {
 				}
 			}
 
-			if (delIndex) {
+			if (delIndex || delIndex === 0) { // if this item is deleted
+
+				//remove its view object
 				items.splice(delIndex, 1);
+				this.updateBounds();
+
+				//update db data
+				C.db.deleteItem(target.data, this.data);
+				
 			}
 
 		},

@@ -1,12 +1,12 @@
 C.TodoCollection = function (data) {
 	this.init(data);
-}
+};
 
 C.TodoCollection.prototype = {
 
 	init: function (data) {
 
-		C.log('TodoCollection: init (title:' + data.title + ')');
+		C.log('TodoCollection: init <' + data.title + '>');
 
 		this.y = 0;
 		this.upperBound = 0;
@@ -27,7 +27,7 @@ C.TodoCollection.prototype = {
 
 	populateItems: function () {
 
-		var todos = this.data.todos,
+		var todos = this.data.items,
 			i = todos.length,
 			li;
 
@@ -96,46 +96,20 @@ C.TodoCollection.prototype = {
 			}
 		}
 
-	},
-
-	getItemById: function () {
-		return C.Collection.getItemById.apply(this, arguments);
-	},
-
-	getItemByOrder: function () {
-		return C.Collection.getItemByOrder.apply(this, arguments);
-	},
-
-	collapseAt: function () {
-		C.Collection.collapseAt.apply(this, arguments);
-	},
-
-	countIncomplete: function () {
-		C.Collection.countIncomplete.apply(this, arguments);
-	},
-
-	updateBounds: function () {
-		C.Collection.updateBounds.apply(this, arguments);
-	},
-
-	updateColor: function () {
-		C.Collection.updateColor.apply(this, arguments);
-	},
-
-	updatePosition: function () {
-		C.Collection.updatePosition.apply(this, arguments);
-	},
-
-	onDragStart: function () {
-		C.Collection.onDragStart.apply(this, arguments);
-	},
-
-	onDragMove: function () {
-		C.Collection.onDragMove.apply(this, arguments);
-	},
-
-	onDragEnd: function () {
-		C.Collection.onDragEnd.apply(this, arguments);
 	}
 
-}
+};
+
+// Inherit methods
+C.utils.extend(C.TodoCollection.prototype, C.Collection, [
+	'getItemById',
+	'getItemByOrder',
+	'collapseAt',
+	'countIncomplete',
+	'updateBounds',
+	'updateColor',
+	'updatePosition',
+	'onDragStart',
+	'onDragMove',
+	'onDragEnd'
+]);

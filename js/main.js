@@ -65,7 +65,7 @@ var C = {
 		if (time < 1000) {
 			time = '[' + time + 'ms] ';
 		} else {
-			time = '[' + time / 1000 + 's]';
+			time = '[' + (time / 1000).toFixed(2) + 's] ';
 		}
 		msg = time + msg;
 		console.log(msg);
