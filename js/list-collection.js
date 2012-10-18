@@ -69,5 +69,6 @@ C.utils.extend(C.listCollection, C.Collection, [
 	'updatePosition',
 	'onDragStart',
 	'onDragMove',
-	'onDragEnd'
+	'onDragEnd',
+	'sortMove'
 ]);

@@ -1,10 +1,11 @@
 C.Collection = (function () {
 
-	var friction = .95,
-		interval = 16,
-		speedMultiplier = 10,
-		maxSpeed = 25,
-		diff = 0.5;
+	var friction 			= .95,
+		interval 			= 16,
+		speedMultiplier 	= 10,
+		maxSpeed 			= 25,
+		diff 				= 0.5,
+		sortMoveSpeed 		= 4;
 
 	return {
 
@@ -132,7 +133,10 @@ C.Collection = (function () {
 
 			function loop () {
 
-				if (C.touch.data.dragging || C.touch.data.draggingItem) return;
+				if (C.touch.data.dragging || C.touch.data.draggingItem) {
+					endLoop();
+					return;
+				}
 
 				col.y += speed;
 				speed *= friction;
@@ -168,6 +172,33 @@ C.Collection = (function () {
 				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
 				col.el.removeClass('drag');
 				col.inMomentum = false;
+			}
+
+		},
+
+		sortMove: function (dir, target) {
+			
+			var col = this,
+				dy  = dir * sortMoveSpeed;
+
+			col.sortMoving = true;
+			loop();
+
+			function loop () {
+
+				if (!col.sortMoving) return;
+
+				var cty = Math.max(col.upperBound, Math.min(0, col.y + dy));
+
+				target.y -= cty - col.y;
+				target.style.webkitTransform = 'translate3d(0,' + target.y + 'px, 0)';
+				target.checkSwap();
+
+				col.y = cty;
+				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
+
+				setTimeout(loop, interval);
+
 			}
 
 		}

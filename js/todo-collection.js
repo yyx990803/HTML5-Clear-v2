@@ -111,5 +111,6 @@ C.utils.extend(C.TodoCollection.prototype, C.Collection, [
 	'updatePosition',
 	'onDragStart',
 	'onDragMove',
-	'onDragEnd'
+	'onDragEnd',
+	'sortMove'
 ]);

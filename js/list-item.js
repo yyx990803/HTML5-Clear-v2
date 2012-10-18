@@ -93,7 +93,8 @@
 		'onDragEnd',
 		'onSortStart',
 		'onSortMove',
-		'onDragEnd'
+		'onSortEnd',
+		'checkSwap'
 	]);
 
 }());

@@ -187,6 +187,25 @@ C.Item = (function () {
 			this.y += dy;
 			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
 
+			var c = this.collection,
+				cy = c.y,
+				ay = this.y + cy; // the actual on screen y
+
+			if (cy < 0 && ay < 92) {
+				// upper move trigger is 1.5x line height = 96px
+				if (!c.sortMoving) c.sortMove(1, this);
+			} else if (cy > this.collection.upperBound && ay > C.client.height - 156) {
+				// the lower move trigger needs to count in the extra one line of space, thus an extra 64px
+				if (!c.sortMoving) c.sortMove(-1, this);
+			} else {
+				c.sortMoving = false;
+				this.checkSwap();
+			}
+
+		},
+
+		checkSwap: function () {
+
 			var currentAt = Math.min(this.collection.items.length - 1, ~~((this.y + 32) / 64));
 			if (currentAt != this.data.order) {
 				var target = this.collection.getItemByOrder(currentAt);
@@ -199,6 +218,7 @@ C.Item = (function () {
 
 		onSortEnd: function () {
 
+			this.collection.sortMoving = false;
 			this.updatePosition();
 			this.el.removeClass('sorting');
 			this.collection.updateColor();

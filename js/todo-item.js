@@ -189,6 +189,7 @@
 		'onDragStart',
 		'onSortStart',
 		'onSortMove',
+		'checkSwap',
 		'del'
 	]);
 
