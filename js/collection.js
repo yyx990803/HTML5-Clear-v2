@@ -2,10 +2,12 @@ C.Collection = (function () {
 
 	var friction 			= .95,
 		interval 			= 16,
-		speedMultiplier 	= 10,
-		maxSpeed 			= 25,
+		speedMultiplier 	= 14,
+		maxSpeed 			= 30,
 		diff 				= 0.5,
 		sortMoveSpeed 		= 5;
+
+	var beforeEditPosition 	= 0; // used to record position before edit focus
 
 	return {
 
@@ -23,6 +25,25 @@ C.Collection = (function () {
 					return item;
 				}
 			}
+		},
+
+		getItemsBetween: function (origin, target) {
+
+			var i = this.items.length,
+				item,
+				order,
+				result = [];
+
+			while (i--) {
+				item = this.items[i];
+				order = item.data.order;
+				if ((order > origin && order <= target) || (order < origin && order >= target)) {
+					result.push(item);
+				}
+			}
+
+			return result;
+
 		},
 
 		updateColor: function () {
@@ -95,7 +116,7 @@ C.Collection = (function () {
 
 		updateBounds: function () {
 
-			this.upperBound = Math.min(0, C.client.height - (this.items.length + 1) * 64);
+			this.upperBound = Math.min(0, C.client.height - (this.items.length + 1) * 62);
 
 		},
 
@@ -202,6 +223,25 @@ C.Collection = (function () {
 				setTimeout(loop, interval);
 
 			}
+
+		},
+
+		onEditStart: function (at) {
+
+			beforeEditPosition = this.y;
+			var ty = -at * 62;
+			this.el.addClass('edit');
+			this.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
+
+		},
+
+		onEditDone: function () {
+
+			this.style.webkitTransform = 'translate3d(0,' + beforeEditPosition + 'px, 0)';
+			var t = this;
+			setTimeout(function () {
+				t.el.removeClass('edit');
+			}, 250);
 
 		}
 

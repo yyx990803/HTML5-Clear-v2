@@ -28,22 +28,21 @@
 
 		render: function () {
 
-			this.el = $('<div class="item todo-item' + (this.data.done ? ' done' : '') + '">'
+			this.el = $('<div class="item todo-item' + (this.data.done ? ' done' : '') + '" style="z-index:' + this.data.order + '">'
 					+ '<div class="slider">'
 						+ '<div class="inner">'
-							+ '<span class="title">' + this.data.title + '</span>'
-							+ '<div class="line"></div>'
+							+ '<span class="title">'
+								+ '<span class="text">' + this.data.title + '</span>'
+								+ '<span class="line"></span>'
+							+ '</span>'
+							+ '<input class="field" type="text" value="' + this.data.title + '">'
 						+ '</div>'
 					+ '</div>'
 				+ '</div>');
 
 			this.lineStyle = this.el.find('.line')[0].style;
+			if (this.data.done) this.lineStyle.width = '100%';
 
-		},
-
-		updateContentWidth: function () {
-			this.contentWidth = this.el.find('.title').width() + 7;
-			if (this.data.done) this.lineStyle.width = this.contentWidth + 'px';
 		},
 
 		updateColor: function (order) {
@@ -65,14 +64,10 @@
 
 		},
 
-		onTap: function () {
-			console.log(this.data.title);
-		},
-
 		onDragMove: function (dx) {
 
-			var w = Math.min(this.contentWidth, Math.max(0, ~~(this.x / 62 * this.contentWidth)));
-			this.lineStyle.width = (this.data.done ? this.contentWidth - w : w) + 'px';
+			var w = (Math.min(1, Math.max(0, this.x / 62)) * 100).toFixed(2);
+			this.lineStyle.width = (this.data.done ? 100 - w : w) + '%';
 
 			if (this.x >= rightBound) {
 				if (!this.activated) {
@@ -103,9 +98,9 @@
 
 			if (this.x < rightBound) {
 				if (this.data.done) {
-					this.lineStyle.width = this.contentWidth;
+					this.lineStyle.width = '100%';
 				} else {
-					this.lineStyle.width = 0;
+					this.lineStyle.width = '0%';
 				}
 			}
 
@@ -166,7 +161,7 @@
 		beDone: function () {
 
 			this.data.done = true;
-			this.lineStyle.width = this.contentWidth + 'px';
+			this.lineStyle.width = '100%';
 			this.el.addClass('done');
 			this.collection.count--;
 			this.collection.updateCount();
@@ -188,6 +183,9 @@
 	// Inherit methods
 	C.utils.extend(C.TodoItem.prototype, C.Item, [
 		'updatePosition',
+		'onTap',
+		'onEditStart',
+		'onEditDone',
 		'onDragStart',
 		'onSortStart',
 		'onSortMove',

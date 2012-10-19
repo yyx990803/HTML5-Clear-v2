@@ -20,12 +20,16 @@ var C = {
 
 		// init some components
 		C.client.init();
-		C.db.init();
+		C.db.init(true);
 		C.touch.init();
 		C.listCollection.init();
 
 		// restore state
-		var state = C.db.data.state;
+		var data = C.db.data,
+			state = data.state,
+			lists = data.items,
+			i = lists.length;
+
 		switch (state.view) {
 
 			case C.states.MENU:
@@ -39,8 +43,13 @@ var C = {
 				break;
 
 			case C.states.TODOS:
-				C.log('App: init at list with ID: ' + state.listID);
-				C.currentCollection = new C.TodoCollection(C.db.data.lists[state.listID]);
+				C.log('App: init at list with order: ' + state.order);
+				while (i--) {
+					if (lists[i].order === state.order) {
+						C.currentCollection = new C.TodoCollection(lists[i]);
+						break;
+					}
+				}
 				break;
 
 			default:
@@ -50,7 +59,7 @@ var C = {
 
 		}
 
-		C.$wrapper.append(C.currentCollection.el);
+		C.currentCollection.load(true); // passing in noAnimation:true
 
 	},
 

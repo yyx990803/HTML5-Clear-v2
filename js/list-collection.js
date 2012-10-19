@@ -23,6 +23,12 @@ C.listCollection = {
 
 	},
 
+	load: function () {
+
+		this.el.appendTo(C.$wrapper);
+
+	},
+
 	populateItems: function () {
 
 		var lists = this.data.items,
@@ -62,6 +68,7 @@ C.listCollection = {
 C.utils.extend(C.listCollection, C.Collection, [
 	'getItemById',
 	'getItemByOrder',
+	'getItemsBetween',
 	'collapseAt',
 	'countIncomplete',
 	'updateBounds',
@@ -70,5 +77,7 @@ C.utils.extend(C.listCollection, C.Collection, [
 	'onDragStart',
 	'onDragMove',
 	'onDragEnd',
-	'sortMove'
+	'sortMove',
+	'onEditStart',
+	'onEditDone'
 ]);

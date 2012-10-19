@@ -47,8 +47,9 @@
 				+ '">'
 					+ '<div class="slider">'
 						+ '<div class="inner">'
-							+ this.data.title
+							+ '<span class="title"><span class="text">' + this.data.title + '</span></span>'
 							+ '<div class="count">' + this.count + '</div>'
+							+ '<input class="field" type="text" value="' + this.data.title + '">'
 						+ '</div>'
 					+ '</div>'
 				+ '</div>');
@@ -78,18 +79,27 @@
 
 		},
 
-		onTap: function () {
+		open: function () {
 
 			if (this.collection.inMomentum) return;
 
 			C.listCollection.fade(this.data.order);
+
 			var todoCollection = new C.TodoCollection(this.data);
-			todoCollection.itemEl = this;
 			todoCollection.load();
+
+			C.db.data.state = {
+				view: C.states.TODOS,
+				order: this.data.order
+			};
+
+			C.db.save();
 
 		},
 
 		done: function () {
+
+			if (!confirm('Are you sure you want to complete all your items in this list?')) return;
 			
 			var i = this.data.items.length;
 			while (i--) {
@@ -105,10 +115,13 @@
 
 		updateCount: function () {
 
-			console.log(this.count);
-
 			this.countEl.text(this.count);
-			if (this.count === 0) this.el.addClass('empty');
+			if (this.count === 0) {
+				this.el.addClass('empty');
+				this.noDragRight = true;
+			} else {
+				this.noDragRight = false;
+			}
 
 		}
 
@@ -116,6 +129,9 @@
 
 	C.utils.extend(C.ListItem.prototype, C.Item, [
 		'updatePosition',
+		'onTap',
+		'onEditStart',
+		'onEditDone',
 		'onDragStart',
 		'onDragMove',
 		'onDragEnd',

@@ -175,13 +175,19 @@ C.touch = (function () {
 		}
 
 		C.$wrapper
-			.on(start, '.item', function () {
+			.on(start, '.item', function (e) {
+
+				if (e.touches && e.touches.length > 1) return;
+
 				moved = false;
 				tapTarget = this;
 				startTime = Date.now();
 				ltTimeout = setTimeout(longTap, ltDelay);
 			})
-			.on(move, function () {
+			.on(move, function (e) {
+
+				if (e.touches && e.touches.length > 1) return;
+
 				moved = true;
 				cancelLongTap();
 				if (data.sorting) {
@@ -190,13 +196,16 @@ C.touch = (function () {
 			})
 			.on(end, function (e) {
 
+				if (e.touches && e.touches.length > 1) return;
+
 				cancelLongTap();
 
 				if (!moved &&
 					(Date.now() - startTime < ltDelay) &&
 					!C.currentCollection.inMomentum) {
+
 					var target = C.currentCollection.getItemById(+tapTarget.dataset.id);
-					target.onTap();
+					target.onTap(e);
 					tapTarget = null;
 					data = touch.data = {};
 				}

@@ -16,6 +16,19 @@ C.TodoCollection.prototype = {
 		this.render();
 		this.populateItems();
 
+		// find the corresponding list item
+		var listItems = C.listCollection.items,
+			i = listItems.length,
+			item;
+
+		while (i--) {
+			item = listItems[i];
+			if (item.data.order === this.data.order) {
+				this.itemEl = item;
+				break;
+			}
+		}
+
 	},
 
 	render: function () {
@@ -53,22 +66,21 @@ C.TodoCollection.prototype = {
 
 	},
 
-	load: function () {
+	load: function (noAnimation) {
 
 		var t = this;
 		C.currentCollection = t;
 		t.updateColor();
-		t.el.appendTo(C.$wrapper);
-		
-		setTimeout(function () {
-			
-			var i = t.items.length;
-			while (i--) {
-				t.items[i].updateContentWidth();
-				t.items[i].updatePosition();
-			}
 
-		}, 1);
+		if (noAnimation) {
+			t.updatePosition();
+			t.el.appendTo(C.$wrapper);
+		} else {
+			t.el.appendTo(C.$wrapper);
+			setTimeout(function () {
+				t.updatePosition();
+			}, 1);
+		}
 
 	},
 
@@ -111,6 +123,7 @@ C.TodoCollection.prototype = {
 C.utils.extend(C.TodoCollection.prototype, C.Collection, [
 	'getItemById',
 	'getItemByOrder',
+	'getItemsBetween',
 	'collapseAt',
 	'countIncomplete',
 	'updateBounds',
@@ -119,5 +132,7 @@ C.utils.extend(C.TodoCollection.prototype, C.Collection, [
 	'onDragStart',
 	'onDragMove',
 	'onDragEnd',
-	'sortMove'
+	'sortMove',
+	'onEditStart',
+	'onEditDone'
 ]);

@@ -19,7 +19,7 @@ C.Item = (function () {
 			this.slider = this.el.find('.slider');
 			this.sliderStyle = this.slider[0].style;
 
-			// init cross and check
+			// cross and check
 
 			this.check = $('<img class="check drag" src="img/check.png">');
 			this.cross = $('<img class="cross drag" src="img/cross.png">');
@@ -35,21 +35,45 @@ C.Item = (function () {
 			this.checkO = 0;
 			this.crossO = 0;
 
+			// editing related
+
+			this.title = this.el.find('.title');
+			this.field = this.el.find('.field');
+			var t = this;
+			this.field.on('change blur', function () {
+				t.onEditDone();
+			});
+
 		},
 
 		updatePosition: function (top) {
 			
 			this.y = this.data.order * 62;
 
-			if (top) this.style.zIndex = 1; // make sure the item acted upon moves on top
+			if (top) this.el.addClass('top'); // make sure the item acted upon moves on top
 
 			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
 
 			if (top) {
 				var t = this;
 				setTimeout(function () {
-					t.style.zIndex = 0;		
+					t.el.removeClass('top');
 				}, 300);
+			}
+
+		},
+
+		onTap: function (e) {
+
+			// check to see if is tapping on the text or the item itself
+			if (this.open) {
+				if (e.target.className === 'title') {
+					this.onEditStart();
+				} else {
+					this.open();
+				}
+			} else {
+				if (!this.data.done) this.onEditStart();
 			}
 
 		},
@@ -191,10 +215,10 @@ C.Item = (function () {
 				cy = c.y,
 				ay = this.y + cy; // the actual on screen y
 
-			if (cy < 0 && ay < 93) {
+			if (cy < 0 && ay < 93 && dy < 0) {
 				// upper move trigger is 1.5x line height = 93px
 				if (!c.sortMoving) c.sortMove(1, this);
-			} else if (cy > this.collection.upperBound && ay > C.client.height - 155) {
+			} else if (cy > this.collection.upperBound && ay > C.client.height - 155 && dy > 0) {
 				// the lower move trigger needs to count in the extra one line of space, thus an extra 62px
 				if (!c.sortMoving) c.sortMove(-1, this);
 			} else {
@@ -206,12 +230,24 @@ C.Item = (function () {
 
 		checkSwap: function () {
 
-			var currentAt = Math.min(this.collection.items.length - 1, ~~((this.y + 31) / 62));
-			if (currentAt != this.data.order) {
-				var target = this.collection.getItemByOrder(currentAt);
-				target.data.order = this.data.order;
+			var currentAt = Math.min(this.collection.items.length - 1, ~~((this.y + 31) / 62)),
+				origin = this.data.order;
+
+			if (currentAt != origin) {
+
+				var targets = this.collection.getItemsBetween(origin, currentAt),
+					i = targets.length,
+					target,
+					increment = currentAt > origin ? -1 : 1;
+
+				while (i--) {
+					target = targets[i];
+					target.data.order += increment;
+					target.updatePosition();
+				}
+
 				this.data.order = currentAt;
-				target.updatePosition();
+				
 			}
 
 		},
@@ -230,6 +266,27 @@ C.Item = (function () {
 
 			C.db.save();
 
+		},
+
+		onEditStart: function () {
+
+			this.title.hide();
+			this.field.show().focus();
+			this.el.addClass('edit');
+			this.collection.onEditStart(this.data.order);
+
+		},
+
+		onEditDone: function () {
+
+			this.field.hide();
+			this.title
+				.show()
+				.find('.text')
+				.text(this.field.val())
+			this.collection.onEditDone();
+			this.el.removeClass('edit');
+				
 		}
 
 	};

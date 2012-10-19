@@ -45,6 +45,13 @@ html, body {
 	&.fade {
 		opacity: 0;
 	}
+
+	&.edit {
+		-webkit-transition: -webkit-transform .25s @ease;
+		.item {
+			opacity: .2;
+		}
+	}
 }
 
 .item {
@@ -78,6 +85,22 @@ html, body {
 		}
 	}
 
+	.field {
+		display: none;
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 19px;
+		font-weight: bold;
+		color: #fff;
+		background: transparent;
+		border: none;
+		padding: 0;
+		height: @itemHeight;
+		outline: none;
+		position: absolute;
+		top: 0;
+		left: 10px;
+	}
+
 	.check, .cross {
 		width: @itemHeight;
 		height: @itemHeight;
@@ -104,11 +127,19 @@ html, body {
 	}
 
 	&.sorting-trans {
-		z-index: 2 !important;
+		z-index: 999 !important;
 		-webkit-transition: -webkit-transform .12s ease-out;
 		.slider {
 			-webkit-transition: -webkit-transform .12s ease-out;
 		}
+	}
+
+	&.top {
+		z-index: 998 !important;
+	}
+
+	&.edit {
+		opacity: 1 !important;
 	}
 }
 
@@ -132,12 +163,16 @@ html, body {
 
 .todo-item {
 
+	.title {
+		position: relative;
+	}
+
 	.line {
 		position: absolute;
 		height: 2px;
-		left: 10px;
-		top: 30px;
-		width: 0;
+		left: 0;
+		top: 12px;
+		width: 0%;
 		background-color: #fff;
 		-webkit-transition: width 0s linear,
 							background-color .15s @ease;
@@ -166,7 +201,7 @@ body.desktop {
 
 	background: url(../img/bg.png) center center no-repeat;
 
-	* {
+	*:not(input) {
 		-webkit-user-select: none;
 	}
 
