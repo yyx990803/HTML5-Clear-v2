@@ -3,6 +3,11 @@ C.Item = (function () {
 	var leftBound = -62,
 		rightBound = 62;
 
+	var exitEdit = function () {
+		C.state = C.states.TODOS;
+		console.log('unlock');
+	}
+
 	return {
 
 		init: function (data) {
@@ -270,6 +275,9 @@ C.Item = (function () {
 
 		onEditStart: function () {
 
+			if (C.state === C.states.EDITING) return;
+			C.state = C.states.EDITING;
+
 			this.title.hide();
 			this.field.show().focus();
 			this.el.addClass('edit');
@@ -286,6 +294,8 @@ C.Item = (function () {
 				.text(this.field.val())
 			this.collection.onEditDone();
 			this.el.removeClass('edit');
+
+			setTimeout(exitEdit, 250);
 				
 		}
 
