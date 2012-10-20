@@ -48,8 +48,11 @@ html, body {
 
 	&.edit {
 		-webkit-transition: -webkit-transform .25s @ease;
+	}
+
+	&.shade {
 		.item {
-			opacity: .2;
+			opacity: .15;
 		}
 	}
 }
@@ -77,7 +80,6 @@ html, body {
 		.inner {
 			-webkit-transform: translate3d(0,0,0);
 			box-sizing: border-box;
-			padding-left: 12px;
 			border-top: 1px solid rgba(255,255,255,.07);
 			border-bottom: 1px solid rgba(0,0,0,.1);
 			height: @itemHeight;
@@ -97,8 +99,14 @@ html, body {
 		height: @itemHeight;
 		outline: none;
 		position: absolute;
+		top: -1px;
+		left: 9px;
+	}
+
+	.title {
+		position: absolute;
 		top: 0;
-		left: 10px;
+		left: 12px;
 	}
 
 	.check, .cross {
@@ -222,6 +230,10 @@ body.desktop {
 		display: inline;
 	}
 
+	.field { // weird input element positioning difference between mobile and desktop
+		top: 0;
+		left: 10px;
+	}
 }
 
 #log {

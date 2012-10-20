@@ -2,8 +2,8 @@ C.Collection = (function () {
 
 	var friction 			= .95,
 		interval 			= 16,
-		speedMultiplier 	= 14,
-		maxSpeed 			= 30,
+		speedMultiplier 	= 16,
+		maxSpeed 			= 32,
 		diff 				= 0.5,
 		sortMoveSpeed 		= 5;
 
@@ -230,14 +230,20 @@ C.Collection = (function () {
 
 			beforeEditPosition = this.y;
 			var ty = -at * 62;
-			this.el.addClass('edit');
-			this.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
+			this.el.addClass('edit shade');
+
+			if (!C.client.isTouch) {
+				this.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
+			}
 
 		},
 
 		onEditDone: function () {
 
-			this.style.webkitTransform = 'translate3d(0,' + beforeEditPosition + 'px, 0)';
+			if (!C.client.isTouch) {
+				this.style.webkitTransform = 'translate3d(0,' + beforeEditPosition + 'px, 0)';
+			}
+			this.el.removeClass('shade');
 			var t = this;
 			setTimeout(function () {
 				t.el.removeClass('edit');

@@ -1,12 +1,9 @@
+// Common methods shared by both C.ListItem and C.TodoItem
+
 C.Item = (function () {
 
 	var leftBound = -62,
 		rightBound = 62;
-
-	var exitEdit = function () {
-		C.state = C.states.TODOS;
-		console.log('unlock');
-	}
 
 	return {
 
@@ -70,7 +67,8 @@ C.Item = (function () {
 
 		onTap: function (e) {
 
-			// check to see if is tapping on the text or the item itself
+			// check to see if tap is on the text or the item itself
+
 			if (this.open) {
 				if (e.target.className === 'title') {
 					this.onEditStart();
@@ -287,15 +285,20 @@ C.Item = (function () {
 
 		onEditDone: function () {
 
-			this.field.hide();
+			var val = this.field.hide().val();
 			this.title
 				.show()
 				.find('.text')
-				.text(this.field.val())
+				.text(val);
 			this.collection.onEditDone();
-			this.el.removeClass('edit');
 
-			setTimeout(exitEdit, 250);
+			var t = this;
+			setTimeout(function () {
+				t.el.removeClass('edit');
+				C.state = C.states.TODOS;
+				t.data.title = val;
+				C.db.save();
+			}, 250);
 				
 		}
 
