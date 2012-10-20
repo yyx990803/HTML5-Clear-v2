@@ -20,7 +20,7 @@ var C = {
 
 		// init some components
 		C.client.init();
-		C.db.init();
+		C.db.init(true);
 		C.touch.init();
 		C.listCollection.init();
 

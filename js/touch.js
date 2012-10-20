@@ -177,7 +177,7 @@ C.touch = (function () {
 		C.$wrapper
 			.on(start, '.item', function (e) {
 
-				if (e.touches && e.touches.length > 1) return;
+				if (data.sorting || data.dragging || (e.touches && e.touches.length > 1)) return;
 
 				moved = false;
 				tapTarget = this;
@@ -186,17 +186,16 @@ C.touch = (function () {
 			})
 			.on(move, function (e) {
 
-				if (e.touches && e.touches.length > 1) return;
-
 				moved = true;
 				cancelLongTap();
 				if (data.sorting) {
 					ltTarget.onSortMove(data.dy);
 				}
+
 			})
 			.on(end, function (e) {
 
-				if (e.touches && e.touches.length > 1) return;
+				if (e.touches && e.touches.length > 0) return;
 
 				cancelLongTap();
 
