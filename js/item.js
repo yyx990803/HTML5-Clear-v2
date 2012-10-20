@@ -67,8 +67,10 @@ C.Item = (function () {
 
 		onTap: function (e) {
 
+			if (C.state === C.states.EDITING) return;
+
 			// check to see if tap is on the text or the item itself
-			
+
 			if (this.open) {
 				if (e.target.className === 'text') {
 					this.onEditStart();
@@ -273,7 +275,6 @@ C.Item = (function () {
 
 		onEditStart: function () {
 
-			if (C.state === C.states.EDITING) return;
 			C.state = C.states.EDITING;
 
 			this.title.hide();
