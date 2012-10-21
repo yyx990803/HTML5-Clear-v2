@@ -135,6 +135,10 @@ C.TodoCollection.prototype = {
 
 	onPullUp: function () {
 
+	},
+
+	createNewItem: function () {
+		C.Collection.createNewItem.apply(this);
 	}
 
 };

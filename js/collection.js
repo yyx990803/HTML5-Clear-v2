@@ -158,8 +158,6 @@ C.Collection = (function () {
 
 			function loop () {
 
-				console.log('loop');
-
 				if (C.touch.data.isDown) {
 					endLoop();
 					return;
@@ -263,6 +261,10 @@ C.Collection = (function () {
 			}
 			this.el.removeClass('shade');
 
+		},
+
+		createNewItem: function () {
+			
 		}
 
 	};

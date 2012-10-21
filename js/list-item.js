@@ -114,6 +114,23 @@
 
 		},
 
+		del: function (loopBack) {
+
+			if (this.count === 0) {
+				C.Item.del.apply(this);
+			} else {
+				loopBack(conf);
+			}
+
+			var t = this;
+			function conf () {
+				if (confirm('Are you sure you want to delete the entire list?')) {
+					C.Item.del.apply(t);
+				}
+			}
+
+		},
+
 		updateCount: function () {
 
 			this.countEl.text(this.count);
@@ -139,8 +156,7 @@
 		'onSortStart',
 		'onSortMove',
 		'onSortEnd',
-		'checkSwap',
-		'del'
+		'checkSwap'
 	]);
 
 }());

@@ -162,13 +162,18 @@ C.Item = (function () {
 		onDragEnd: function () {
 
 			var item = this,
-				done = false;
+				done = null;
 
 			if (item.x < leftBound) {
-				this.del();
+				this.del(function (callback) {
+					done = callback;
+					loop();
+				});
 				return;
 			} else if (item.x > rightBound) {
-				done = true;
+				done = function () {
+					item.done();
+				}
 			}
 
 			loop();
@@ -185,7 +190,7 @@ C.Item = (function () {
 					item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';
 					item.slider.removeClass('drag');
 
-					if (done) item.done();
+					if (done) done();
 
 				}
 
@@ -290,20 +295,25 @@ C.Item = (function () {
 		onEditDone: function () {
 
 			var val = this.field.hide().val();
-			this.title
-				.show()
-				.find('.text')
-				.text(val);
-			this.collection.onEditDone();
 
-			var t = this;
-			setTimeout(function () {
-				t.el.removeClass('edit');
-				C.state = C.states.TODOS;
-				t.data.title = val;
-				C.db.save();
-			}, 300);
-				
+			if (!val) {
+				this.del();
+			} else {
+				this.title
+					.show()
+					.find('.text')
+					.text(val);
+				this.collection.onEditDone();
+
+				var t = this;
+				setTimeout(function () {
+					t.el.removeClass('edit');
+					C.state = C.states.TODOS;
+					t.data.title = val;
+					C.db.save();
+				}, 300);
+			}
+	
 		}
 
 	};
