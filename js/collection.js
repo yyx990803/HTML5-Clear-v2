@@ -134,6 +134,7 @@ C.Collection = (function () {
 
 			this.y += dy;
 
+			//using plain stuff here to avoid extra function invocations for performance
 			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
 
 		},
@@ -141,11 +142,11 @@ C.Collection = (function () {
 		onDragEnd: function (speed) {
 
 			if (this.y > 120) {
-				console.log("up one level");
+				this.onPullDown();
 			} else if (this.y > 64) {
-				console.log("create new item");
+				this.createNewItem(0);
 			} else if (this.y < this.upperBound - 64) {
-				console.log("pulled up");
+				this.onPullUp();
 			}
 
 			var col = this;
@@ -156,7 +157,9 @@ C.Collection = (function () {
 
 			function loop () {
 
-				if (C.touch.data.dragging || C.touch.data.draggingItem) {
+				console.log('loop');
+
+				if (C.touch.data.isDown) {
 					endLoop();
 					return;
 				}
@@ -205,11 +208,15 @@ C.Collection = (function () {
 				dy  = dir * sortMoveSpeed;
 
 			col.sortMoving = true;
+			col.el.addClass('drag');
 			loop();
 
 			function loop () {
 
-				if (!col.sortMoving) return;
+				if (!col.sortMoving) {
+					col.el.removeClass('drag');
+					return;
+				}
 
 				var cty = Math.max(col.upperBound, Math.min(0, col.y + dy));
 
@@ -230,7 +237,7 @@ C.Collection = (function () {
 
 			beforeEditPosition = this.y;
 			var ty = -at * 62;
-			this.el.addClass('edit shade');
+			this.el.addClass('shade');
 
 			if (!C.client.isTouch) {
 				this.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
@@ -244,10 +251,6 @@ C.Collection = (function () {
 				this.style.webkitTransform = 'translate3d(0,' + beforeEditPosition + 'px, 0)';
 			}
 			this.el.removeClass('shade');
-			var t = this;
-			setTimeout(function () {
-				t.el.removeClass('edit');
-			}, 250);
 
 		}
 

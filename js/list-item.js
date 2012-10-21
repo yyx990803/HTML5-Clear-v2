@@ -83,10 +83,11 @@
 
 			if (this.collection.inMomentum) return;
 
-			C.listCollection.fade(this.data.order);
+			this.el.addClass('fade');
+			C.listCollection.fadeOut(this.data.order);
 
 			var todoCollection = new C.TodoCollection(this.data);
-			todoCollection.load();
+			todoCollection.load(this.data.order);
 
 			C.db.data.state = {
 				view: C.states.TODOS,

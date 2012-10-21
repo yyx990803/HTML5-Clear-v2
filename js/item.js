@@ -220,10 +220,12 @@ C.Item = (function () {
 				cy = c.y,
 				ay = this.y + cy; // the actual on screen y
 
-			if (cy < 0 && ay < 93 && dy < 0) {
+			if (cy < 0 && ay < 93 && dy < 3) {
 				// upper move trigger is 1.5x line height = 93px
+				// dy < 3 : makes sure upmove only triggers when user moves the dragged item upwards.
+				// the 3px gives a small buffer for incidental downward movements
 				if (!c.sortMoving) c.sortMove(1, this);
-			} else if (cy > this.collection.upperBound && ay > C.client.height - 155 && dy > 0) {
+			} else if (cy > this.collection.upperBound && ay > C.client.height - 155 && dy > -3) {
 				// the lower move trigger needs to count in the extra one line of space, thus an extra 62px
 				if (!c.sortMoving) c.sortMove(-1, this);
 			} else {
@@ -299,7 +301,7 @@ C.Item = (function () {
 				C.state = C.states.TODOS;
 				t.data.title = val;
 				C.db.save();
-			}, 250);
+			}, 300);
 				
 		}
 

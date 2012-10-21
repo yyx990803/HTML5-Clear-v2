@@ -59,7 +59,7 @@ var C = {
 
 		}
 
-		C.currentCollection.load(true); // passing in noAnimation:true
+		C.currentCollection.load(0, true); // passing in (position:0) and (noAnimation:true)
 
 	},
 

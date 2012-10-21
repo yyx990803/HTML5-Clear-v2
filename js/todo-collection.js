@@ -66,7 +66,7 @@ C.TodoCollection.prototype = {
 
 	},
 
-	load: function (noAnimation) {
+	load: function (at, noAnimation) {
 
 		var t = this;
 		C.currentCollection = t;
@@ -76,10 +76,22 @@ C.TodoCollection.prototype = {
 			t.updatePosition();
 			t.el.appendTo(C.$wrapper);
 		} else {
-			t.el.appendTo(C.$wrapper);
+
+			t.el
+				.addClass('move')
+				.appendTo(C.$wrapper);
+
+			t.style.webkitTransform = 'translate3d(0,' + (at * 62 + C.listCollection.y) + 'px, 0)';
+
 			setTimeout(function () {
+				t.style.webkitTransform = 'translate3d(0, 0, 0)';
 				t.updatePosition();
+
+				setTimeout(function () {
+					t.el.removeClass('move');
+				}, 300);
 			}, 1);
+
 		}
 
 	},
@@ -114,6 +126,14 @@ C.TodoCollection.prototype = {
 
 		this.itemEl.count = this.count;
 		this.itemEl.updateCount();
+
+	},
+
+	onPullDown: function () {
+
+	},
+
+	onPullUp: function () {
 
 	}
 

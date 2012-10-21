@@ -52,13 +52,40 @@ C.listCollection = {
 
 	},
 
-	fade: function (at) {
+	fadeOut: function (at) {
 
 		var t = this;
+
+		// move current and up to top, drop anything below
+		var i = t.items.length,
+			item,
+			ty;
+		while (i--) {
+			item = t.items[i];
+			if (item.data.order <= at) {
+				ty = (item.data.order - at) * 62 - t.y;
+			} else {
+				ty = C.client.height + (item.data.order - at) * 62 - t.y;
+			}
+			item.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
+		}
+
+		// fade out
 		t.el.addClass('fade');
+
+		// hide
 		setTimeout(function () {
 			t.el.css('display', 'none');
 		}, 300);
+
+	},
+
+	onPullDown: function () {
+		// do nothing, menu not implemented
+	},
+
+	onPullUp: function () {
+
 
 	}
 

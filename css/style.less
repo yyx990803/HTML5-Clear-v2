@@ -35,20 +35,13 @@ html, body {
 
 .collection {
 	-webkit-transform: translate3d(0,0,0);
-	-webkit-transition: opacity .3s @ease;
+	-webkit-transition: -webkit-transform .3s @ease,
+						opacity .3s @ease;
 	position: absolute;
 	width: 100%;
 	top: 0;
 	left: 0;
 	z-index: 0;
-
-	&.fade {
-		opacity: 0;
-	}
-
-	&.edit {
-		-webkit-transition: -webkit-transform .25s @ease;
-	}
 
 	&.shade {
 		.item {
@@ -60,13 +53,14 @@ html, body {
 .item {
 	text-shadow: 0 1px 1px rgba(0,0,0,.25);
 	-webkit-transform-origin: center center;
-	-webkit-transition: -webkit-transform .25s @ease,
-						opacity .25s @ease;
+	-webkit-transition: -webkit-transform .3s @ease,
+						opacity .3s @ease;
 	position: absolute;
 	z-index: 0;
 	width: 100%;
 	top: 0;
 	left: 0;
+	opacity: 1;
 	height: @itemHeight;
 
 	.slider {
@@ -148,6 +142,10 @@ html, body {
 
 	&.edit {
 		opacity: 1 !important;
+	}
+
+	&.fade {
+		opacity: 0;
 	}
 }
 
