@@ -282,6 +282,7 @@ C.Item = (function () {
 			this.title.hide();
 			this.field.show().focus();
 			this.el.addClass('edit');
+
 			this.collection.onEditStart(this.data.order);
 
 		},

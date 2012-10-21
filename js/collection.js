@@ -1,11 +1,12 @@
 C.Collection = (function () {
 
-	var friction 			= .95,
+	var dragElasticity 		= 2.8,
+		friction 			= .95,
 		interval 			= 16,
 		speedMultiplier 	= 16,
 		maxSpeed 			= 32,
 		diff 				= 0.5,
-		sortMoveSpeed 		= 5;
+		sortMoveSpeed 		= 4.5;
 
 	var beforeEditPosition 	= 0; // used to record position before edit focus
 
@@ -129,7 +130,7 @@ C.Collection = (function () {
 		onDragMove: function (dy) {
 
 			if (this.y + dy < this.upperBound || this.y + dy > 0) {
-				dy /= 3;
+				dy /= dragElasticity;
 			}
 
 			this.y += dy;
@@ -236,12 +237,22 @@ C.Collection = (function () {
 		onEditStart: function (at) {
 
 			beforeEditPosition = this.y;
-			var ty = -at * 62;
-			this.el.addClass('shade');
 
-			if (!C.client.isTouch) {
-				this.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
-			}
+			// Reason for using a setTimeout here: (or at least what I think is the case)
+			// It seems in iOS browsers when you trigger the keyboard for the first time,
+			// there's some heavy initialization work going on. This function is called
+			// from the function that was initially triggered by the input focus event,
+			// so the css transitions triggered here will be blocked. I'm avoiding that
+			// by putting the class changes into a new call stack.
+
+			var t = this;
+			setTimeout(function () {
+				if (!C.client.isTouch) {
+					var ty = -at * 62;
+					t.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
+				}
+				t.el.addClass('shade');
+			}, 1);
 
 		},
 

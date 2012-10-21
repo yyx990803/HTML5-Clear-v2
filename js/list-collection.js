@@ -18,7 +18,9 @@ C.listCollection = {
 
 	render: function () {
 
-		this.el = $('<div id="list-collection" class="collection"></div>');
+		this.el = $('<div id="list-collection" class="collection">'
+					+ '<div class="credit">Made by Evan You <br> Original iOS app by Realmac</div>'
+					+ '</div>');
 		this.style = this.el[0].style;
 
 	},
