@@ -87,7 +87,7 @@ C.listCollection = {
 	},
 
 	onPullUp: function () {
-
+		// goes to the last opened list
 	},
 
 	createNewItem: function () {

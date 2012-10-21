@@ -182,7 +182,6 @@ C.touch = (function () {
 				moved = false;
 				tapTarget = this;
 				startTime = Date.now();
-				console.log("!");
 				ltTimeout = setTimeout(longTap, ltDelay);
 			})
 			.on(move, function (e) {

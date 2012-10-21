@@ -162,16 +162,14 @@ C.Item = (function () {
 		onDragEnd: function () {
 
 			var item = this,
-				done = null;
+				doneCallback = null;
 
 			if (item.x < leftBound) {
-				this.del(function (callback) {
-					done = callback;
-					loop();
-				});
+				// passing in a loop starter with callback to be used after confirmation
+				this.del(loopWithCallback);
 				return;
 			} else if (item.x > rightBound) {
-				done = function () {
+				doneCallback = function () {
 					item.done();
 				}
 			}
@@ -190,10 +188,15 @@ C.Item = (function () {
 					item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';
 					item.slider.removeClass('drag');
 
-					if (done) done();
+					if (doneCallback) doneCallback();
 
 				}
 
+			}
+
+			function loopWithCallback (callback) {
+				doneCallback = callback;
+				loop();
 			}
 
 		},
