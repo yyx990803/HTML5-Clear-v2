@@ -131,6 +131,9 @@
 			function ask () {
 				if (confirm('Are you sure you want to delete the entire list?')) {
 					C.Item.del.apply(t);
+				} else {
+					t.field.hide().val(t.title.text());
+					t.title.show();
 				}
 			}
 		},
