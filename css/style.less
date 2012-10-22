@@ -89,6 +89,7 @@ html, body {
 	}
 
 	.field {
+		cursor: default;
 		display: none;
 		font-family: Helvetica, Arial, sans-serif;
 		font-size: 19px;
@@ -101,7 +102,9 @@ html, body {
 		outline: none;
 		position: absolute;
 		top: -1px;
-		left: 9px;
+		left: 0;
+		right: 0;
+		padding-left: 9px;
 	}
 
 	.title {
@@ -237,7 +240,7 @@ body.desktop {
 
 	.field { // weird input element positioning difference between mobile and desktop
 		top: 0;
-		left: 10px;
+		padding-left: 10px;
 	}
 }
 

@@ -99,6 +99,8 @@ C.Item = (function () {
 
 		onDragMove: function (dx) {
 
+			if (C.state === C.states.EDITING) return;
+
 			var tx = this.x + dx;
 
 			if (this.noDragRight && tx > 0) return;
