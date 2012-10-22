@@ -116,15 +116,22 @@
 
 		del: function (loopWithCallback) {
 
+			var t = this;
+
 			if (this.count === 0) {
-				C.Item.del.apply(this);
+				C.Item.del.apply(t);
 			} else {
-				var t = this;
-				loopWithCallback(function () {
-					if (confirm('Are you sure you want to delete the entire list?')) {
-						C.Item.del.apply(t);
-					}
-				});
+				if (loopWithCallback) {
+					loopWithCallback(ask);
+				} else {
+					ask();
+				}
+			}
+
+			function ask () {
+				if (confirm('Are you sure you want to delete the entire list?')) {
+					C.Item.del.apply(t);
+				}
 			}
 		},
 

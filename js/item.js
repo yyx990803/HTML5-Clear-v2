@@ -42,9 +42,15 @@ C.Item = (function () {
 			this.title = this.el.find('.title');
 			this.field = this.el.find('.field');
 			var t = this;
-			this.field.on('change blur', function () {
-				t.onEditDone();
-			});
+			this.field
+				.on('blur', function () {
+					t.onEditDone();
+				})
+				.on('keyup', function (e) {
+					if (e.keyCode === 13) {
+						$(this).blur();
+					}
+				});
 
 		},
 
@@ -207,8 +213,9 @@ C.Item = (function () {
 			t.style.webkitTransform = 'translate3d(' + (-C.client.width - 62) + 'px,' + this.y + 'px, 0)';
 			setTimeout(function () {
 				if (!t.data.done) t.collection.count--;
+				t.deleted = true;
 				t.el.remove();
-				t.collection.collapseAt(t.data.order, t, true);
+				t.collection.collapseAt(t.data.order, t);
 			}, 300);
 
 		},
@@ -296,25 +303,34 @@ C.Item = (function () {
 		},
 
 		onEditDone: function () {
+			
+			var t= this,
+				val = t.field.hide().val();
 
-			var val = this.field.hide().val();
+			t.collection.onEditDone();
 
 			if (!val) {
-				this.del();
+
+				setTimeout(function () {
+					t.el.removeClass('edit');
+					C.state = C.states.TODOS;
+					t.del();
+				}, 300);
+
 			} else {
-				this.title
+
+				t.title
 					.show()
 					.find('.text')
 					.text(val);
-				this.collection.onEditDone();
 
-				var t = this;
 				setTimeout(function () {
 					t.el.removeClass('edit');
 					C.state = C.states.TODOS;
 					t.data.title = val;
 					C.db.save();
 				}, 300);
+
 			}
 	
 		}

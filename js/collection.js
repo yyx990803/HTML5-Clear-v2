@@ -81,7 +81,7 @@ C.Collection = (function () {
 
 		},
 
-		collapseAt: function (at, target, del) {
+		collapseAt: function (at, target) {
 
 			var items = this.items,
 				i = items.length,
@@ -91,7 +91,7 @@ C.Collection = (function () {
 			while (i--) {
 				item = items[i];
 				if (item === target) {
-					if (del) delIndex = i;
+					if (target.deleted) delIndex = i;
 					continue;
 				} else if (item.data.order > at && (!item.data.done || del)) {
 					item.data.order--;
@@ -264,7 +264,7 @@ C.Collection = (function () {
 		},
 
 		createNewItem: function () {
-			
+
 		}
 
 	};
