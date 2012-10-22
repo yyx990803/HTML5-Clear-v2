@@ -96,20 +96,5 @@ C.listCollection = {
 
 };
 
-// Inherit methods
-C.utils.extend(C.listCollection, C.Collection, [
-	'getItemById',
-	'getItemByOrder',
-	'getItemsBetween',
-	'collapseAt',
-	'countIncomplete',
-	'updateBounds',
-	'updateColor',
-	'updatePosition',
-	'onDragStart',
-	'onDragMove',
-	'onDragEnd',
-	'sortMove',
-	'onEditStart',
-	'onEditDone'
-]);
+// inherit shared methods
+C.listCollection.__proto__ = C.Collection;

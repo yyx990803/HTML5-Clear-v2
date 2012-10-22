@@ -152,18 +152,6 @@
 
 	};
 
-	C.utils.extend(C.ListItem.prototype, C.Item, [
-		'updatePosition',
-		'onTap',
-		'onEditStart',
-		'onEditDone',
-		'onDragStart',
-		'onDragMove',
-		'onDragEnd',
-		'onSortStart',
-		'onSortMove',
-		'onSortEnd',
-		'checkSwap'
-	]);
+	C.ListItem.prototype.__proto__ = C.Item;
 
 }());

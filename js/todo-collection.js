@@ -144,19 +144,4 @@ C.TodoCollection.prototype = {
 };
 
 // Inherit methods
-C.utils.extend(C.TodoCollection.prototype, C.Collection, [
-	'getItemById',
-	'getItemByOrder',
-	'getItemsBetween',
-	'collapseAt',
-	'countIncomplete',
-	'updateBounds',
-	'updateColor',
-	'updatePosition',
-	'onDragStart',
-	'onDragMove',
-	'onDragEnd',
-	'sortMove',
-	'onEditStart',
-	'onEditDone'
-]);
+C.TodoCollection.prototype.__proto__ = C.Collection;

@@ -27,7 +27,6 @@ echo -e "\033[32m[minify]\033[0m source:" $BASEDIR"/js/"
 echo -e "\033[32m[minify]\033[0m output:" $BASEDIR"/deploy/js/min.js"
 cat $BASEDIR/js/zepto.js \
 $BASEDIR/js/main.js \
-$BASEDIR/js/utils.js \
 $BASEDIR/js/client.js \
 $BASEDIR/js/db.js \
 $BASEDIR/js/touch.js \

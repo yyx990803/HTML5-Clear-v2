@@ -181,16 +181,6 @@
 	};
 
 	// Inherit methods
-	C.utils.extend(C.TodoItem.prototype, C.Item, [
-		'updatePosition',
-		'onTap',
-		'onEditStart',
-		'onEditDone',
-		'onDragStart',
-		'onSortStart',
-		'onSortMove',
-		'checkSwap',
-		'del'
-	]);
+	C.TodoItem.prototype.__proto__ = C.Item;
 
 }());
