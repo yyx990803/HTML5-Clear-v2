@@ -93,7 +93,7 @@ C.Collection = (function () {
 				if (item === target) {
 					if (target.deleted) delIndex = i;
 					continue;
-				} else if (item.data.order > at && (!item.data.done || del)) {
+				} else if (item.data.order > at && (!item.data.done || target.deleted)) {
 					item.data.order--;
 					item.updateColor();
 					item.updatePosition();

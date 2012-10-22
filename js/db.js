@@ -67,28 +67,28 @@ C.db = (function () {
 				items: [
 					{
 
-						title: 'Hello',
+						title: 'Things to do',
 						order: 0,
 						items: [
 							{
 								order: 0,
-								title: 'Test1'
+								title: 'Research Paper.js'
 							},
 							{
 								order: 1,
-								title: 'Test2'
+								title: 'Redesign personal site'
 							},
 							{
 								order: 2,
-								title: 'Test3'
+								title: 'Read Node.js book'
 							},
 							{
 								order: 3,
-								title: 'Test4'
+								title: 'Make a game'
 							},
 							{
 								order: 4,
-								title: 'Test4'
+								title: 'Make a CMS'
 							},
 							{
 								order: 5,
