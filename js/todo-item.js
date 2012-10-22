@@ -23,7 +23,10 @@
 	C.TodoItem.prototype = {
 
 		init: function (data) {
-			C.Item.init.apply(this, arguments);
+
+			this.base = C.Item;
+			this.base.init.apply(this, arguments);
+			
 		},
 
 		render: function () {
@@ -90,7 +93,7 @@
 				}
 			}
 
-			C.Item.onDragMove.apply(this, arguments);
+			this.base.onDragMove.apply(this, arguments);
 
 		},
 
@@ -104,7 +107,7 @@
 				}
 			}
 
-			C.Item.onDragEnd.apply(this);
+			this.base.onDragEnd.apply(this);
 
 		},
 
@@ -120,13 +123,7 @@
 				}
 			}
 
-			C.Item.onSortEnd.apply(this);
-		},
-
-		del: function () {
-			
-			C.Item.del.apply(this);
-
+			this.base.onSortEnd.apply(this);
 		},
 
 		done: function () {  // this is todoItem specific

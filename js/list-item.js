@@ -22,11 +22,13 @@
 
 		init: function (data) {
 
-			this.count = 0;
+			this.base = C.Item;
 
+			// count undone items
+			this.count = 0;
+			
 			var i = data.items.length,
 				item;
-
 			while (i--) {
 				item = data.items[i];
 				if (!item.done) this.count++;
@@ -36,7 +38,7 @@
 				this.noDragRight = true;
 			}
 
-			C.Item.init.apply(this, arguments);
+			this.base.init.apply(this, arguments);
 
 		},
 
@@ -119,7 +121,7 @@
 			var t = this;
 
 			if (this.count === 0) {
-				C.Item.del.apply(t);
+				this.base.del.apply(t);
 			} else {
 				if (loopWithCallback) {
 					loopWithCallback(ask);
@@ -130,7 +132,7 @@
 
 			function ask () {
 				if (confirm('Are you sure you want to delete the entire list?')) {
-					C.Item.del.apply(t);
+					this.base.del.apply(t);
 				} else {
 					t.field.hide().val(t.title.text());
 					t.title.show();

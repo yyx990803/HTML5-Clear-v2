@@ -12,6 +12,43 @@ C.Collection = (function () {
 
 	return {
 
+		init: function (data) {
+
+			this.y = 0;
+			this.upperBound = 0;
+
+			this.data = data || C.db.data;
+			this.items = [];
+			this.render();
+			this.populateItems();
+
+		},
+
+		populateItems: function () {
+
+			var items = this.data.items,
+				i = items.length,
+				li;
+
+			this.count = 0;	// number of items (for C.TodoCollection this only counts items not done yet)
+			this.hash = {}; // hash for getting items based on ID
+			this.newIdFrom = i; // newly created item ID start from this
+
+			while (i--) {
+				li = new this.itemType(items[i]);
+				li.collection = this;
+				li.el
+					.data('id', i)
+					.appendTo(this.el);
+				this.items.push(li);
+				this.hash[i] = li; // assign pointer in hash
+				if (!li.data.done) this.count++;
+			}
+
+			this.updateBounds();
+
+		},
+
 		getItemById: function (id) {
 			return this.hash[id];
 		},

@@ -8,26 +8,15 @@ C.TodoCollection.prototype = {
 
 		C.log('TodoCollection: init <' + data.title + '>');
 
-		this.y = 0;
-		this.upperBound = 0;
+		this.base = C.Collection;
+		this.itemType = C.TodoItem;
 
-		this.data = data;
-		this.items = [];
-		this.render();
-		this.populateItems();
+		// apply shared init
+		this.base.init.apply(this, arguments);
 
+		// custome init jobs
 		// find the corresponding list item
-		var listItems = C.listCollection.items,
-			i = listItems.length,
-			item;
-
-		while (i--) {
-			item = listItems[i];
-			if (item.data.order === this.data.order) {
-				this.itemEl = item;
-				break;
-			}
-		}
+		this.itemEl = C.listCollection.getItemByOrder(this.data.order);
 
 	},
 
@@ -35,34 +24,6 @@ C.TodoCollection.prototype = {
 
 		this.el = $('<div class="collection"></div>');
 		this.style = this.el[0].style;
-
-	},
-
-	populateItems: function () {
-
-		var todos = this.data.items,
-			i = todos.length,
-			li;
-
-		this.count = 0; // number of items not done
-		this.hash = {}; // hash for getting items based on ID
-		this.newIdFrom = i; // newly created item ID start from this
-
-
-		while (i--) {
-			li = new C.TodoItem(todos[i]);
-			li.collection = this;
-
-			li.el
-				.data('id', i)
-				.appendTo(this.el);
-
-			this.items.push(li);
-			this.hash[i] = li;
-			if (!li.data.done) this.count++;
-		}
-		
-		C.Collection.updateBounds.apply(this);
 
 	},
 
@@ -138,7 +99,7 @@ C.TodoCollection.prototype = {
 	},
 
 	createNewItem: function () {
-		C.Collection.createNewItem.apply(this);
+		this.base.createNewItem.apply(this);
 	}
 
 };
