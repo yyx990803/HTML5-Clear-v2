@@ -305,7 +305,7 @@ C.Item = (function () {
 		},
 
 		onEditDone: function () {
-			
+
 			var t= this,
 				val = t.field.hide().val();
 
@@ -317,7 +317,7 @@ C.Item = (function () {
 					t.el.removeClass('edit');
 					C.state = C.states.TODOS;
 					t.del();
-				}, 300);
+				}, 310);
 
 			} else {
 
@@ -331,7 +331,7 @@ C.Item = (function () {
 					C.state = C.states.TODOS;
 					t.data.title = val;
 					C.db.save();
-				}, 300);
+				}, 310);
 
 			}
 	
