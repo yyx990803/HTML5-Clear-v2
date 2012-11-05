@@ -15,7 +15,9 @@
 		spanL = maxColorSpan * stepL;
 
 	C.ListItem = function (data) {
+
 		this.init(data);
+
 	};
 
 	C.ListItem.prototype = {
@@ -23,7 +25,11 @@
 		init: function (data) {
 
 			this.base = C.Item;
+			this.h = baseH;
+			this.s = baseS;
+			this.l = baseL;
 
+			// private init jobs
 			// count undone items
 			this.count = 0;
 			

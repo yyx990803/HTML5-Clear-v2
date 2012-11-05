@@ -1,6 +1,17 @@
 C.touch = (function () {
 
-	var data 		= {},
+	// TouchData object constructor
+	// avoiding mutating hidden class for better performance in V8
+	var TouchData = function () {
+		this.ox = this.oy = 0;
+		this.dx = this.cx = 0;
+		this.dy = this.cy = 0;
+		this.dt = this.ct = 0;
+		this.tdx = this.tdy = 0;
+		this.isDown = this.draggingCollection = this.draggingItem = this.sorting = false;
+	};
+
+	var data 		= new TouchData(),
 		t 			= C.client.isTouch,
 		start 		= t ? 'touchstart' : 'mousedown',
 		move 		= t ? 'touchmove' : 'mousemove',
@@ -59,13 +70,13 @@ C.touch = (function () {
 				data.dt = now - data.ct;
 				data.ct = now;
 
-				if (!data.dragging && Math.abs(data.tdy) > dragThreshold) {
-					data.dragging = true;
+				if (!data.draggingCollection && Math.abs(data.tdy) > dragThreshold) {
+					data.draggingCollection = true;
 					C.currentCollection.onDragStart();
 					return;
 				}
 
-				if (data.dragging) {
+				if (data.draggingCollection) {
 					C.currentCollection.onDragMove(data.dy);
 				}
 				
@@ -75,14 +86,14 @@ C.touch = (function () {
 				if (t && e.touches.length) return;
 				if (data.draggingItem || data.sorting) return;
 
-				if (data.dragging) {
+				if (data.draggingCollection) {
 					data.isDown = false;
-					data.dragging = false;
+					data.draggingCollection = false;
 					var speed = data.dy / data.dt;
 					C.currentCollection.onDragEnd(speed);
 				}
 
-				data = touch.data = {};
+				data = touch.data = new TouchData();
 				
 			});
 
@@ -124,7 +135,7 @@ C.touch = (function () {
 			})
 			.on(move, function (e) {
 
-				if (!item || data.dragging || data.sorting) return;
+				if (!item || data.draggingCollection || data.sorting) return;
 
 				if (!data.draggingItem && Math.abs(data.tdx) > dragThreshold) {
 					data.draggingItem = true;
@@ -177,7 +188,7 @@ C.touch = (function () {
 		C.$wrapper
 			.on(start, '.item', function (e) {
 
-				if (data.sorting || data.dragging || (e.touches && e.touches.length > 1)) return;
+				if (data.sorting || data.draggingCollection || (e.touches && e.touches.length > 1)) return;
 
 				moved = false;
 				tapTarget = this;

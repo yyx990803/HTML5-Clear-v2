@@ -57,10 +57,6 @@ C.TodoCollection.prototype = {
 
 	},
 
-	unload: function () {
-
-	},
-
 	floatUp: function (target) {
 
 		var i = this.items.length,

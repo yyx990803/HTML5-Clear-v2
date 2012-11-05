@@ -19,12 +19,15 @@
 		this.init(data);
 	};
 
-
 	C.TodoItem.prototype = {
 
 		init: function (data) {
 
 			this.base = C.Item;
+			this.h = baseH;
+			this.s = baseS;
+			this.l = baseL;
+			
 			this.base.init.apply(this, arguments);
 			
 		},

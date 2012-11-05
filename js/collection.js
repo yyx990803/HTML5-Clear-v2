@@ -21,6 +21,7 @@ C.Collection = (function () {
 			this.items = [];
 			this.render();
 			this.populateItems();
+			this.appendDummyItem();
 
 		},
 
@@ -46,6 +47,12 @@ C.Collection = (function () {
 			}
 
 			this.updateBounds();
+
+		},
+
+		appendDummyItem: function () {
+
+			this.dummy = $('<div class="item">');
 
 		},
 
