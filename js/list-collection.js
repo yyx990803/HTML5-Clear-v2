@@ -50,12 +50,13 @@ C.listCollection = {
 		}
 
 		// fade out
-		t.el.addClass('fade');
-
-		// hide
-		setTimeout(function () {
-			t.el.css('display', 'none');
-		}, 300);
+		t.el
+			.addClass('fade')
+			.on('webkitTransitionEnd', function () {
+				t.el
+					.off('webkitTransitionEnd')
+					.css('display', 'none');
+			});
 
 	},
 

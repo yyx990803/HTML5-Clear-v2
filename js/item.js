@@ -64,9 +64,11 @@ C.Item = (function () {
 
 			if (top) {
 				var t = this;
-				setTimeout(function () {
-					t.el.removeClass('top');
-				}, 300);
+				t.el.on('webkitTransitionEnd', function () {
+					t.el
+						.off('webkitTransitionEnd')
+						.removeClass('top');
+				});
 			}
 
 		},
@@ -213,12 +215,14 @@ C.Item = (function () {
 
 			var t = this;
 			t.style.webkitTransform = 'translate3d(' + (-C.client.width - 62) + 'px,' + this.y + 'px, 0)';
-			setTimeout(function () {
+			t.el.on('webkitTransitionEnd', function () {
 				if (!t.data.done) t.collection.count--;
 				t.deleted = true;
-				t.el.remove();
+				t.el
+					.off('webkitTransitionEnd')
+					.remove();
 				t.collection.collapseAt(t.data.order, t);
-			}, 300);
+			});
 
 		},
 
@@ -284,11 +288,11 @@ C.Item = (function () {
 			this.collection.updateColor();
 
 			var t = this;
-			setTimeout(function () {
-				t.el.removeClass('sorting-trans');
-			}, 150);
-
-			C.db.save();
+			t.el.on('webkitTransitionEnd', function () {
+				t.el
+					.off('webkitTransitionEnd')
+					.removeClass('sorting-trans');
+			});
 
 		},
 
@@ -306,34 +310,27 @@ C.Item = (function () {
 
 		onEditDone: function () {
 
-			var t= this,
-				val = t.field.hide().val();
+			var t = this,
+				val = t.field.val();
 
-			t.collection.onEditDone();
+			t.collection.onEditDone(function () {
 
-			if (!val) {
+				t.el.removeClass('edit');
+				C.state = C.states.TODOS;
 
-				setTimeout(function () {
-					t.el.removeClass('edit');
-					C.state = C.states.TODOS;
+				if (!val) {
 					t.del();
-				}, 310);
-
-			} else {
-
-				t.title
-					.show()
-					.find('.text')
-					.text(val);
-
-				setTimeout(function () {
-					t.el.removeClass('edit');
-					C.state = C.states.TODOS;
+				} else {
+					t.field.hide();
+					t.title
+						.show()
+						.find('.text')
+						.text(val);
 					t.data.title = val;
 					C.db.save();
-				}, 310);
+				}
 
-			}
+			});
 	
 		}
 

@@ -261,6 +261,8 @@ C.Collection = (function () {
 					return;
 				}
 
+				setTimeout(loop, interval);
+
 				var cty = Math.max(col.upperBound, Math.min(0, col.y + dy));
 
 				target.y -= cty - col.y;
@@ -269,8 +271,6 @@ C.Collection = (function () {
 
 				col.y = cty;
 				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
-
-				setTimeout(loop, interval);
 
 			}
 
@@ -298,12 +298,19 @@ C.Collection = (function () {
 
 		},
 
-		onEditDone: function () {
+		onEditDone: function (callback) {
 
 			if (!C.client.isTouch) {
 				this.style.webkitTransform = 'translate3d(0,' + beforeEditPosition + 'px, 0)';
 			}
-			this.el.removeClass('shade');
+
+			var t = this;
+			t.el
+				.removeClass('shade')
+				.on('webkitTransitionEnd', function () {
+					t.el.off('webkitTransitionEnd');
+					callback();
+				});
 
 		},
 

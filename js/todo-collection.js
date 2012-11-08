@@ -48,9 +48,11 @@ C.TodoCollection.prototype = {
 				t.style.webkitTransform = 'translate3d(0, 0, 0)';
 				t.updatePosition();
 
-				setTimeout(function () {
-					t.el.removeClass('move');
-				}, 300);
+				t.el.on('webkitTransitionEnd', function () {
+					t.el
+						.off('webkitTransitionEnd')
+						.removeClass('move');
+				});
 			}, 1);
 
 		}
