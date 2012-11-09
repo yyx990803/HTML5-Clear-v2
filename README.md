@@ -23,3 +23,7 @@ So for this version, by adding a lot more visual/motion details and multi-touch 
 
 1. To challenge my own technical limits;
 2. To show (partly to myself) that HTML5 can achieve amazing level of details if you really want to.
+
+## Build Dependency
+
+Node.js and UglifyJS
