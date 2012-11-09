@@ -1,6 +1,6 @@
 var C = {
 
-	debug: true,
+	debug: window.location.hash.replace('#','') === 'debug',
 
 	// dom elements
 	$wrapper: 		$('#wrapper'),
@@ -20,7 +20,7 @@ var C = {
 
 		// init some components
 		C.client.init();
-		C.db.init(true);
+		C.db.init(C.debug);
 		C.touch.init();
 		C.listCollection.init();
 
