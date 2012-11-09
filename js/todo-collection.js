@@ -1,11 +1,11 @@
-C.TodoCollection = function (data, itemEl) {
+C.TodoCollection = function (data, listItem) {
 	
 	C.log('TodoCollection: init <' + data.title + '>');
 
 	this.base = C.Collection;
 	this.itemType = C.TodoItem;
 
-	this.itemEl = itemEl;
+	this.listItem = listItem;
 
 	// apply shared init
 	this.base.init.apply(this, arguments);
@@ -28,8 +28,10 @@ C.TodoCollection.prototype = {
 		t.updateColor();
 
 		if (noAnimation) {
+
 			t.updatePosition();
 			t.el.appendTo(C.$wrapper);
+			
 		} else {
 
 			t.el
@@ -77,8 +79,8 @@ C.TodoCollection.prototype = {
 
 	updateCount: function () {
 
-		this.itemEl.count = this.count;
-		this.itemEl.updateCount();
+		this.listItem.count = this.count;
+		this.listItem.updateCount();
 
 	},
 

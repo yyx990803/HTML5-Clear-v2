@@ -89,7 +89,9 @@
 			this.el.addClass('fade');
 			C.listCollection.fadeOut(this.data.order);
 
-			this.todoCollection = new C.TodoCollection(this.data, this);
+			if (!this.todoCollection) {
+				this.todoCollection = new C.TodoCollection(this.data, this);
+			}
 			this.todoCollection.load(this.data.order);
 
 			C.db.data.state = {
