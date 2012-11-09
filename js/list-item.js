@@ -16,37 +16,32 @@
 
 	C.ListItem = function (data) {
 
-		this.init(data);
+		this.base = C.Item;
+		this.h = baseH;
+		this.s = baseS;
+		this.l = baseL;
+		this.todoCollection = null; // this one is lazy
+
+		// private init jobs
+		// count undone items
+		this.count = 0;
+		
+		var i = data.items.length,
+			item;
+		while (i--) {
+			item = data.items[i];
+			if (!item.done) this.count++;
+		}
+
+		if (this.count === 0) {
+			this.noDragRight = true;
+		}
+
+		this.base.init.apply(this, arguments);
 
 	};
 
 	C.ListItem.prototype = {
-
-		init: function (data) {
-
-			this.base = C.Item;
-			this.h = baseH;
-			this.s = baseS;
-			this.l = baseL;
-
-			// private init jobs
-			// count undone items
-			this.count = 0;
-			
-			var i = data.items.length,
-				item;
-			while (i--) {
-				item = data.items[i];
-				if (!item.done) this.count++;
-			}
-
-			if (this.count === 0) {
-				this.noDragRight = true;
-			}
-
-			this.base.init.apply(this, arguments);
-
-		},
 
 		render: function () {
 
@@ -94,8 +89,8 @@
 			this.el.addClass('fade');
 			C.listCollection.fadeOut(this.data.order);
 
-			var todoCollection = new C.TodoCollection(this.data);
-			todoCollection.load(this.data.order);
+			this.todoCollection = new C.TodoCollection(this.data, this);
+			this.todoCollection.load(this.data.order);
 
 			C.db.data.state = {
 				view: C.states.TODOS,

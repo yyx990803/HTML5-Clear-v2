@@ -16,21 +16,17 @@
 		rightBound = 62;
 
 	C.TodoItem = function (data) {
-		this.init(data);
+
+		this.base = C.Item;
+		this.h = baseH;
+		this.s = baseS;
+		this.l = baseL;
+		
+		this.base.init.apply(this, arguments);
+
 	};
 
 	C.TodoItem.prototype = {
-
-		init: function (data) {
-
-			this.base = C.Item;
-			this.h = baseH;
-			this.s = baseS;
-			this.l = baseL;
-			
-			this.base.init.apply(this, arguments);
-			
-		},
 
 		render: function () {
 

@@ -1,24 +1,18 @@
-C.TodoCollection = function (data) {
-	this.init(data);
+C.TodoCollection = function (data, itemEl) {
+	
+	C.log('TodoCollection: init <' + data.title + '>');
+
+	this.base = C.Collection;
+	this.itemType = C.TodoItem;
+
+	this.itemEl = itemEl;
+
+	// apply shared init
+	this.base.init.apply(this, arguments);
+
 };
 
 C.TodoCollection.prototype = {
-
-	init: function (data) {
-
-		C.log('TodoCollection: init <' + data.title + '>');
-
-		this.base = C.Collection;
-		this.itemType = C.TodoItem;
-
-		// apply shared init
-		this.base.init.apply(this, arguments);
-
-		// custome init jobs
-		// find the corresponding list item
-		this.itemEl = C.listCollection.getItemByOrder(this.data.order);
-
-	},
 
 	render: function () {
 
