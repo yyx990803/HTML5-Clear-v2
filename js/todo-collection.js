@@ -31,7 +31,7 @@ C.TodoCollection.prototype = {
 
 			t.updatePosition();
 			t.el.appendTo(C.$wrapper);
-			
+
 		} else {
 
 			t.el
@@ -44,7 +44,8 @@ C.TodoCollection.prototype = {
 				t.style.webkitTransform = 'translate3d(0, 0, 0)';
 				t.updatePosition();
 
-				t.el.on('webkitTransitionEnd', function () {
+				t.el.on('webkitTransitionEnd', function (e) {
+					if (e.target !== this) return;
 					t.el
 						.off('webkitTransitionEnd')
 						.removeClass('move');

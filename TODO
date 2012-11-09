@@ -1,1 +1,0 @@
-- Inside the <open> function of a ListItem: should create a mutual pointer link between the ListItem and the TodoCollection.

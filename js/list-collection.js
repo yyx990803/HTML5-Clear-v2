@@ -49,14 +49,13 @@ C.listCollection = {
 			item.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
 		}
 
-		// fade out
-		t.el
-			.addClass('fade')
-			.on('webkitTransitionEnd', function () {
-				t.el
-					.off('webkitTransitionEnd')
-					.css('display', 'none');
-			});
+		// listen for transition end on the last item!
+		item.el.on('webkitTransitionEnd', function (e) {
+			if (e.target !== this) return;
+			t.el
+				.off('webkitTransitionEnd')
+				.css('display', 'none');
+		});
 
 	},
 

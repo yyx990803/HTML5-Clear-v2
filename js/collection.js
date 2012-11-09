@@ -307,7 +307,9 @@ C.Collection = (function () {
 			var t = this;
 			t.el
 				.removeClass('shade')
-				.on('webkitTransitionEnd', function () {
+				.on('webkitTransitionEnd', function (e) {
+					// this cannot do self checking because
+					// triggered transition doesn't happen on itself
 					t.el.off('webkitTransitionEnd');
 					callback();
 				});

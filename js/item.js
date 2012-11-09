@@ -58,13 +58,16 @@ C.Item = (function () {
 			
 			this.y = this.data.order * 62;
 
-			if (top) this.el.addClass('top'); // make sure the item acted upon moves on top
+			if (top) {
+				this.el.addClass('top'); // make sure the item acted upon moves on top
+			}
 
 			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
 
 			if (top) {
 				var t = this;
-				t.el.on('webkitTransitionEnd', function () {
+				t.el.on('webkitTransitionEnd', function (e) {
+					if (e.target !== this) return;
 					t.el
 						.off('webkitTransitionEnd')
 						.removeClass('top');
@@ -215,7 +218,8 @@ C.Item = (function () {
 
 			var t = this;
 			t.style.webkitTransform = 'translate3d(' + (-C.client.width - 62) + 'px,' + this.y + 'px, 0)';
-			t.el.on('webkitTransitionEnd', function () {
+			t.el.on('webkitTransitionEnd', function (e) {
+				if (e.target !== this) return;
 				if (!t.data.done) t.collection.count--;
 				t.deleted = true;
 				t.el
@@ -288,7 +292,8 @@ C.Item = (function () {
 			this.collection.updateColor();
 
 			var t = this;
-			t.el.on('webkitTransitionEnd', function () {
+			t.el.on('webkitTransitionEnd', function (e) {
+				if (e.target !== this) return;
 				t.el
 					.off('webkitTransitionEnd')
 					.removeClass('sorting-trans');
