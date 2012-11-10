@@ -4,7 +4,7 @@ C.Collection = (function (raf) {
 		friction 			= .95,
 		speedMultiplier 	= 16,
 		maxSpeed 			= 32,
-		diff 				= 0.5,
+		diff 				= 0.5, // the min distance from target an animation loop chain should reach before ending
 		sortMoveSpeed 		= 4.5;
 
 	var beforeEditPosition 	= 0; // used to record position before edit focus
@@ -108,22 +108,6 @@ C.Collection = (function (raf) {
 
 		},
 
-		countIncomplete: function () {
-
-			console.log("!");
-
-			var i = this.items.length,
-				count = 0;
-
-			while (i--) {
-				if (!this.items[i].data.done) count++;
-			}
-
-			this.count = count;
-			return count;
-
-		},
-
 		collapseAt: function (at, target) {
 
 			var items = this.items,
@@ -134,8 +118,7 @@ C.Collection = (function (raf) {
 			while (i--) {
 				item = items[i];
 				if (item === target) {
-					if (target.deleted) delIndex = i;
-					continue;
+					if (target.deleted) delIndex = i; // found item to be deleted
 				} else if (item.data.order > at && (!item.data.done || target.deleted)) {
 					item.data.order--;
 					item.updateColor();
@@ -161,6 +144,10 @@ C.Collection = (function (raf) {
 		updateBounds: function () {
 
 			this.upperBound = Math.min(0, C.client.height - (this.items.length + 1) * 62);
+			if (this.y < this.upperBound) {
+				this.y = this.upperBound;
+				this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
+			}
 
 		},
 
@@ -312,7 +299,7 @@ C.Collection = (function (raf) {
 			t.el
 				.removeClass('shade')
 				.on('webkitTransitionEnd', function (e) {
-					// this cannot do self checking because
+					// must avoid (e.target === this) checking here because
 					// triggered transition doesn't happen on itself
 					t.el.off('webkitTransitionEnd');
 					callback();
