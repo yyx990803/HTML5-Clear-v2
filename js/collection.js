@@ -1,8 +1,7 @@
-C.Collection = (function () {
+C.Collection = (function (raf) {
 
 	var dragElasticity 		= 2.8,
 		friction 			= .95,
-		interval 			= 16,
 		speedMultiplier 	= 16,
 		maxSpeed 			= 32,
 		diff 				= 0.5,
@@ -215,7 +214,7 @@ C.Collection = (function () {
 					col.y += (col.upperBound - col.y) / 5;
 					speed *= .85;
 					if (col.y < col.upperBound - diff) {
-						setTimeout(loop, interval);
+						raf(loop);
 					} else {
 						col.y = col.upperBound;
 						endLoop();
@@ -224,13 +223,13 @@ C.Collection = (function () {
 					col.y *= .8;
 					speed *= .85;
 					if (col.y > diff) {
-						setTimeout(loop, interval);
+						raf(loop);
 					} else {
 						col.y = 0;
 						endLoop();
 					}
 				} else if (Math.abs(speed) > 0.1 && !C.touch.data.isDown) {
-					setTimeout(loop, interval);
+					raf(loop);
 				} else {
 					endLoop();
 				}
@@ -261,7 +260,7 @@ C.Collection = (function () {
 					return;
 				}
 
-				setTimeout(loop, interval);
+				raf(loop);
 
 				var cty = Math.max(col.upperBound, Math.min(0, col.y + dy));
 
@@ -322,4 +321,4 @@ C.Collection = (function () {
 
 	};
 
-}());
+}(C.raf));

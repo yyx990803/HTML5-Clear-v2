@@ -1,6 +1,6 @@
 // Common methods shared by both C.ListItem and C.TodoItem
 
-C.Item = (function () {
+C.Item = (function (raf) {
 
 	var leftBound = -62,
 		rightBound = 62;
@@ -195,7 +195,7 @@ C.Item = (function () {
 				item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';
 
 				if (Math.abs(item.x) > 0.1) {
-					setTimeout(loop, 16);
+					raf(loop);
 				} else {
 					item.x = 0;
 					item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';
@@ -341,4 +341,4 @@ C.Item = (function () {
 
 	};
 
-}());
+}(C.raf));

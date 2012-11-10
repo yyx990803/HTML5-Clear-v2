@@ -78,10 +78,17 @@ var C = {
 		msg = time + msg;
 		console.log(msg);
 
-	}
+	},
+
+	raf: window.requestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		function (callback) {
+			window.setTimeout(callback, 16);
+		}
 
 };
 
+// boot up on page load
 $(function () {
 	C.init();
 });

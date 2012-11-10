@@ -34,12 +34,13 @@ C.TodoCollection.prototype = {
 
 		} else {
 
+			t.style.webkitTransform = 'translate3d(0,' + (at * 62 + C.listCollection.y) + 'px, 0)';
+
 			t.el
 				.addClass('move')
 				.appendTo(C.$wrapper);
 
-			t.style.webkitTransform = 'translate3d(0,' + (at * 62 + C.listCollection.y) + 'px, 0)';
-
+			// wait for repaint
 			setTimeout(function () {
 				t.style.webkitTransform = 'translate3d(0, 0, 0)';
 				t.updatePosition();
