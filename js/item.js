@@ -191,11 +191,10 @@ C.Item = (function (raf) {
 
 			function loop () {
 
-				item.x *= .6;
-				item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';
-
 				if (Math.abs(item.x) > 0.1) {
 					raf(loop);
+					item.x *= .6;
+					item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';
 				} else {
 					item.x = 0;
 					item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';

@@ -206,15 +206,12 @@ C.Collection = (function (raf) {
 					return;
 				}
 
-				col.y += speed;
-				speed *= friction;
-				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
-
 				if (col.y < col.upperBound - diff) {
 					col.y += (col.upperBound - col.y) / 5;
 					speed *= .85;
 					if (col.y < col.upperBound - diff) {
 						raf(loop);
+						render();
 					} else {
 						col.y = col.upperBound;
 						endLoop();
@@ -224,12 +221,14 @@ C.Collection = (function (raf) {
 					speed *= .85;
 					if (col.y > diff) {
 						raf(loop);
+						render();
 					} else {
 						col.y = 0;
 						endLoop();
 					}
 				} else if (Math.abs(speed) > 0.1 && !C.touch.data.isDown) {
 					raf(loop);
+					render();
 				} else {
 					endLoop();
 				}
@@ -240,6 +239,12 @@ C.Collection = (function (raf) {
 				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
 				col.el.removeClass('drag');
 				col.inMomentum = false;
+			}
+
+			function render () {
+				col.y += speed;
+				speed *= friction;
+				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
 			}
 
 		},
