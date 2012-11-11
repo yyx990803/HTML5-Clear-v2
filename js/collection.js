@@ -108,6 +108,12 @@ C.Collection = (function (raf) {
 
 		},
 
+		moveY: function (y) {
+
+			this.style.webkitTransform = 'translate3d(0px,' + y + 'px, 0px)';
+
+		},
+
 		collapseAt: function (at, target) {
 
 			var items = this.items,
@@ -146,7 +152,7 @@ C.Collection = (function (raf) {
 			this.upperBound = Math.min(0, C.client.height - (this.items.length + 1) * 62);
 			if (this.y < this.upperBound) {
 				this.y = this.upperBound;
-				this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
+				this.moveY(this.y);
 			}
 
 		},
@@ -165,8 +171,7 @@ C.Collection = (function (raf) {
 
 			this.y += dy;
 
-			//using plain stuff here to avoid extra function invocations for performance
-			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
+			this.moveY(this.y);
 
 		},
 
@@ -223,7 +228,7 @@ C.Collection = (function (raf) {
 			}
 
 			function endLoop () {
-				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
+				col.moveY(col.y);
 				col.el.removeClass('drag');
 				col.inMomentum = false;
 			}
@@ -231,10 +236,12 @@ C.Collection = (function (raf) {
 			function render () {
 				col.y += speed;
 				speed *= friction;
-				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
+				col.moveY(col.y);
 			}
 
 		},
+
+		// need better doc here, target is an Item
 
 		sortMove: function (dir, target) {
 			
@@ -261,7 +268,7 @@ C.Collection = (function (raf) {
 				target.checkSwap();
 
 				col.y = cty;
-				col.style.webkitTransform = 'translate3d(0,' + col.y + 'px, 0)';
+				col.moveY(col.y);
 
 			}
 
@@ -282,7 +289,7 @@ C.Collection = (function (raf) {
 			setTimeout(function () {
 				if (!C.client.isTouch) {
 					var ty = -at * 62;
-					t.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
+					t.moveY(ty);
 				}
 				t.el.addClass('shade');
 			}, 1);
@@ -292,7 +299,7 @@ C.Collection = (function (raf) {
 		onEditDone: function (callback) {
 
 			if (!C.client.isTouch) {
-				this.style.webkitTransform = 'translate3d(0,' + beforeEditPosition + 'px, 0)';
+				this.moveY(beforeEditPosition);
 			}
 
 			var t = this;

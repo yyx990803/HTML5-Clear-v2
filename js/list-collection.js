@@ -46,15 +46,14 @@ C.listCollection = {
 			} else {
 				ty = C.client.height + (item.data.order - at) * 62 - t.y;
 			}
-			item.style.webkitTransform = 'translate3d(0,' + ty + 'px, 0)';
+			item.moveY(ty);
 		}
 
-		// listen for transition end on the last item!
+		// listen for transition end on the last item
 		item.el.on('webkitTransitionEnd', function (e) {
 			if (e.target !== this) return;
-			t.el
-				.off('webkitTransitionEnd')
-				.css('display', 'none');
+			item.el.off('webkitTransitionEnd');
+			t.el.css('display', 'none');
 		});
 
 	},

@@ -54,15 +54,37 @@ C.Item = (function (raf) {
 
 		},
 
+		// convenience functions for moving stuff
+
+		moveY: function (y) {
+			this.y = y;
+			this.style.webkitTransform = 'translate3d(0px,' + y + 'px,0px)';
+		},
+
+		moveX: function (x) {
+			this.x = x;
+			this.sliderStyle.webkitTransform = 'translate3d(' + x + 'px,0px,0px)';
+		},
+
+		moveCheck: function (x) {
+			this.checkX = x;
+			this.checkStyle.webkitTransform = 'translate3d(' + x + 'px,0px,0px)';
+		},
+
+		moveCross: function (x) {
+			this.crossX = x;
+			this.crossStyle.webkitTransform = 'translate3d(' + x + 'px,0px,0px)';
+		},
+
+		// update position based on current order
+
 		updatePosition: function (top) {
-			
-			this.y = this.data.order * 62;
 
 			if (top) {
 				this.el.addClass('top'); // make sure the item acted upon moves on top
 			}
 
-			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
+			this.moveY(this.data.order * 62);
 
 			if (top) {
 				var t = this;
@@ -97,8 +119,8 @@ C.Item = (function (raf) {
 		onDragStart: function () {
 
 			this.slider.addClass('drag');
-			this.checkX = this.crossX = 0;
-			this.checkStyle.webkitTransform = this.crossStyle.webkitTransform = 'translate3d(0,0,0)';
+			this.moveCheck(0);
+			this.moveCross(0);
 
 		},
 
@@ -106,6 +128,7 @@ C.Item = (function (raf) {
 
 			if (C.state === C.states.EDITING) return;
 
+			// the desired x position
 			var tx = this.x + dx;
 
 			if (this.noDragRight && tx > 0) return;
@@ -121,15 +144,16 @@ C.Item = (function (raf) {
 					this.checkStyle.opacity = this.checkO;
 
 					if (this.checkX != 0) {
-						this.checkX = 0;
-						this.checkStyle.webkitTransform = 'translate3d(0, 0, 0)';
+						this.moveCheck(0);
 					}
 
 				} else { // over bound
 
+					// damp the dx to a third
 					dx /= 3;
-					this.checkX = Math.max(0, (this.x + dx) - rightBound);
-					this.checkStyle.webkitTransform = 'translate3d(' + this.checkX + 'px, 0, 0)';
+
+					// move the check along with it
+					this.moveCheck(Math.max(0, (this.x + dx) - rightBound));
 
 					var targetO = this.data.done ? 0 : 1;
 					if (this.checkO != targetO) {
@@ -148,15 +172,13 @@ C.Item = (function (raf) {
 					this.crossStyle.opacity = this.crossO;
 
 					if (this.crossX != 0) {
-						this.crossX = 0;
-						this.crossStyle.webkitTransform = 'translate3d(0, 0, 0)';
+						this.moveCross(0);
 					}
 
 				} else { // over bound
 
 					dx /= 3;
-					this.crossX = Math.min(0, (this.x + dx) - leftBound);
-					this.crossStyle.webkitTransform = 'translate3d(' + this.crossX + 'px, 0, 0)';
+					this.moveCross(Math.min(0, (this.x + dx) - leftBound));
 
 					if (this.crossO != 1) {
 						this.crossO = 1;
@@ -167,8 +189,7 @@ C.Item = (function (raf) {
 
 			}
 
-			this.x += dx;
-			this.sliderStyle.webkitTransform = 'translate3d(' + this.x + 'px, 0, 0)';
+			this.moveX(this.x + dx);
 
 		},
 
@@ -193,11 +214,9 @@ C.Item = (function (raf) {
 
 				if (Math.abs(item.x) > 0.1) {
 					raf(loop);
-					item.x *= .6;
-					item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';
+					item.moveX(item.x * .6);
 				} else {
-					item.x = 0;
-					item.sliderStyle.webkitTransform = 'translate3d(' + item.x + 'px, 0, 0)';
+					item.moveX(0);
 					item.slider.removeClass('drag');
 
 					if (doneCallback) doneCallback();
@@ -237,8 +256,7 @@ C.Item = (function (raf) {
 
 		onSortMove: function (dy) {
 
-			this.y += dy;
-			this.style.webkitTransform = 'translate3d(0,' + this.y + 'px, 0)';
+			this.moveY(this.y + dy);
 
 			var c = this.collection,
 				cy = c.y,

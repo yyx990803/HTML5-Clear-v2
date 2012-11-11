@@ -34,7 +34,8 @@ C.TodoCollection.prototype = {
 
 		} else {
 
-			t.style.webkitTransform = 'translate3d(0,' + (at * 62 + C.listCollection.y) + 'px, 0)';
+			// move to match the position of the ListItem
+			t.moveY(at * 62 + C.listCollection.y);
 
 			t.el
 				.addClass('move')
@@ -42,7 +43,11 @@ C.TodoCollection.prototype = {
 
 			// wait for repaint
 			setTimeout(function () {
-				t.style.webkitTransform = 'translate3d(0, 0, 0)';
+
+				// move to top
+				t.moveY(0);
+
+				// expand items to their right positions
 				t.updatePosition();
 
 				t.el.on('webkitTransitionEnd', function (e) {

@@ -167,7 +167,7 @@
 		unDone: function () {
 
 			this.data.done = false;
-			this.lineStyle.width = '0px';
+			this.lineStyle.width = '0%';
 			this.el.removeClass('done');
 			this.collection.count++;
 			this.collection.updateCount();
