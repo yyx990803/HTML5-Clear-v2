@@ -1,5 +1,7 @@
 C.listCollection = {
 
+	__proto__: C.Collection,
+
 	init: function () {
 
 		C.log('ListCollection: init');
@@ -103,6 +105,3 @@ C.listCollection = {
 	}
 
 };
-
-// inherit methods from C.Collection
-C.listCollection.__proto__ = C.Collection;

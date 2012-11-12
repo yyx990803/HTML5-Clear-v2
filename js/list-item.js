@@ -43,6 +43,8 @@
 
 	C.ListItem.prototype = {
 
+		__proto__: C.Item,
+
 		render: function () {
 
 			this.el = $('<div class="item list-item'
@@ -156,8 +158,5 @@
 		}
 
 	};
-
-	// inherit methods from C.Item
-	C.ListItem.prototype.__proto__ = C.Item;
 
 }());

@@ -17,6 +17,8 @@ C.TodoCollection = function (data, listItem) {
 
 C.TodoCollection.prototype = {
 
+	__proto__: C.Collection,
+
 	render: function () {
 
 		this.el = $('<div class="collection">'
@@ -153,6 +155,3 @@ C.TodoCollection.prototype = {
 	}
 
 };
-
-// Inherit methods from C.Collection
-C.TodoCollection.prototype.__proto__ = C.Collection;

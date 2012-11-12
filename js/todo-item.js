@@ -28,6 +28,8 @@
 
 	C.TodoItem.prototype = {
 
+		__proto__: C.Item,
+
 		render: function () {
 
 			this.el = $('<div class="item todo-item' + (this.data.done ? ' done' : '') + '" style="z-index:' + this.data.order + '">'
@@ -175,8 +177,5 @@
 		}
 
 	};
-
-	// Inherit methods from C.Item
-	C.TodoItem.prototype.__proto__ = C.Item;
 
 }());
