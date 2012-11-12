@@ -30,7 +30,7 @@ C.touch = (function () {
 				e.preventDefault();
 			});
 
-			initListEvents();
+			initCollectionEvents();
 			initItemEvents();
 
 		},
@@ -39,7 +39,7 @@ C.touch = (function () {
 
 	};
 
-	function initListEvents () {
+	function initCollectionEvents () {
 
 		C.$wrapper
 			.on(start, function (e) {
@@ -83,7 +83,7 @@ C.touch = (function () {
 			})
 			.on(end, function (e) {
 
-				if (t && e.touches.length) return;
+				if (t && e.touches.length > 0) return;
 				if (data.draggingItem || data.sorting) return;
 
 				if (data.draggingCollection) {
@@ -206,7 +206,7 @@ C.touch = (function () {
 			})
 			.on(end, function (e) {
 
-				if (e.touches && e.touches.length > 0) return;
+				if (t && e.touches.length > 0) return;
 
 				cancelLongTap();
 

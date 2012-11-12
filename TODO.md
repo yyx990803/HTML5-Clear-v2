@@ -5,5 +5,4 @@ Create New Item
 
 Navigation
 - pinch inwards to close TodoCollection
-- long pull down to go back to ListCollection
 - long pull up to clear / go to last opened TodoCollection
