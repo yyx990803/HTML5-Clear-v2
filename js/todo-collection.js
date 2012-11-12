@@ -134,7 +134,7 @@ C.TodoCollection.prototype = {
 		lc.moveY(0);
 
 		this.el.removeClass('drag');
-		this.moveY(lc.height + C.ITEM_HEIGHT * 2);
+		this.moveY(Math.max(lc.height, C.client.height) + C.ITEM_HEIGHT * 2);
 
 		C.currentCollection = lc;
 
@@ -154,5 +154,5 @@ C.TodoCollection.prototype = {
 
 };
 
-// Inherit methods
+// Inherit methods from C.Collection
 C.TodoCollection.prototype.__proto__ = C.Collection;

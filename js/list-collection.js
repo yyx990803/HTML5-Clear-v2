@@ -104,5 +104,5 @@ C.listCollection = {
 
 };
 
-// inherit shared methods
+// inherit methods from C.Collection
 C.listCollection.__proto__ = C.Collection;

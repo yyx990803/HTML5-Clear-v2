@@ -123,8 +123,8 @@
 
 			var t = this;
 
-			if (this.count === 0) {
-				this.base.del.apply(t);
+			if (t.count === 0) {
+				t.base.del.apply(t);
 			} else {
 				if (loopWithCallback) {
 					loopWithCallback(ask);
@@ -135,7 +135,7 @@
 
 			function ask () {
 				if (confirm('Are you sure you want to delete the entire list?')) {
-					this.base.del.apply(t);
+					t.base.del.apply(t);
 				} else {
 					t.field.hide().val(t.title.text());
 					t.title.show();
@@ -157,6 +157,7 @@
 
 	};
 
+	// inherit methods from C.Item
 	C.ListItem.prototype.__proto__ = C.Item;
 
 }());

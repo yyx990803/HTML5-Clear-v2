@@ -1,3 +1,6 @@
+// The C.Collection base object
+// inehrited by C.ListCollection and C.TodoCollection
+
 C.Collection = (function (raf) {
 
 	var dragElasticity 		= .45,

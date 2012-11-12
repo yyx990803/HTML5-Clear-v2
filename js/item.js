@@ -1,4 +1,5 @@
-// Common methods shared by both C.ListItem and C.TodoItem
+// The C.Item base object
+// inehrited by C.ListItem and C.TodoItem
 
 C.Item = (function (raf) {
 

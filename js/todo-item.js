@@ -176,7 +176,7 @@
 
 	};
 
-	// Inherit methods
+	// Inherit methods from C.Item
 	C.TodoItem.prototype.__proto__ = C.Item;
 
 }());
