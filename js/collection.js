@@ -177,15 +177,17 @@ C.Collection = (function (raf) {
 
 		onDragEnd: function (speed) {
 
+			var bounceBack = true;
+
 			if (this.y > 120) {
-				this.onPullDown();
-				return;
+				bounceBack = this.onPullDown();
+				if (!bounceBack) return;
 			} else if (this.y > 64) {
 				this.createNewItem(0);
 				return;
 			} else if (this.y < this.upperBound - 64) {
-				this.onPullUp();
-				return;
+				bounceBack = this.onPullUp();
+				if (!bounceBack) return;
 			}
 
 			var col = this;
@@ -315,7 +317,7 @@ C.Collection = (function (raf) {
 
 		},
 
-		createNewItem: function () {
+		createNewItem: function (at) {
 
 		}
 

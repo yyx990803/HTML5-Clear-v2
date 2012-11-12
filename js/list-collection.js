@@ -89,15 +89,17 @@ C.listCollection = {
 	},
 
 	onPullDown: function () {
-		// do nothing, menu not implemented
+		// there's no menu, so just skip
+		this.createNewItem();
 	},
 
 	onPullUp: function () {
-		// goes to the last opened list
+		// should go to the last opened list
+		return false;
 	},
 
 	createNewItem: function () {
-		this.base.createNewItem.apply(this);
+		this.base.createNewItem.apply(this, arguments);
 	}
 
 };

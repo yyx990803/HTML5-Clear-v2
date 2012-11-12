@@ -138,14 +138,18 @@ C.TodoCollection.prototype = {
 
 		C.currentCollection = lc;
 
+		// cancel bounceBack
+		return false;
+
 	},
 
 	onPullUp: function () {
-
+		// clear done stuff
+		return true;
 	},
 
 	createNewItem: function () {
-		this.base.createNewItem.apply(this);
+		this.base.createNewItem.apply(this, arguments);
 	}
 
 };
