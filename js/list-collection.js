@@ -14,6 +14,8 @@ C.listCollection = {
 		this.updateColor();
 		this.updatePosition();
 
+		this.openedAt = -1; // used to record currently opened list
+
 	},
 
 	render: function () {
@@ -27,11 +29,15 @@ C.listCollection = {
 
 	load: function () {
 
+		this.initiated = true;
 		this.el.appendTo(C.$wrapper);
 
 	},
 
+	// fade out when a ListItem is tapped.
 	fadeOut: function (at) {
+
+		this.openedAt = at;
 
 		var t = this;
 
@@ -42,9 +48,9 @@ C.listCollection = {
 		while (i--) {
 			item = t.items[i];
 			if (item.data.order <= at) {
-				ty = (item.data.order - at) * 62 - t.y;
+				ty = (item.data.order - at) * C.ITEM_HEIGHT - t.y;
 			} else {
-				ty = C.client.height + (item.data.order - at) * 62 - t.y;
+				ty = C.client.height + (item.data.order - at) * C.ITEM_HEIGHT - t.y;
 			}
 			item.moveY(ty);
 		}
@@ -53,8 +59,32 @@ C.listCollection = {
 		item.el.on('webkitTransitionEnd', function (e) {
 			if (e.target !== this) return;
 			item.el.off('webkitTransitionEnd');
-			t.el.css('display', 'none');
+
+			// do the expensive re-position right here to avoid jank during pull down animation.
+			t.positionForPulldown();
+
 		});
+
+	},
+
+	// position the collection for pulldown from a TodoCollection.
+	positionForPulldown: function () {
+
+		var t = this;
+		t.el.css('display', 'none');
+		t.updatePosition();
+		t.moveY(-t.height);
+
+		setTimeout(function () {
+			t.el
+				.css('display', 'block')
+				.addClass('drag');
+		}, 1);
+
+	},
+
+	// position the collection for pinch in from a TodoCollection.
+	positionForPinchIn: function () {
 
 	},
 

@@ -12,8 +12,8 @@
 		spanH = stepH * maxColorSpan,
 		spanL = stepL * maxColorSpan;
 
-	var leftBound = -62,
-		rightBound = 62;
+	var leftBound = -C.ITEM_HEIGHT,
+		rightBound = C.ITEM_HEIGHT;
 
 	C.TodoItem = function (data) {
 
@@ -68,7 +68,7 @@
 
 		onDragMove: function (dx) {
 
-			var w = (Math.min(1, Math.max(0, this.x / 62)) * 100).toFixed(2);
+			var w = (Math.min(1, Math.max(0, this.x / C.ITEM_HEIGHT)) * 100).toFixed(2);
 			this.lineStyle.width = (this.data.done ? 100 - w : w) + '%';
 
 			if (this.x >= rightBound) {

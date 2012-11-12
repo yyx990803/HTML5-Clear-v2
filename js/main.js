@@ -14,6 +14,8 @@ var C = {
 		EDITING: 	3
 	},
 
+	ITEM_HEIGHT: 62,
+
 	init: function () {
 
 		C.start = Date.now();
@@ -60,6 +62,12 @@ var C = {
 		}
 
 		C.currentCollection.load(0, true); // passing in (position:0) and (noAnimation:true)
+
+		// also load ListCollection if we started with a TodoCollection
+		if (!C.listCollection.initiated) {
+			C.listCollection.positionForPulldown();
+			C.listCollection.load();
+		}
 
 	},
 

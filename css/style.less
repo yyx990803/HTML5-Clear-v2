@@ -55,6 +55,29 @@ html, body {
 			opacity: .15;
 		}
 	}
+
+	// top switch (shown when pulled down)
+
+	.top-switch {
+		position: absolute;
+		top: -@itemHeight;
+		height: @itemHeight;
+		line-height: @itemHeight;
+		width: 100%;
+		text-align: center;
+	}
+
+	.arrow {
+		width: 30px;
+		height: 30px;
+		vertical-align: middle;
+		-webkit-transition: -webkit-transform .1s linear;
+
+		&.down {
+			-webkit-transform: rotate(180deg);
+		}
+	}
+
 }
 
 .item {

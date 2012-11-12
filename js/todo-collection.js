@@ -7,6 +7,9 @@ C.TodoCollection = function (data, listItem) {
 
 	this.listItem = listItem;
 
+	this.longPullingDown = false;
+	this.longPullingUp = false;
+
 	// apply shared init
 	this.base.init.apply(this, arguments);
 
@@ -16,12 +19,18 @@ C.TodoCollection.prototype = {
 
 	render: function () {
 
-		this.el = $('<div class="collection"></div>');
+		this.el = $('<div class="collection">'
+			+ '<div class="top-switch">'
+				+ '<img class="arrow" src="img/arrow.png"> Switch To Lists'
+			+ '</div>'
+			+ '</div>');
 		this.style = this.el[0].style;
 
 	},
 
 	load: function (at, noAnimation) {
+
+		this.initiated = true;
 
 		var t = this;
 		C.currentCollection = t;
@@ -34,12 +43,11 @@ C.TodoCollection.prototype = {
 
 		} else {
 
-			// move to match the position of the ListItem
-			t.moveY(at * 62 + C.listCollection.y);
+			if (t.initiated) t.el.remove();
 
-			t.el
-				.addClass('move')
-				.appendTo(C.$wrapper);
+			// move to match the position of the ListItem
+			t.moveY(at * C.ITEM_HEIGHT + C.listCollection.y);
+			t.el.appendTo(C.$wrapper);
 
 			// wait for repaint
 			setTimeout(function () {
@@ -91,7 +99,44 @@ C.TodoCollection.prototype = {
 
 	},
 
+	onDragMove: function () {
+
+		this.base.onDragMove.apply(this, arguments);
+
+		var lc = C.listCollection;
+
+		// long pull over top
+		if (this.y >= C.ITEM_HEIGHT * 2) {
+			if (!this.longPullingDown) {
+				this.longPullingDown = true;
+			}
+			lc.moveY(this.y - lc.height - C.ITEM_HEIGHT * 2);
+		} else {
+			if (this.longPullingDown) {
+				this.longPullingDown = false;
+				lc.moveY(-lc.height - C.ITEM_HEIGHT * 2 - 1);
+			}
+		}
+
+	},
+
 	onPullDown: function () {
+
+		this.longPullingDown = false;
+
+		var lc = C.listCollection;
+
+		// show the faded item
+		var fadedItem = lc.getItemByOrder(lc.openedAt);
+		if (fadedItem) fadedItem.el.removeClass('fade');
+
+		lc.el.removeClass('drag');
+		lc.moveY(0);
+
+		this.el.removeClass('drag');
+		this.moveY(lc.height + C.ITEM_HEIGHT * 2);
+
+		C.currentCollection = lc;
 
 	},
 

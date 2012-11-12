@@ -2,15 +2,15 @@
 
 C.Item = (function (raf) {
 
-	var leftBound = -62,
-		rightBound = 62;
+	var leftBound = -C.ITEM_HEIGHT,
+		rightBound = C.ITEM_HEIGHT;
 
 	return {
 
 		init: function (data) {
 
 			this.x = 0;
-			this.y = data.order * 62;
+			this.y = data.order * C.ITEM_HEIGHT;
 			this.data = data;
 
 			this.render();
@@ -84,7 +84,7 @@ C.Item = (function (raf) {
 				this.el.addClass('top'); // make sure the item acted upon moves on top
 			}
 
-			this.moveY(this.data.order * 62);
+			this.moveY(this.data.order * C.ITEM_HEIGHT);
 
 			if (top) {
 				var t = this;
@@ -235,7 +235,7 @@ C.Item = (function (raf) {
 		del: function () {
 
 			var t = this;
-			t.style.webkitTransform = 'translate3d(' + (-C.client.width - 62) + 'px,' + this.y + 'px, 0)';
+			t.style.webkitTransform = 'translate3d(' + (-C.client.width - C.ITEM_HEIGHT) + 'px,' + this.y + 'px, 0)';
 			t.el.on('webkitTransitionEnd', function (e) {
 				if (e.target !== this) return;
 				if (!t.data.done) t.collection.count--;
@@ -279,7 +279,7 @@ C.Item = (function (raf) {
 
 		checkSwap: function () {
 
-			var currentAt = Math.min(this.collection.items.length - 1, ~~((this.y + 31) / 62)),
+			var currentAt = Math.min(this.collection.items.length - 1, ~~((this.y + C.ITEM_HEIGHT / 2) / C.ITEM_HEIGHT)),
 				origin = this.data.order;
 
 			if (currentAt != origin) {

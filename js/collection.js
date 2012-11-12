@@ -1,6 +1,6 @@
 C.Collection = (function (raf) {
 
-	var dragElasticity 		= 2.8,
+	var dragElasticity 		= .45,
 		friction 			= .95,
 		speedMultiplier 	= 16,
 		maxSpeed 			= 32,
@@ -15,6 +15,7 @@ C.Collection = (function (raf) {
 
 			this.y = 0;
 			this.upperBound = 0;
+			this.initiated = false;
 
 			this.data = data || C.db.data;
 			this.items = [];
@@ -110,6 +111,7 @@ C.Collection = (function (raf) {
 
 		moveY: function (y) {
 
+			this.y = y;
 			this.style.webkitTransform = 'translate3d(0px,' + y + 'px, 0px)';
 
 		},
@@ -149,10 +151,10 @@ C.Collection = (function (raf) {
 
 		updateBounds: function () {
 
-			this.upperBound = Math.min(0, C.client.height - (this.items.length + 1) * 62);
+			this.height = this.items.length * C.ITEM_HEIGHT;
+			this.upperBound = Math.min(0, C.client.height - (this.height + C.ITEM_HEIGHT));
 			if (this.y < this.upperBound) {
-				this.y = this.upperBound;
-				this.moveY(this.y);
+				this.moveY(this.upperBound);
 			}
 
 		},
@@ -166,12 +168,10 @@ C.Collection = (function (raf) {
 		onDragMove: function (dy) {
 
 			if (this.y + dy < this.upperBound || this.y + dy > 0) {
-				dy /= dragElasticity;
+				dy *= dragElasticity;
 			}
 
-			this.y += dy;
-
-			this.moveY(this.y);
+			this.moveY(this.y + dy);
 
 		},
 
@@ -179,10 +179,13 @@ C.Collection = (function (raf) {
 
 			if (this.y > 120) {
 				this.onPullDown();
+				return;
 			} else if (this.y > 64) {
 				this.createNewItem(0);
+				return;
 			} else if (this.y < this.upperBound - 64) {
 				this.onPullUp();
+				return;
 			}
 
 			var col = this;
@@ -198,45 +201,43 @@ C.Collection = (function (raf) {
 					return;
 				}
 
-				if (col.y < col.upperBound - diff) {
-					col.y += (col.upperBound - col.y) / 5;
-					speed *= .85;
+				if (col.y < col.upperBound - diff) { // dragged over bottom
+					col.y += (col.upperBound - col.y) / 5; // apply elastic bounce back
+					speed *= .85; // apply additional friction
 					if (col.y < col.upperBound - diff) {
 						raf(loop);
 						render();
 					} else {
-						col.y = col.upperBound;
+						col.moveY(col.upperBound);
 						endLoop();
 					}
-				} else if (col.y > diff) {
+				} else if (col.y > diff) { // dragged over top
 					col.y *= .8;
 					speed *= .85;
 					if (col.y > diff) {
 						raf(loop);
 						render();
 					} else {
-						col.y = 0;
+						col.moveY(0);
 						endLoop();
 					}
-				} else if (Math.abs(speed) > 0.1 && !C.touch.data.isDown) {
+				} else if (Math.abs(speed) > 0.1) { // normal moving
 					raf(loop);
 					render();
-				} else {
+				} else { // natural stop due to friction
 					endLoop();
 				}
 
 			}
 
 			function endLoop () {
-				col.moveY(col.y);
 				col.el.removeClass('drag');
 				col.inMomentum = false;
 			}
 
 			function render () {
-				col.y += speed;
+				col.moveY(col.y + speed);
 				speed *= friction;
-				col.moveY(col.y);
 			}
 
 		},
@@ -288,7 +289,7 @@ C.Collection = (function (raf) {
 			var t = this;
 			setTimeout(function () {
 				if (!C.client.isTouch) {
-					var ty = -at * 62;
+					var ty = -at * C.ITEM_HEIGHT;
 					t.moveY(ty);
 				}
 				t.el.addClass('shade');
