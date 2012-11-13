@@ -5,10 +5,7 @@ C.TodoCollection = function (data, listItem) {
 	this.base = C.Collection;
 	this.itemType = C.TodoItem;
 
-	this.listItem = listItem;
-
-	this.longPullingDown = false;
-	this.longPullingUp = false;
+	this.listItem = listItem || C.listCollection.getItemByOrder(data.order);
 
 	// apply shared init
 	this.base.init.apply(this, arguments);
@@ -23,10 +20,13 @@ C.TodoCollection.prototype = {
 
 		this.el = $('<div class="collection">'
 			+ '<div class="top-switch">'
-				+ '<img class="arrow" src="img/arrow.png"> Switch To Lists'
+				+ '<img class="arrow" src="img/arrow.png"> <span class="text">Switch To Lists</span>'
 			+ '</div>'
 			+ '</div>');
 		this.style = this.el[0].style;
+		this.topSwitch = this.el.find('.top-switch');
+		this.topArrow = this.topSwitch.find('.arrow');
+		this.topText = this.topSwitch.find('.text');
 
 	},
 
@@ -35,8 +35,9 @@ C.TodoCollection.prototype = {
 		this.initiated = true;
 
 		var t = this;
-		C.currentCollection = t;
+
 		t.updateColor();
+		t.resetTopSwitch();
 
 		if (noAnimation) {
 
@@ -56,16 +57,9 @@ C.TodoCollection.prototype = {
 
 				// move to top
 				t.moveY(0);
-
 				// expand items to their right positions
 				t.updatePosition();
 
-				t.el.on('webkitTransitionEnd', function (e) {
-					if (e.target !== this) return;
-					t.el
-						.off('webkitTransitionEnd')
-						.removeClass('move');
-				});
 			}, 1);
 
 		}
@@ -116,15 +110,31 @@ C.TodoCollection.prototype = {
 		} else {
 			if (this.longPullingDown) {
 				this.longPullingDown = false;
-				lc.moveY(-lc.height - C.ITEM_HEIGHT * 2 - 1);
+				lc.moveY(-lc.height - C.ITEM_HEIGHT * 2);
 			}
 		}
 
 	},
 
-	onPullDown: function () {
+	onDragEnd: function () {
 
 		this.longPullingDown = false;
+		this.longPullingUp = false;
+
+		if (this.y >= C.ITEM_HEIGHT * 2) {
+			this.onPullDown();
+			return; // cancel default bounce back
+		} else if (this.y >= C.ITEM_HEIGHT) {
+			this.createNewItem(0);
+		} else if (this.y <= this.upperBound - C.ITEM_HEIGHT * 2) {
+			this.onPullUp();
+		}
+
+		this.base.onDragEnd.apply(this, arguments);
+
+	},
+
+	onPullDown: function () {
 
 		var lc = C.listCollection;
 
@@ -139,19 +149,37 @@ C.TodoCollection.prototype = {
 		this.moveY(Math.max(lc.height, C.client.height) + C.ITEM_HEIGHT * 2);
 
 		C.currentCollection = lc;
+		C.lastTodoCollection = this;
 
-		// cancel bounceBack
-		return false;
+		var t = this;
+		t.onMoveEnd(function () {
+			t.positionForPullUp();
+		});
 
 	},
 
 	onPullUp: function () {
-		// clear done stuff
-		return true;
+
 	},
 
 	createNewItem: function () {
 		this.base.createNewItem.apply(this, arguments);
+	},
+
+	positionForPullUp: function () {
+
+		this.el.addClass('drag');
+		this.moveY(C.client.height + C.ITEM_HEIGHT);
+		this.topText.text(this.data.title);
+		this.topArrow.removeClass('down');
+
+	},
+
+	resetTopSwitch: function () {
+
+		this.topText.text('Switch to Lists');
+		this.topArrow.removeClass('down');
+
 	}
 
 };

@@ -90,14 +90,92 @@ C.listCollection = {
 
 	},
 
-	onPullDown: function () {
-		// there's no menu, so just skip
-		this.createNewItem();
+	onDragMove: function () {
+
+		this.base.onDragMove.apply(this, arguments);
+
+		var ltc = C.lastTodoCollection;
+
+		// long pull down
+		if (this.y <= this.upperBound) {
+			if (!this.longPullingUp) {
+				this.longPullingUp = true;
+				ltc.el.addClass('drag');
+			}
+			ltc.moveY(this.y + this.height + C.ITEM_HEIGHT * 2);
+
+			if (this.y < this.upperBound - C.ITEM_HEIGHT) {
+				if (!this.pastLongPullDownThreshold) {
+					this.pastLongPullDownThreshold = true;
+					ltc.topArrow.addClass('down');
+				}
+			} else {
+				if (this.pastLongPullDownThreshold) {
+					this.pastLongPullDownThreshold = false;
+					ltc.topArrow.removeClass('down');
+				}
+			}
+
+		} else {
+			if (this.longPullingUp) {
+				this.longPullingUp = false;
+				ltc.moveY(C.client.height + C.ITEM_HEIGHT);
+			}
+		}
+
+	},
+
+	onDragEnd: function () {
+
+		this.longPullingUp = false;
+		this.pastLongPullDownThreshold = false;
+
+		if (this.y >= C.ITEM_HEIGHT) {
+
+			this.createNewItem(0);
+
+		} else if (this.y <= this.upperBound - C.ITEM_HEIGHT) {
+
+			this.onPullUp();
+			return; // cancel default bounce back
+
+		} else if (this.y <= this.upperBound) {
+
+			// pull up cancelled
+
+			var ltc = C.lastTodoCollection;
+			ltc.el.removeClass('drag').addClass('ease-out');
+			ltc.moveY(C.client.height + C.ITEM_HEIGHT);
+			ltc.onMoveEnd(function () {
+				ltc.el.removeClass('ease-out');
+			});
+		}
+
+		this.base.onDragEnd.apply(this, arguments);
+
 	},
 
 	onPullUp: function () {
-		// should go to the last opened list
-		return false;
+		
+		var ltc = C.lastTodoCollection;
+
+		ltc.el.removeClass('drag');
+		ltc.moveY(0);
+
+		this.el.removeClass('drag');
+		this.moveY(Math.min(-this.height, -C.client.height) - C.ITEM_HEIGHT * 2);
+
+		C.currentCollection = ltc;
+
+		ltc.onMoveEnd(function () {
+			ltc.resetTopSwitch();
+		});
+
+		var t = this;
+		t.onMoveEnd(function () {
+			t.positionForPulldown();
+		});
+
 	},
 
 	createNewItem: function () {

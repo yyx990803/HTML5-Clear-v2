@@ -239,7 +239,12 @@ C.Item = (function (raf) {
 			t.style.webkitTransform = 'translate3d(' + (-C.client.width - C.ITEM_HEIGHT) + 'px,' + this.y + 'px, 0)';
 			t.el.on('webkitTransitionEnd', function (e) {
 				if (e.target !== this) return;
-				if (!t.data.done) t.collection.count--;
+				if (!t.data.done) {
+					t.collection.count--;
+					if (t.collection.updateCount) {
+						t.collection.updateCount();
+					}
+				}
 				t.deleted = true;
 				t.el
 					.off('webkitTransitionEnd')

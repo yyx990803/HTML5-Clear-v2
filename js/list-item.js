@@ -96,6 +96,8 @@
 			}
 			this.todoCollection.load(this.data.order);
 
+			C.currentCollection = this.todoCollection;
+
 			C.db.data.state = {
 				view: C.states.TODOS,
 				order: this.data.order
@@ -152,6 +154,7 @@
 				this.el.addClass('empty');
 				this.noDragRight = true;
 			} else {
+				this.el.removeClass('empty');
 				this.noDragRight = false;
 			}
 

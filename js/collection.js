@@ -19,6 +19,8 @@ C.Collection = (function (raf) {
 			this.y = 0;
 			this.upperBound = 0;
 			this.initiated = false;
+			this.longPullingDown = false;
+			this.longPullingUp = false;
 
 			this.data = data || C.db.data;
 			this.items = [];
@@ -180,19 +182,6 @@ C.Collection = (function (raf) {
 
 		onDragEnd: function (speed) {
 
-			var bounceBack = true;
-
-			if (this.y > 120) {
-				bounceBack = this.onPullDown();
-				if (!bounceBack) return;
-			} else if (this.y > 64) {
-				this.createNewItem(0);
-				return;
-			} else if (this.y < this.upperBound - 64) {
-				bounceBack = this.onPullUp();
-				if (!bounceBack) return;
-			}
-
 			var col = this;
 			speed = Math.max(-maxSpeed, Math.min(maxSpeed, speed * speedMultiplier));
 
@@ -309,18 +298,27 @@ C.Collection = (function (raf) {
 			}
 
 			var t = this;
-			t.el
-				.removeClass('shade')
-				.on('webkitTransitionEnd', function (e) {
-					// must avoid (e.target === this) checking here because
-					// triggered transition doesn't happen on itself
-					t.el.off('webkitTransitionEnd');
-					callback();
-				});
+			t.el.removeClass('shade');
+			t.onMoveEnd(callback, true);
+			// passing in {noStrict: true}
+			// must avoid (e.target === this) checking here because
+			// triggered transition doesn't happen on itself
 
 		},
 
 		createNewItem: function (at) {
+
+		},
+
+		// listen for webkitTransitionEnd
+		onMoveEnd: function (callback, noStrict) {
+
+			var t = this;
+			t.el.on('webkitTransitionEnd', function (e) {
+				if (e.target !== this && !noStrict) return;
+				t.el.off('webkitTransitionEnd');
+				callback();
+			});
 
 		}
 

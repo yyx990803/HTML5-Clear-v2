@@ -63,10 +63,15 @@ var C = {
 
 		C.currentCollection.load(0, true); // passing in (position:0) and (noAnimation:true)
 
-		// also load ListCollection if we started with a TodoCollection
 		if (!C.listCollection.initiated) {
+			// If we started with a TodoCollection, load ListCollection and position it for pulldown
 			C.listCollection.positionForPulldown();
 			C.listCollection.load();
+		} else {
+			// otherwise, load the last used todoCollection
+			C.lastTodoCollection = new C.TodoCollection(lists[state.lastTodoCollection]);
+			C.lastTodoCollection.load(C.client.height + C.ITEM_HEIGHT, true);
+			C.lastTodoCollection.positionForPullUp();
 		}
 
 	},

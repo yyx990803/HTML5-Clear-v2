@@ -132,12 +132,12 @@
 			if (!this.data.done) {
 				
 				//modify state
-				this.el.removeClass('green');
 				this.beDone();
 
 				//move myself
 				var at = this.data.order;
 				this.data.order = this.collection.count;
+				console.log(this.data.order);
 				this.updatePosition(true);
 
 				//move others
@@ -160,7 +160,7 @@
 
 			this.data.done = true;
 			this.lineStyle.width = '100%';
-			this.el.addClass('done');
+			this.el.removeClass('green').addClass('done');
 			this.collection.count--;
 			this.collection.updateCount();
 

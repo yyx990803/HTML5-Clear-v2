@@ -61,7 +61,8 @@ C.db = (function () {
 			this.data = {
 
 				state: {
-					view: C.states.LISTS
+					view: C.states.LISTS,
+					lastTodoCollection: 0
 				},
 
 				items: [
