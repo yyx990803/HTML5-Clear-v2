@@ -85,7 +85,7 @@ C.touch = (function () {
 
 				// reset data
 				if (!t || !e.touches.length) {
-					data = touch.data = new TouchData();
+					data = exports.data = new TouchData();
 				}
 				
 			});
@@ -286,7 +286,7 @@ C.touch = (function () {
 	}
 
 	// the public interface
-	var touch = {
+	var exports = {
 
 		init: function () {
 
@@ -325,6 +325,6 @@ C.touch = (function () {
 
 	};
 
-	return touch;
+	return exports;
 
 }());
