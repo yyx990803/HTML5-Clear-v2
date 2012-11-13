@@ -8,4 +8,4 @@ Navigation
 - long pull up in TodoCollection to clear
 
 Refactor
-- Touch module: centralize event processing by switch (data.gesture)
+- Touch module: need to track multiple touches separately.
