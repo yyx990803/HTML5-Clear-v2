@@ -6,3 +6,6 @@ Create New Item
 Navigation
 - pinch inwards to close TodoCollection
 - long pull up in TodoCollection to clear
+
+Refactor
+- Touch module: centralize event processing by switch (data.gesture)
