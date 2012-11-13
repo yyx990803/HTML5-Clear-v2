@@ -96,12 +96,7 @@
 			}
 			this.todoCollection.load(this.data.order);
 
-			C.currentCollection = this.todoCollection;
-
-			C.db.data.state = {
-				view: C.states.TODOS,
-				order: this.data.order
-			};
+			C.setCurrentCollection(this.todoCollection);
 
 			C.db.save();
 

@@ -2,6 +2,7 @@ C.TodoCollection = function (data, listItem) {
 	
 	C.log('TodoCollection: init <' + data.title + '>');
 
+	this.stateType = C.states.TODOS;
 	this.base = C.Collection;
 	this.itemType = C.TodoItem;
 
@@ -148,8 +149,8 @@ C.TodoCollection.prototype = {
 		this.el.removeClass('drag');
 		this.moveY(Math.max(lc.height, C.client.height) + C.ITEM_HEIGHT * 2);
 
-		C.currentCollection = lc;
-		C.lastTodoCollection = this;
+		C.setCurrentCollection(lc);
+		C.setLastTodoCollection(this);
 
 		var t = this;
 		t.onMoveEnd(function () {

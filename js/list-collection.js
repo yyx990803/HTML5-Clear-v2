@@ -6,6 +6,7 @@ C.listCollection = {
 
 		C.log('ListCollection: init');
 
+		this.stateType = C.states.LISTS;
 		this.base = C.Collection;
 		this.itemType = C.ListItem;
 
@@ -165,7 +166,7 @@ C.listCollection = {
 		this.el.removeClass('drag');
 		this.moveY(Math.min(-this.height, -C.client.height) - C.ITEM_HEIGHT * 2);
 
-		C.currentCollection = ltc;
+		C.setCurrentCollection(ltc);
 
 		ltc.onMoveEnd(function () {
 			ltc.resetTopSwitch();

@@ -8,10 +8,9 @@ var C = {
 
 	// states
 	states: {
-		MENU: 		0,
-		LISTS: 		1,
-		TODOS: 		2,
-		EDITING: 	3
+		LISTS: 		0,
+		TODOS: 		1,
+		EDITING: 	2
 	},
 
 	ITEM_HEIGHT: 62,
@@ -69,10 +68,31 @@ var C = {
 			C.listCollection.load();
 		} else {
 			// otherwise, load the last used todoCollection
-			C.lastTodoCollection = new C.TodoCollection(lists[state.lastTodoCollection]);
+			C.lastTodoCollection = new C.TodoCollection(lists[state.lastTodoCollection || 0]);
 			C.lastTodoCollection.load(C.client.height + C.ITEM_HEIGHT, true);
 			C.lastTodoCollection.positionForPullUp();
 		}
+
+	},
+
+	setCurrentCollection: function (col) {
+
+		var msg = 'Current collection set to: '
+		C.log(msg + (col.data.title ? 'TodoCollection <' + col.data.title + '>' : 'ListCollection'));
+
+		C.currentCollection = col;
+		var state = C.db.data.state;
+		state.view = col.stateType;
+		state.order = col.data.order;
+		C.db.save();
+
+	},
+
+	setLastTodoCollection: function (col) {
+
+		C.lastTodoCollection = col;
+		C.db.data.state.lastTodoCollection = col.data.order;
+		C.db.save();
 
 	},
 

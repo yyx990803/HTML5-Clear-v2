@@ -2,6 +2,8 @@ C.db = (function () {
 
 	var supported = ('localStorage' in window) && ('JSON' in window);
 
+	var localStorageKey = 'html5-clear'
+
 	var db = {
 
 		init: function (force) {
@@ -28,11 +30,15 @@ C.db = (function () {
 
 		save: function () {
 
+			var start = Date.now();
+
 			if (!supported) return;
 			var raw = JSON.stringify(this.data);
-			localStorage.setItem('html5clear', raw);
+			localStorage.setItem(localStorageKey, raw);
 
-			C.log('DB: saved.');
+			var used = Date.now() - start;
+
+			C.log('DB: saved in ' + used + 'ms');
 
 		},
 
@@ -73,11 +79,11 @@ C.db = (function () {
 						items: [
 							{
 								order: 0,
-								title: 'Research Paper.js'
+								title: 'Buy some milk'
 							},
 							{
 								order: 1,
-								title: 'Redesign personal site'
+								title: 'Walk the dog'
 							},
 							{
 								order: 2,
@@ -105,27 +111,27 @@ C.db = (function () {
 							},
 							{
 								order: 8,
-								title: 'Goooooogle this shit'
+								title: 'I\'ve run out of stuff'
 							},
 							{
 								order: 9,
-								title: 'Come on come on'
+								title: 'OK Test'
 							},
 							{
 								order: 10,
-								title: 'dued dueduedueduedu'
+								title: 'Moar test'
 							},
 							{
 								order: 11,
-								title: 'HAHAHAHAHAH'
+								title: 'Moar test'
 							},
 							{
 								order: 12,
-								title: 'Test4'
+								title: 'Moar test'
 							},
 							{
 								order: 13,
-								title: 'Test4'
+								title: 'Moar test'
 							}
 						]
 					},
@@ -158,7 +164,7 @@ C.db = (function () {
 						]
 					},
 					{
-						title: 'This is a demo',
+						title: 'Test',
 						order: 3,
 						items: [
 							{
@@ -168,7 +174,7 @@ C.db = (function () {
 						]
 					},
 					{
-						title: 'This is a demo',
+						title: 'Test',
 						order: 4,
 						items: [
 							{
@@ -178,30 +184,30 @@ C.db = (function () {
 						]
 					},
 					{
-						title: 'This is a demo',
+						title: 'Test',
 						order: 5,
 						items: []
 					},
 					{
-						title: 'This is a demo',
+						title: 'Test',
 						order: 6,
 						items: []
 					},
 					{
-						title: 'This is a demo',
+						title: 'Test',
 						order: 7,
 						items: []
 					},
 					{
-						title: 'This is a demo',
+						title: 'Test',
 						order: 8,
 						items: []
 					},{
-						title: 'This is a demo',
+						title: 'Test',
 						order: 9,
 						items: []
 					},{
-						title: 'This is a demo',
+						title: 'Test',
 						order: 10,
 						items: [
 							{
