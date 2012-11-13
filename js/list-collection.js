@@ -102,7 +102,7 @@ C.listCollection = {
 				this.longPullingUp = true;
 				ltc.el.addClass('drag');
 			}
-			ltc.moveY(this.y + this.height + C.ITEM_HEIGHT * 2);
+			ltc.moveY(this.y + Math.max(this.height + C.ITEM_HEIGHT * 2, C.client.height + C.ITEM_HEIGHT));
 
 			if (this.y < this.upperBound - C.ITEM_HEIGHT) {
 				if (!this.pastLongPullDownThreshold) {
