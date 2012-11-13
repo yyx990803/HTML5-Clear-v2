@@ -8,7 +8,9 @@ C.touch = (function () {
 		this.dy = this.cy = 0;
 		this.dt = this.ct = 0;
 		this.tdx = this.tdy = 0;
-		this.isDown = this.draggingCollection = this.draggingItem = this.sorting = false;
+		this.isDown = false;
+		this.gesture = '';
+		this.fingers = 0;
 	};
 
 	var data 		= new TouchData(),
@@ -19,6 +21,7 @@ C.touch = (function () {
 
 	var dragThreshold = 20;
 
+	// the public interface
 	var touch = {
 
 		init: function () {
@@ -47,6 +50,8 @@ C.touch = (function () {
 				e = t ? e.touches[0] : e;
 
 				data.isDown = true;
+				data.fingers++;
+
 				data.ox = data.cx = e.pageX;
 				data.oy = data.cy = e.pageY;
 				data.ct = Date.now();
@@ -64,34 +69,37 @@ C.touch = (function () {
 				data.cy = e.pageY;
 				data.tdy = data.cy - data.oy;
 
-				if (data.draggingItem || data.sorting) return;
+				// below is for collection dragging only
+				if (data.gesture && data.gesture !== 'draggingCollection') return;
 
 				var now = Date.now();
 				data.dt = now - data.ct;
 				data.ct = now;
 
-				if (!data.draggingCollection && Math.abs(data.tdy) > dragThreshold) {
-					data.draggingCollection = true;
+				if (Math.abs(data.tdy) > dragThreshold && data.gesture !== 'draggingCollection') {
+					data.gesture = 'draggingCollection';
 					C.currentCollection.onDragStart();
 					return;
 				}
 
-				if (data.draggingCollection) {
+				if (data.gesture === 'draggingCollection') {
 					C.currentCollection.onDragMove(data.dy);
 				}
 				
 			})
 			.on(end, function (e) {
 
-				if (t && e.touches.length > 0) return;
-				if (data.draggingItem || data.sorting) return;
-
-				if (data.draggingCollection) {
-					data.isDown = false;
-					data.draggingCollection = false;
-					var speed = data.dy / data.dt;
-					C.currentCollection.onDragEnd(speed);
+				if (t && e.touches.length > 0) {
+					data.fingers--;
+					return;
 				}
+
+				if (data.gesture !== 'draggingCollection') return;
+
+				data.isDown = false;
+				data.draggingCollection = false;
+				var speed = data.dy / data.dt;
+				C.currentCollection.onDragEnd(speed);
 
 				data = touch.data = new TouchData();
 				
@@ -135,15 +143,16 @@ C.touch = (function () {
 			})
 			.on(move, function (e) {
 
-				if (!item || data.draggingCollection || data.sorting) return;
+				if (!item) return;
+				if (data.gesture && data.gesture !== 'draggingItem') return;
 
-				if (!data.draggingItem && Math.abs(data.tdx) > dragThreshold) {
-					data.draggingItem = true;
+				if (data.gesture !== 'draggingItem' && Math.abs(data.tdx) > dragThreshold) {
+					data.gesture = 'draggingItem';
 					item.onDragStart();
 					return;
 				}
 
-				if (data.draggingItem) {
+				if (data.gesture === 'draggingItem') {
 					item.onDragMove(data.dx);
 				}
 
@@ -152,7 +161,7 @@ C.touch = (function () {
 
 				if (t && e.touches.length > 0) return;
 
-				if (data.draggingItem) {
+				if (data.gesture === 'draggingItem') {
 					item.onDragEnd();
 					data = touch.data = {};
 				}
@@ -178,7 +187,7 @@ C.touch = (function () {
 
 		function longTap () {
 			if (tapTarget) {
-				data.sorting = true;
+				data.gesture = 'sorting';
 				ltTarget = C.currentCollection.getItemById(+tapTarget.dataset.id);
 				ltTarget.onSortStart();
 				ltTimeout = null;
@@ -188,7 +197,8 @@ C.touch = (function () {
 		C.$wrapper
 			.on(start, '.item', function (e) {
 
-				if (data.sorting || data.draggingCollection || (e.touches && e.touches.length > 1)) return;
+				if (e.touches && e.touches.length > 1) return;
+				if (data.gesture) return;
 
 				moved = false;
 				tapTarget = this;
@@ -199,7 +209,7 @@ C.touch = (function () {
 
 				moved = true;
 				cancelLongTap();
-				if (data.sorting) {
+				if (data.gesture === 'sorting') {
 					ltTarget.onSortMove(data.dy);
 				}
 
@@ -220,8 +230,7 @@ C.touch = (function () {
 					data = touch.data = {};
 				}
 
-				if (data.sorting) {
-					sorting = false;
+				if (data.gesture === 'sorting') {
 					ltTarget.onSortEnd();
 					ltTarget = null;
 					tapTarget = null;
