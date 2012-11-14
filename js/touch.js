@@ -295,7 +295,8 @@ C.touch = (function () {
 	function processActions (e, eventType) {
 
 		// TODO : should put more checking logic in here to avoid redundency
-		var item = getParentItem(e.target);
+		var item;
+		if (eventType === 'start') item = getParentItem(e.target);
 
 		for (var i = 0, j = actions.types.length; i < j; i++) {
 			actions[actions.types[i]][eventType](e, item);
@@ -307,7 +308,7 @@ C.touch = (function () {
 	function getParentItem (node) {
 
 		while (node) { // loop until we reach top of document
-			if (node.className && node.className.match(/item/)) {
+			if (node.className && node.className.match(/\bitem\b/)) {
 				//found one!
 				return node;
 			}
