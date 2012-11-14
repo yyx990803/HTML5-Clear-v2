@@ -1,10 +1,10 @@
+// TODO - currently broken, look for more TODOs
+
 C.touch = (function () {
 
 	// TouchData object constructor
 	// avoiding mutating hidden class for better performance in V8
 	var TouchData = function () {
-
-		// TODO : each touch and states should be represented separately
 
 		this.ox = this.oy = 0;
 		this.dx = this.cx = 0;
@@ -51,7 +51,7 @@ C.touch = (function () {
 			C.log('Touch: init');
 
 			// prevent page dragging
-			$(document.body).on('touchstart touchmove touchend', function (e) {
+			$(document.body).on('touchmove', function (e) {
 				e.preventDefault();
 			});
 
@@ -88,6 +88,9 @@ C.touch = (function () {
 		C.$wrapper
 			.on(start, function (e) {
 
+				// TODO all data collection and calc should happen within these three
+				// so other handlers don't need to worry about it
+
 				e = t ? e.touches[0] : e;
 
 				data.isDown = true;
@@ -97,7 +100,7 @@ C.touch = (function () {
 				data.oy = data.cy = e.pageY;
 				data.ot = data.ct = Date.now();
 
-				processActions(e, 'start');
+				processActions('start');
 
 			})
 			.on(move, function (e) {
@@ -116,14 +119,14 @@ C.touch = (function () {
 				data.dt = now - data.ct;
 				data.ct = now;
 
-				processActions(e, 'move');
+				processActions('move');
 				
 			})
 			.on(end, function (e) {
 
 				data.fingers--;
 
-				processActions(e, 'end');
+				processActions('end');
 
 				// reset data
 				if (!t || e.touches.length === 0) {
@@ -136,17 +139,13 @@ C.touch = (function () {
 
 	var actions = {
 
-		types: ['collectionDrag', 'itemDrag', 'itemTap', 'itemSort'],
+		// TODO remove redundent logic in here
 
 		collectionDrag: {
 
-			start: function (e) {
-				// do nothing
-			},
+			move: function () {
 
-			move: function (e) {
-
-				if (e.touches && e.touches.length > 1) return;
+				if (data.fingers > 1) return;
 				if (data.gesture && data.gesture !== 'collectionDrag') return;
 
 				if (Math.abs(data.tdy) > dragThreshold && data.gesture !== 'collectionDrag') {
@@ -161,7 +160,7 @@ C.touch = (function () {
 
 			},
 
-			end: function (e) {
+			end: function () {
 
 				if (e.touches && e.touches.length) return;
 				if (data.gesture !== 'collectionDrag') return;
@@ -177,20 +176,20 @@ C.touch = (function () {
 
 		itemDrag: {
 
-			start: function (e, item) {
+			start: function () {
 
 				if (!item) return;
 				if (data.itemBeingDragged) return;
-				if (e.touches && e.touches.length > 1) return;
+				if (data.fingers > 1) return;
 
 				data.itemBeingDragged = C.currentCollection.getItemById(+item.dataset.id);
 
 			},
 
-			move: function (e) {
+			move: function () {
 
 				if (!data.itemBeingDragged) return;
-				if (e.touches && e.touches.length > 1) return;
+				if (data.fingers > 1) return;
 				if (data.gesture && data.gesture !== 'itemDrag') return;
 
 				if (data.gesture !== 'itemDrag' && Math.abs(data.tdx) > dragThreshold) {
@@ -205,9 +204,9 @@ C.touch = (function () {
 
 			},
 
-			end: function (e) {
+			end: function () {
 
-				if (e.touches && e.touches.length) return;
+				if (data.fingers) return;
 				if (data.gesture !== 'itemDrag') return;
 
 				data.itemBeingDragged.onDragEnd();
@@ -218,10 +217,10 @@ C.touch = (function () {
 
 		itemTap: {
 
-			start: function (e, item) {
+			start: function () {
 
 				if (!item) return;
-				if (e.touches && e.touches.length > 1) return;
+				if (data.fingers > 1) return;
 				if (data.gesture) return;
 
 				data.moved = false;
@@ -230,15 +229,15 @@ C.touch = (function () {
 
 			},
 
-			move: function (e) {
+			move: function () {
 
 				data.moved = true;
 
 			},
 
-			end: function (e) {
+			end: function () {
 
-				if (e.touches && e.touches.length) return;
+				if (data.fingers) return;
 
 				if (!data.moved &&
 					(Date.now() - data.tapStartTime < longTapDelay) &&
@@ -254,21 +253,21 @@ C.touch = (function () {
 
 		itemSort: {
 
-			start: function (e, item) {
+			start: function () {
 
 				if (!item) return;
-				if (e.touches && e.touches.length > 1) return;
+				if (data.fingers > 1) return;
 				if (data.gesture) return;
 
 				longTapTimeout = setTimeout(longTap, longTapDelay);
 
 			},
 
-			move: function (e) {
+			move: function () {
 
 				cancelLongTap();
 
-				if (e.touches && e.touches.length > 1) return;
+				if (data.fingers > 1) return;
 
 				if (data.gesture === 'itemSort') {
 					data.itemBeingSorted.onSortMove(data.dy);
@@ -276,11 +275,11 @@ C.touch = (function () {
 
 			},
 
-			end: function (e) {
+			end: function () {
 
 				cancelLongTap();
 
-				if (e.touches && e.touches.length) return;
+				if (data.fingers) return;
 
 				if (data.gesture === 'itemSort') {
 					data.itemBeingSorted.onSortEnd();
@@ -292,14 +291,40 @@ C.touch = (function () {
 
 	}
 
-	function processActions (e, eventType) {
+	function processActions (eventType) {
 
-		// TODO : should put more checking logic in here to avoid redundency
-		var item;
-		if (eventType === 'start') item = getParentItem(e.target);
+		// TODO complete the logic here
+		
+		var item,
+			actionsToProcess = [];
 
-		for (var i = 0, j = actions.types.length; i < j; i++) {
-			actions[actions.types[i]][eventType](e, item);
+		switch (eventType) {
+
+			case 'start':
+				if (fingers > 1) {
+					// multitouch going on!!!
+				} else {
+					item = getParentItem(e.target);
+					if (item) {
+						actionsToProcess = ['collectionDrag', 'itemTap', 'itemDrag', 'itemSort'];
+					} else {
+						actionsToProcess = ['collectionDrag'];
+					}
+				}
+			break;
+
+			case 'move':
+			break;
+
+			case 'end':
+			break;
+
+			default:
+			return;
+		}
+
+		for (var i = 0, j = actionsToProcess.length; i < j; i++) {
+			actions[actionsToProcess[i]][eventType]();
 		}
 
 	}
