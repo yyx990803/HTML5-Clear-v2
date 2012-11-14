@@ -11,7 +11,7 @@ C.db = (function () {
 			C.log('DB: init');
 
 			if (supported && !force) {
-				var raw = localStorage.getItem('html5clear');
+				var raw = localStorage.getItem(localStorageKey);
 				if (raw) {
 					this.data = JSON.parse(raw);
 					if (!this.data) {
