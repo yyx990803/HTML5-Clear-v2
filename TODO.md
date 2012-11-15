@@ -5,7 +5,3 @@ Create New Item
 
 Navigation
 - pinch inwards to close TodoCollection
-- long pull up in TodoCollection to clear
-
-Refactor
-- Touch module: need to track multiple touches separately.
