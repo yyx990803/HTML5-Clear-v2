@@ -6,7 +6,7 @@ C.Collection = (function (raf) {
 	var dragElasticity 		= .45,
 		friction 			= .95,
 		speedMultiplier 	= 16,
-		maxSpeed 			= 32,
+		maxSpeed 			= 35,
 		diff 				= 0.5, // the min distance from target an animation loop chain should reach before ending
 		sortMoveSpeed 		= 4.5;
 
@@ -190,7 +190,7 @@ C.Collection = (function (raf) {
 
 			function loop () {
 
-				if (C.touch.data.isDown) {
+				if (C.touch.isDown) {
 					endLoop();
 					return;
 				}

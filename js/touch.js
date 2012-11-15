@@ -2,32 +2,66 @@
 
 C.touch = (function () {
 
-	// TouchData object constructor
-	// avoiding mutating hidden class for better performance in V8
-	var TouchData = function () {
+	// TouchData object that represents an active touch
+	var TouchData = function (e) {
 
-		this.ox = this.oy = 0;
-		this.dx = this.cx = 0;
-		this.dy = this.cy = 0;
-		this.dt = this.ct = this.ot = 0;
+		this.id = e.identifier || 'mouse';
+
+		// starting and current x, y
+		this.ox = this.cx = e.pageX;
+		this.oy = this.cy = e.pageY;
+
+		// delta x, y
+		this.dx = this.dy = 0;
+
+		// total distance x, y
 		this.tdx = this.tdy = 0;
 
-		this.isDown = false;
+		// starting and current time
+		this.ot = this.ct = Date.now();
 
-		this.gesture = '';
+		// delta time
+		this.dt = 0;
 
-		this.fingers = 0;
+		// target item
+		var targetItemNode = getParentItem(e.target);
+		if (targetItemNode) {
+			this.targetItem = C.currentCollection.getItemById(+targetItemNode.dataset.id);
+		}
 
-		this.itemBeingDragged = null;
-		this.tapStartTime = 0;
-		this.tapTarget = null;
-		this.itemBeingSorted = null;
+		// whether the touch has moved
 		this.moved = false;
 
 	};
 
-	// The data object containing info of a gesture
-	var data 		= new TouchData();
+	TouchData.prototype = {
+
+		update: function (e) {
+
+			this.moved = true;
+
+			this.dx = e.pageX - this.cx;
+			this.cx = e.pageX;
+
+			this.dy = e.pageY - this.cy;
+			this.cy = e.pageY;
+
+			this.tdx = this.cx - this.ox;
+			this.tdy = this.cy - this.oy;
+
+			var now = Date.now();
+			this.dt = now - this.ct;
+			this.ct = now;
+
+		}
+
+	};
+
+	// the array that holds TouchData objects
+	var touches 	= [];
+
+	// current gesture
+	var currentAction;
 
 	// whether it's a touch device
 	var	t 			= C.client.isTouch;
@@ -37,14 +71,269 @@ C.touch = (function () {
 		move 		= t ? 'touchmove' : 'mousemove',
 		end 		= t ? 'touchend' : 'mouseup';
 
+	// threshold to trigger dragging
 	var dragThreshold = 20;
 
-	// longTap
-	var longTapTimeout,
-		longTapDelay = 300;
+	var s = 0;
+
+	// init events
+	function initEvents () {
+
+		C.$wrapper
+			.on(start, function (e) {
+
+				// only record two fingers
+				// and ignore additional fingers if already in action
+				if (touches.length >= 2 || currentAction) return;
+
+				pub.isDown = true;
+
+				e = t ? e.changedTouches[0] : e;
+
+				// create touch data
+				var touch = new TouchData(e);
+				touches.push(touch);
+				
+				// process actions
+
+				if (touches.length > 1) {
+					actions.pinch.start();
+				} else {
+					if (touches[0].targetItem) {
+						actions.itemSort.startTimeout();
+					}
+				}
+
+			})
+			.on(move, function (e) {
+
+				// for mousemove
+				if (!touches.length) return;
+
+				e = t ? e.changedTouches[0] : e;
+
+				// update touch data
+				var	i = getTouchIndex(e.identifier || 'mouse');
+				if (i !== -1) {
+					touches[i].update(e);
+				} else {
+					return; // ignore touches not in list
+				}
+
+				//process actions
+
+				actions.itemSort.cancelTimeout();
+
+				if (!currentAction) {
+					actions.collectionDrag.check();
+					actions.itemDrag.check();
+				} else {
+					// passing in i to let pinch move handler know which finger is which
+					actions[currentAction].move(i);
+				}
+				
+			})
+			.on(end, function (e) {
+
+				e = t ? e.changedTouches[0] : e;
+				var id = e.identifier || 'mouse';
+				var i = getTouchIndex(id);
+
+				// ignore touches not in list
+				if (i === -1) return;
+
+				// isDown
+				if (touches.length === 1) {
+					pub.isDown = false;
+				}
+
+				// process actions
+
+				actions.itemSort.cancelTimeout();
+
+				if (!currentAction) {
+					if (touches[0].targetItem) {
+						actions.itemTap.trigger(e);
+					}
+				} else {
+					actions[currentAction].end();
+					currentAction = null;
+				}
+
+				// delete afterwards
+				touches.splice(i, 1);
+				
+			});
+
+	}
+
+	var actions = {
+
+		// TODO remove redundent logic in here
+
+		collectionDrag: {
+
+			check: function () {
+
+				if (Math.abs(touches[0].tdy) > dragThreshold) {
+					currentAction = 'collectionDrag';
+					C.currentCollection.onDragStart();
+				}
+
+			},
+
+			move: function () {
+
+				C.currentCollection.onDragMove(touches[0].dy);
+
+			},
+
+			end: function () {
+
+				var speed = touches[0].dy / touches[0].dt;
+				C.currentCollection.onDragEnd(speed);
+
+			}
+
+		},
+
+		itemDrag: {
+
+			check: function () {
+
+				if (touches[0].targetItem && Math.abs(touches[0].tdx) > dragThreshold) {
+					currentAction = 'itemDrag';
+					touches[0].targetItem.onDragStart();
+				}
+
+			},
+
+			move: function () {
+
+				touches[0].targetItem.onDragMove(touches[0].dx);
+
+			},
+
+			end: function () {
+
+				touches[0].targetItem.onDragEnd();
+
+			}
+
+		},
+
+		itemTap: {
+
+			trigger: function (e) {
+
+				if (!touches[0].moved &&
+					!C.currentCollection.inMomentum) {
+
+					touches[0].targetItem.onTap(e);
+				}
+
+			}
+
+		},
+
+		itemSort: {
+
+			timeOut: null,
+
+			delay: 300,
+
+			startTimeout: function () {
+
+				this.timeOut = setTimeout(function () {
+					actions.itemSort.trigger();
+				}, this.delay);
+
+			},
+
+			move: function () {
+
+				touches[0].targetItem.onSortMove(touches[0].dy);
+
+			},
+
+			end: function () {
+
+				this.cancelTimeout();
+				touches[0].targetItem.onSortEnd();
+				
+			},
+
+			trigger: function () {
+
+				this.timeOut = null;
+				if (currentAction) return;
+
+				currentAction = 'itemSort';
+				touches[0].targetItem.onSortStart();
+
+			},
+
+			cancelTimeout: function () {
+
+				if (this.timeOut) {
+					clearTimeout(this.timeOut);
+					this.timeOut = null;
+				}
+
+			}
+
+		},
+
+		pinch: {
+
+			start: function () {
+
+				currentAction = 'pinch';
+
+			},
+
+			move: function (i) {
+
+			},
+
+			end: function () {
+
+			}
+
+		}
+
+	}
+
+	function getTouchIndex (id) {
+
+		var i = touches.length,
+			t;
+		while (i--) {
+			t = touches[i];
+			if (t.id === id) return i;
+		}
+
+		return -1;
+		
+	}
+
+	// check if a node is within a .item element
+	function getParentItem (node) {
+
+		while (node) { // loop until we reach top of document
+			if (node.className && node.className.match(/\bitem\b/)) {
+				//found one!
+				return node;
+			}
+			node = node.parentNode;
+		}
+
+		return null;
+
+	}
 
 	// the public interface
-	var exports = {
+	var pub = {
 
 		init: function () {
 
@@ -75,291 +364,12 @@ C.touch = (function () {
 				});
 			}
 
-			initGestures();
+			initEvents();
 
-		},
-
-		data: data
+		}
 
 	};
 
-	function initGestures () {
-
-		C.$wrapper
-			.on(start, function (e) {
-
-				// TODO all data collection and calc should happen within these three
-				// so other handlers don't need to worry about it
-
-				e = t ? e.touches[0] : e;
-
-				data.isDown = true;
-				data.fingers++;
-
-				data.ox = data.cx = e.pageX;
-				data.oy = data.cy = e.pageY;
-				data.ot = data.ct = Date.now();
-
-				processActions('start');
-
-			})
-			.on(move, function (e) {
-
-				if (!data.isDown) return;
-				e = t ? e.touches[0] : e;
-
-				data.dx = e.pageX - data.cx;
-				data.cx = e.pageX;
-				data.tdx = data.cx - data.ox;
-				data.dy = e.pageY - data.cy;
-				data.cy = e.pageY;
-				data.tdy = data.cy - data.oy;
-
-				var now = Date.now();
-				data.dt = now - data.ct;
-				data.ct = now;
-
-				processActions('move');
-				
-			})
-			.on(end, function (e) {
-
-				data.fingers--;
-
-				processActions('end');
-
-				// reset data
-				if (!t || e.touches.length === 0) {
-					data = exports.data = new TouchData();
-				}
-				
-			});
-
-	}
-
-	var actions = {
-
-		// TODO remove redundent logic in here
-
-		collectionDrag: {
-
-			move: function () {
-
-				if (data.fingers > 1) return;
-				if (data.gesture && data.gesture !== 'collectionDrag') return;
-
-				if (Math.abs(data.tdy) > dragThreshold && data.gesture !== 'collectionDrag') {
-					data.gesture = 'collectionDrag';
-					C.currentCollection.onDragStart();
-					return;
-				}
-
-				if (data.gesture === 'collectionDrag') {
-					C.currentCollection.onDragMove(data.dy);
-				}
-
-			},
-
-			end: function () {
-
-				if (e.touches && e.touches.length) return;
-				if (data.gesture !== 'collectionDrag') return;
-
-				data.isDown = false;
-				data.collectionDrag = false;
-				var speed = data.dy / data.dt;
-				C.currentCollection.onDragEnd(speed);
-
-			}
-
-		},
-
-		itemDrag: {
-
-			start: function () {
-
-				if (!item) return;
-				if (data.itemBeingDragged) return;
-				if (data.fingers > 1) return;
-
-				data.itemBeingDragged = C.currentCollection.getItemById(+item.dataset.id);
-
-			},
-
-			move: function () {
-
-				if (!data.itemBeingDragged) return;
-				if (data.fingers > 1) return;
-				if (data.gesture && data.gesture !== 'itemDrag') return;
-
-				if (data.gesture !== 'itemDrag' && Math.abs(data.tdx) > dragThreshold) {
-					data.gesture = 'itemDrag';
-					data.itemBeingDragged.onDragStart();
-					return;
-				}
-
-				if (data.gesture === 'itemDrag') {
-					data.itemBeingDragged.onDragMove(data.dx);
-				}
-
-			},
-
-			end: function () {
-
-				if (data.fingers) return;
-				if (data.gesture !== 'itemDrag') return;
-
-				data.itemBeingDragged.onDragEnd();
-
-			}
-
-		},
-
-		itemTap: {
-
-			start: function () {
-
-				if (!item) return;
-				if (data.fingers > 1) return;
-				if (data.gesture) return;
-
-				data.moved = false;
-				data.tapTarget = item;
-				data.tapStartTime = Date.now();
-
-			},
-
-			move: function () {
-
-				data.moved = true;
-
-			},
-
-			end: function () {
-
-				if (data.fingers) return;
-
-				if (!data.moved &&
-					(Date.now() - data.tapStartTime < longTapDelay) &&
-					!C.currentCollection.inMomentum) {
-
-					var target = C.currentCollection.getItemById(+data.tapTarget.dataset.id);
-					target.onTap(e);
-				}
-
-			}
-
-		},
-
-		itemSort: {
-
-			start: function () {
-
-				if (!item) return;
-				if (data.fingers > 1) return;
-				if (data.gesture) return;
-
-				longTapTimeout = setTimeout(longTap, longTapDelay);
-
-			},
-
-			move: function () {
-
-				cancelLongTap();
-
-				if (data.fingers > 1) return;
-
-				if (data.gesture === 'itemSort') {
-					data.itemBeingSorted.onSortMove(data.dy);
-				}
-
-			},
-
-			end: function () {
-
-				cancelLongTap();
-
-				if (data.fingers) return;
-
-				if (data.gesture === 'itemSort') {
-					data.itemBeingSorted.onSortEnd();
-				}
-				
-			}
-
-		}
-
-	}
-
-	function processActions (eventType) {
-
-		// TODO complete the logic here
-		
-		var item,
-			actionsToProcess = [];
-
-		switch (eventType) {
-
-			case 'start':
-				if (fingers > 1) {
-					// multitouch going on!!!
-				} else {
-					item = getParentItem(e.target);
-					if (item) {
-						actionsToProcess = ['collectionDrag', 'itemTap', 'itemDrag', 'itemSort'];
-					} else {
-						actionsToProcess = ['collectionDrag'];
-					}
-				}
-			break;
-
-			case 'move':
-			break;
-
-			case 'end':
-			break;
-
-			default:
-			return;
-		}
-
-		for (var i = 0, j = actionsToProcess.length; i < j; i++) {
-			actions[actionsToProcess[i]][eventType]();
-		}
-
-	}
-
-	// check if a node is within a .item element
-	function getParentItem (node) {
-
-		while (node) { // loop until we reach top of document
-			if (node.className && node.className.match(/\bitem\b/)) {
-				//found one!
-				return node;
-			}
-			node = node.parentNode;
-		}
-
-		return null;
-
-	}
-
-	function cancelLongTap () {
-		if (longTapTimeout) {
-			clearTimeout(longTapTimeout);
-			longTapTimeout = null;
-		}
-	}
-
-	function longTap () {
-		if (!data.tapTarget) return;
-		if (data.fingers > 1) return;
-		data.gesture = 'itemSort';
-		data.itemBeingSorted = C.currentCollection.getItemById(+data.tapTarget.dataset.id);
-		data.itemBeingSorted.onSortStart();
-		longTapTimeout = null;
-	}
-
-	return exports;
+	return pub;
 
 }());
