@@ -21,6 +21,8 @@ C.Collection = (function (raf) {
 			this.initiated = false;
 			this.longPullingDown = false;
 			this.longPullingUp = false;
+			this.pastLongPullDownThreshold = false;
+			this.pastLongPullUpThreshold = false;
 
 			this.data = data || C.db.data;
 			this.items = [];
@@ -50,6 +52,8 @@ C.Collection = (function (raf) {
 				this.hash[i] = li; // assign pointer in hash
 				if (!li.data.done) this.count++;
 			}
+
+			this.hasDoneItems = this.items.length > this.count;
 
 			this.updateBounds();
 
@@ -158,8 +162,16 @@ C.Collection = (function (raf) {
 
 			this.height = this.items.length * C.ITEM_HEIGHT;
 			this.upperBound = Math.min(0, C.client.height - (this.height + C.ITEM_HEIGHT));
+
+			// move into bound when items are deleted
 			if (this.y < this.upperBound) {
 				this.moveY(this.upperBound);
+			}
+
+			// update bottom switch position
+			if (this.bottomSwitch) {
+				var pos = Math.max(C.client.height, this.height) + C.ITEM_HEIGHT * 2;
+				this.bottomSwitch[0].style.webkitTransform = 'translate3d(0px,' + pos + 'px, 0px)';
 			}
 
 		},

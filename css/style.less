@@ -60,9 +60,7 @@ html, body {
 		}
 	}
 
-	// top switch (shown when pulled down)
-
-	.top-switch {
+	.top-switch, .bottom-switch {
 		position: absolute;
 		top: -@itemHeight;
 		height: @itemHeight;
@@ -79,6 +77,44 @@ html, body {
 
 		&.down {
 			-webkit-transform: rotate(180deg);
+		}
+	}
+
+	.bottom-switch {
+		&.empty {
+			color: #333;
+			.drawer {
+				opacity: .2;
+				.arrow-small {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.drawer {
+		position: relative;
+		top: -2px;
+		margin-right: 8px;
+		display: inline-block;
+		width: 30px;
+		height: 30px;
+		vertical-align: middle;
+		background: url(../img/drawer.png) 0 0 no-repeat;
+		background-size: 100%;
+
+		.arrow-small {
+			position: absolute;
+			width: 15px;
+			left: 7px;
+			top: -@itemHeight + 5px;
+		}
+
+		&.full {
+			background-position: 0 -30px;
+			.arrow-small {
+				display: none;
+			}
 		}
 	}
 

@@ -20,14 +20,24 @@ C.TodoCollection.prototype = {
 	render: function () {
 
 		this.el = $('<div class="collection">'
-			+ '<div class="top-switch">'
-				+ '<img class="arrow" src="img/arrow.png"> <span class="text">Switch To Lists</span>'
-			+ '</div>'
+				+ '<div class="top-switch">'
+					+ '<img class="arrow" src="img/arrow.png"> <span class="text">Switch To Lists</span>'
+				+ '</div>'
+				+ '<div class="bottom-switch">'
+					+ '<div class="drawer"><img class="arrow-small" src="img/arrow-small.png"></div>'
+					+ '<span class="text">Pull to Clear</span>'
+				+ '</div>'
 			+ '</div>');
+
 		this.style = this.el[0].style;
+
 		this.topSwitch = this.el.find('.top-switch');
 		this.topArrow = this.topSwitch.find('.arrow');
 		this.topText = this.topSwitch.find('.text');
+
+		this.bottomSwitch = this.el.find('.bottom-switch');
+		this.drawer = this.bottomSwitch.find('.drawer');
+		this.smallArrowStyle = this.bottomSwitch.find('.arrow-small')[0].style;
 
 	},
 
@@ -93,6 +103,7 @@ C.TodoCollection.prototype = {
 
 		this.listItem.count = this.count;
 		this.listItem.updateCount();
+		this.hasDoneItems = this.items.length > this.count;
 
 	},
 
@@ -102,7 +113,7 @@ C.TodoCollection.prototype = {
 
 		var lc = C.listCollection;
 
-		// long pull over top
+		// long pull down
 		if (this.y >= C.ITEM_HEIGHT * 2) {
 			if (!this.longPullingDown) {
 				this.longPullingDown = true;
@@ -112,6 +123,43 @@ C.TodoCollection.prototype = {
 			if (this.longPullingDown) {
 				this.longPullingDown = false;
 				lc.moveY(-lc.height - C.ITEM_HEIGHT * 2);
+			}
+		}
+
+		// long pull up
+		if (this.y < this.upperBound) {
+
+			if (!this.longPullingUp) {
+				this.longPullingUp = true;
+				if (this.hasDoneItems) {
+					this.bottomSwitch.removeClass('empty');
+				} else {
+					this.bottomSwitch.addClass('empty');
+				}
+			}
+
+			// move the small arrow
+			if (this.hasDoneItems) {
+				var offset = (this.upperBound - this.y) / 2;
+				this.smallArrowStyle.webkitTransform = 'translate3d(0,' + offset + 'px, 0)';
+			}
+
+			// check threshold
+			if (this.y < this.upperBound - C.ITEM_HEIGHT * 2) {
+				if (!this.pastLongPullUpThreshold) {
+					this.pastLongPullUpThreshold = true;
+					this.drawer.addClass('full');
+				}
+			} else {
+				if (this.pastLongPullUpThreshold) {
+					this.pastLongPullUpThreshold = false;
+					this.drawer.removeClass('full');
+				}
+			}
+
+		} else {
+			if (this.longPullingUp) {
+				this.longPullingUp = false;
 			}
 		}
 
@@ -160,6 +208,8 @@ C.TodoCollection.prototype = {
 	},
 
 	onPullUp: function () {
+
+		
 
 	},
 

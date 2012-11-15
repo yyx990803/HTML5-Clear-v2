@@ -1,8 +1,7 @@
 C.db = (function () {
 
 	var supported = ('localStorage' in window) && ('JSON' in window);
-
-	var localStorageKey = 'html5-clear'
+	var localStorageKey = 'html5-clear';
 
 	var db = {
 
