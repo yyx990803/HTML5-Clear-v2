@@ -1,4 +1,5 @@
-// TODO - currently broken, look for more TODOs
+// The module that handles all user interactions
+// exposes one variable: isDown (used by C.Collection to determine when to quit animation loop)
 
 C.touch = (function () {
 
