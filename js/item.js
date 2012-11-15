@@ -88,12 +88,8 @@ C.Item = (function (raf) {
 			this.moveY(this.data.order * C.ITEM_HEIGHT);
 
 			if (top) {
-				var t = this;
-				t.el.on('webkitTransitionEnd', function (e) {
-					if (e.target !== this) return;
-					t.el
-						.off('webkitTransitionEnd')
-						.removeClass('top');
+				this.onTransitionEnd(function (t) {
+					t.el.removeClass('top');
 				});
 			}
 
@@ -236,20 +232,22 @@ C.Item = (function (raf) {
 		del: function () {
 
 			var t = this;
+
 			t.style.webkitTransform = 'translate3d(' + (-C.client.width - C.ITEM_HEIGHT) + 'px,' + this.y + 'px, 0)';
-			t.el.on('webkitTransitionEnd', function (e) {
-				if (e.target !== this) return;
+
+			t.onTransitionEnd(function (t) {
+
 				if (!t.data.done) {
 					t.collection.count--;
 					if (t.collection.updateCount) {
 						t.collection.updateCount();
 					}
 				}
+
 				t.deleted = true;
-				t.el
-					.off('webkitTransitionEnd')
-					.remove();
+				t.el.remove();
 				t.collection.collapseAt(t.data.order, t);
+
 			});
 
 		},
@@ -314,12 +312,8 @@ C.Item = (function (raf) {
 			this.el.removeClass('sorting');
 			this.collection.updateColor();
 
-			var t = this;
-			t.el.on('webkitTransitionEnd', function (e) {
-				if (e.target !== this) return;
-				t.el
-					.off('webkitTransitionEnd')
-					.removeClass('sorting-trans');
+			this.onTransitionEnd(function (t) {
+				t.el.removeClass('sorting-trans');
 			});
 
 		},
@@ -360,6 +354,27 @@ C.Item = (function (raf) {
 
 			});
 	
+		},
+
+		clear: function () {
+
+			this.deleted = true;
+			this.moveY(this.y + 1000);
+			this.onTransitionEnd(function (t) {
+				t.el.remove();
+			});
+
+		},
+
+		onTransitionEnd: function (callback) {
+
+			var t = this;
+			t.el.on('webkitTransitionEnd', function (e) {
+				if (e.target !== this) return;
+				t.el.off('webkitTransitionEnd');
+				callback(t);
+			});
+
 		}
 
 	};

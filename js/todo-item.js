@@ -137,7 +137,6 @@
 				//move myself
 				var at = this.data.order;
 				this.data.order = this.collection.count;
-				console.log(this.data.order);
 				this.updatePosition(true);
 
 				//move others

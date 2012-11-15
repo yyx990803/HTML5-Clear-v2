@@ -153,25 +153,20 @@ C.Collection = (function (raf) {
 
 				//update db data
 				C.db.deleteItem(target.data, this.data);
-				
+				C.db.save();
+
 			}
 
 		},
 
-		updateBounds: function () {
+		updateBounds: function (noMove) {
 
 			this.height = this.items.length * C.ITEM_HEIGHT;
 			this.upperBound = Math.min(0, C.client.height - (this.height + C.ITEM_HEIGHT));
 
 			// move into bound when items are deleted
-			if (this.y < this.upperBound) {
+			if (this.y < this.upperBound && !noMove) {
 				this.moveY(this.upperBound);
-			}
-
-			// update bottom switch position
-			if (this.bottomSwitch) {
-				var pos = Math.max(C.client.height, this.height) + C.ITEM_HEIGHT * 2;
-				this.bottomSwitch[0].style.webkitTransform = 'translate3d(0px,' + pos + 'px, 0px)';
 			}
 
 		},
@@ -311,7 +306,7 @@ C.Collection = (function (raf) {
 
 			var t = this;
 			t.el.removeClass('shade');
-			t.onMoveEnd(callback, true);
+			t.onTransitionEnd(callback, true);
 			// passing in {noStrict: true}
 			// must avoid (e.target === this) checking here because
 			// triggered transition doesn't happen on itself
@@ -323,7 +318,7 @@ C.Collection = (function (raf) {
 		},
 
 		// listen for webkitTransitionEnd
-		onMoveEnd: function (callback, noStrict) {
+		onTransitionEnd: function (callback, noStrict) {
 
 			var t = this;
 			t.el.on('webkitTransitionEnd', function (e) {

@@ -89,7 +89,7 @@
 			if (this.collection.inMomentum) return;
 
 			this.el.addClass('fade');
-			C.listCollection.fadeOut(this.data.order);
+			C.listCollection.open(this.data.order);
 
 			if (!this.todoCollection) {
 				this.todoCollection = new C.TodoCollection(this.data, this);

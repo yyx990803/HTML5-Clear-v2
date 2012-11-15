@@ -130,7 +130,12 @@ C.TodoCollection.prototype = {
 		if (this.y < this.upperBound) {
 
 			if (!this.longPullingUp) {
+
 				this.longPullingUp = true;
+				var pos = Math.max(C.client.height, this.height + C.ITEM_HEIGHT) + C.ITEM_HEIGHT * 2;
+				this.bottomSwitch[0].style.webkitTransform = 'translate3d(0px,' + pos + 'px, 0px)';
+				this.bottomSwitch.show();
+
 				if (this.hasDoneItems) {
 					this.bottomSwitch.removeClass('empty');
 				} else {
@@ -160,6 +165,7 @@ C.TodoCollection.prototype = {
 		} else {
 			if (this.longPullingUp) {
 				this.longPullingUp = false;
+				this.bottomSwitch.hide();
 			}
 		}
 
@@ -183,6 +189,7 @@ C.TodoCollection.prototype = {
 
 	},
 
+	// go back up to list
 	onPullDown: function () {
 
 		var lc = C.listCollection;
@@ -201,15 +208,43 @@ C.TodoCollection.prototype = {
 		C.setLastTodoCollection(this);
 
 		var t = this;
-		t.onMoveEnd(function () {
+		t.onTransitionEnd(function () {
 			t.positionForPullUp();
 		});
 
 	},
 
+	// clear done items!
 	onPullUp: function () {
 
-		
+		if (!this.hasDoneItems) return;
+
+		// calculate the distance to drop
+		var dist;
+		var unDoneHeight = this.height - (this.items.length - this.count) * C.ITEM_HEIGHT;
+		if (unDoneHeight > C.client.height) {
+			dist = C.ITEM_HEIGHT * 2;
+		} else {
+			dist = C.client.height - unDoneHeight + C.ITEM_HEIGHT * 2;
+		}
+
+		// clear y'all
+		var i = this.items.length,
+			item;
+
+		while (i--) {
+			item = this.items[i];
+			if (item.data.done) {
+				item.clear(dist);
+				this.items.splice(i, 1);
+				C.db.deleteItem(item.data, this.data);
+			}
+		}
+
+		this.hasDoneItems = false;
+		this.updateBounds(true);
+
+		C.db.save();
 
 	},
 

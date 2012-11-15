@@ -55,8 +55,6 @@ C.db = (function () {
 				}
 			}
 
-			C.db.save();
-
 		},
 
 		useDefaultData: function () {

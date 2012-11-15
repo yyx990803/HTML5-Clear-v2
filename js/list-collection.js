@@ -37,8 +37,8 @@ C.listCollection = {
 
 	},
 
-	// fade out when a ListItem is tapped.
-	fadeOut: function (at) {
+	// open when a ListItem is tapped.
+	open: function (at) {
 
 		this.openedAt = at;
 
@@ -59,13 +59,8 @@ C.listCollection = {
 		}
 
 		// listen for transition end on the last item
-		item.el.on('webkitTransitionEnd', function (e) {
-			if (e.target !== this) return;
-			item.el.off('webkitTransitionEnd');
-
-			// do the expensive re-position right here to avoid jank during pull down animation.
+		item.onTransitionEnd(function () {
 			t.positionForPulldown();
-
 		});
 
 	},
@@ -74,14 +69,14 @@ C.listCollection = {
 	positionForPulldown: function () {
 
 		var t = this;
-		t.el.css('display', 'none');
+		t.el.hide();
 		t.updatePosition();
-		t.moveY(-t.height);
+		t.moveY(-t.height - C.ITEM_HEIGHT);
 
 		setTimeout(function () {
 			t.el
-				.css('display', 'block')
-				.addClass('drag');
+				.addClass('drag')
+				.show();
 		}, 1);
 
 	},
@@ -147,7 +142,7 @@ C.listCollection = {
 			var ltc = C.lastTodoCollection;
 			ltc.el.removeClass('drag').addClass('ease-out');
 			ltc.moveY(C.client.height + C.ITEM_HEIGHT);
-			ltc.onMoveEnd(function () {
+			ltc.onTransitionEnd(function () {
 				ltc.el.removeClass('ease-out');
 			});
 		}
@@ -168,12 +163,12 @@ C.listCollection = {
 
 		C.setCurrentCollection(ltc);
 
-		ltc.onMoveEnd(function () {
+		ltc.onTransitionEnd(function () {
 			ltc.resetTopSwitch();
 		});
 
 		var t = this;
-		t.onMoveEnd(function () {
+		t.onTransitionEnd(function () {
 			t.positionForPulldown();
 		});
 
