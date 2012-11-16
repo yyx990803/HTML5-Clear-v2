@@ -145,7 +145,7 @@ C.TodoCollection.prototype = {
 
 			// move the small arrow
 			if (this.hasDoneItems) {
-				var offset = (this.upperBound - this.y) / 2;
+				var offset = (this.upperBound - this.y) / (2 * C.ITEM_HEIGHT) * (C.ITEM_HEIGHT + 15);
 				this.smallArrowStyle.webkitTransform = 'translate3d(0,' + offset + 'px, 0)';
 			}
 
