@@ -134,7 +134,12 @@
 
 			function ask () {
 				if (confirm('Are you sure you want to delete the entire list?')) {
-					t.base.del.apply(t);
+					// fix a bug in Firefox desktop here
+					// it seems after closing the confirm dialog, CSS transitions triggered within that frame (1000/60 ms)
+					// are executed as unseen and thus ends instantly
+					setTimeout(function () {
+						t.base.del.apply(t);
+					}, C.client.isWebkit ? 1 : 20);
 				} else {
 					t.field.hide().val(t.title.text());
 					t.title.show();

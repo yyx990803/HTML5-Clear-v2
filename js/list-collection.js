@@ -70,10 +70,10 @@ C.listCollection = {
 
 		var t = this;
 		t.el.hide();
-		t.updatePosition();
-		t.moveY(-t.height - C.ITEM_HEIGHT);
 
 		setTimeout(function () {
+			t.updatePosition();
+			t.moveY(-t.height - C.ITEM_HEIGHT);
 			t.el
 				.addClass('drag')
 				.show();

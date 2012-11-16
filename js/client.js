@@ -26,6 +26,9 @@ C.client = (function () {
 			// Chrome, FF, IE10+
 
 			var s = document.body.style;
+
+			C.client.isWebkit = 'webkitTransform' in s;
+			
 			C.client.transformProperty =
 				'webkitTransform' in s ? 'webkitTransform' :
 				'mozTransform' in s ? 'mozTransform' :
