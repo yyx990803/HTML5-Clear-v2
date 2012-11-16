@@ -133,7 +133,7 @@ C.TodoCollection.prototype = {
 
 				this.longPullingUp = true;
 				var pos = Math.max(C.client.height, this.height + C.ITEM_HEIGHT) + C.ITEM_HEIGHT * 2;
-				this.bottomSwitch[0].style.webkitTransform = 'translate3d(0px,' + pos + 'px, 0px)';
+				this.bottomSwitch[0].style[C.client.transformProperty] = 'translate3d(0px,' + pos + 'px, 0px)';
 				this.bottomSwitch.show();
 
 				if (this.hasDoneItems) {
@@ -146,7 +146,7 @@ C.TodoCollection.prototype = {
 			// move the small arrow
 			if (this.hasDoneItems) {
 				var offset = (this.upperBound - this.y) / (2 * C.ITEM_HEIGHT) * (C.ITEM_HEIGHT + 15);
-				this.smallArrowStyle.webkitTransform = 'translate3d(0,' + offset + 'px, 0)';
+				this.smallArrowStyle[C.client.transformProperty] = 'translate3d(0,' + offset + 'px, 0)';
 			}
 
 			// check threshold

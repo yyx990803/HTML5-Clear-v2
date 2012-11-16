@@ -1,12 +1,35 @@
 @itemHeight: 62px;
 @ease: cubic-bezier(.67, .18, .30, .86);
 
+.transform (@vars) {
+	-webkit-transform: @vars;
+	-moz-transform: @vars;
+	-ms-transform: @vars;
+	transform: @vars;
+}
+
+// due to limitations of less, extra vars need an escaped comma in front of it: ~","
+// also no extra value needs a dummy parameter ~""
+.transition (@vars, @extra) {
+	-webkit-transition: -webkit-transform @vars @extra;
+	-moz-transition: -moz-transform @vars @extra;
+	-ms-transition: -ms-transform @vars @extra;
+	transition: transform @vars @extra;
+}
+
+.trans-origin (@vars) {
+	-webkit-transform-origin: @vars;
+	-moz-transform-origin: @vars;
+	-ms-transform-origin: @vars;
+	transform-origin: @vars;
+}
+
 .drag {
-	-webkit-transition: -webkit-transform 0s linear, opacity 0s linear !important;
+	.transition(0s linear, ~","opacity 0s linear ~"!important");
 }
 
 .ease-out {
-	-webkit-transition: -webkit-transform .3s cubic-bezier(0,.5,.5,1) !important;
+	.transition(.3s cubic-bezier(0,.5,.5,1) ~"!important", ~"");
 }
 
 html, body {
@@ -45,9 +68,8 @@ html, body {
 }
 
 .collection {
-	-webkit-transform: translate3d(0,0,0);
-	-webkit-transition: -webkit-transform .3s @ease,
-						opacity .3s @ease;
+	.transform(translate3d(0,0,0));
+	.transition(.3s @ease, ~","opacity .3s @ease);
 	position: absolute;
 	width: 100%;
 	top: 0;
@@ -73,10 +95,10 @@ html, body {
 		width: 30px;
 		height: 30px;
 		vertical-align: middle;
-		-webkit-transition: -webkit-transform .18s ease-in-out;
+		.transition(.18s ease-in-out, ~"");
 
 		&.down {
-			-webkit-transform: rotate(180deg);
+			.transform(rotate(180deg));
 		}
 	}
 
@@ -124,9 +146,8 @@ html, body {
 
 .item {
 	text-shadow: 0 1px 1px rgba(0,0,0,.25);
-	-webkit-transform-origin: center center;
-	-webkit-transition: -webkit-transform .3s @ease,
-						opacity .3s @ease;
+	.trans-origin(center center);
+	.transition(.3s @ease, ~","opacity .3s @ease);
 	position: absolute;
 	z-index: 0;
 	width: 100%;
@@ -136,16 +157,19 @@ html, body {
 	height: @itemHeight;
 
 	.slider {
-		-webkit-transition: background-color .15s @ease,
-							color .15s @ease;
+		-webkit-transition: background-color .15s @ease, color .15s @ease;
+		-moz-transition: background-color .15s @ease, color .15s @ease;
+		-ms-transition: background-color .15s @ease, color .15s @ease;
+		transition: background-color .15s @ease, color .15s @ease;
 		cursor: pointer;
 		position: relative;
 		z-index: 1;
 		height: @itemHeight;
 		
 		.inner {
-			-webkit-transform: translate3d(0,0,0);
+			.transform(translate3d(0,0,0));
 			box-sizing: border-box;
+			-moz-box-sizing: border-box;
 			border-top: 1px solid rgba(255,255,255,.07);
 			border-bottom: 1px solid rgba(0,0,0,.1);
 			height: @itemHeight;
@@ -196,18 +220,18 @@ html, body {
 	}
 
 	&.sorting {
-		-webkit-transition: -webkit-transform 0s linear !important;
+		.transition(0s linear ~"!important", ~"");
 		.slider {
 			box-shadow: 0 2px 16px rgba(0,0,0,.25);
-			-webkit-transform: scale(1.05) !important;
+			.transform(scale(1.05) ~"!important");
 		}
 	}
 
 	&.sorting-trans {
 		z-index: 999 !important;
-		-webkit-transition: -webkit-transform .12s ease-out;
+		.transition(.12s ease-out, ~"");
 		.slider {
-			-webkit-transition: -webkit-transform .12s ease-out;
+			.transition(.12s ease-out, ~"");
 		}
 	}
 
@@ -255,8 +279,10 @@ html, body {
 		top: 12px;
 		width: 0%;
 		background-color: #fff;
-		-webkit-transition: width 0s linear,
-							background-color .15s @ease;
+		-webkit-transition: width 0s linear, background-color .15s @ease;
+		-moz-transition: width 0s linear, background-color .15s @ease;
+		-ms-transition: width 0s linear, background-color .15s @ease;
+		transition: width 0s linear, background-color .15s @ease;
 	}
 
 	&.done {
@@ -284,6 +310,10 @@ body.desktop {
 
 	*:not(input) {
 		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-o-user-select: none;
+		user-select: none;
 	}
 
 	img {

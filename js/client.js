@@ -21,6 +21,20 @@ C.client = (function () {
 				C.client.update();
 			});
 
+			// compatibility
+			// only supports browsers with CSS 3D Transforms
+			// Chrome, FF, IE10+
+
+			var s = document.body.style;
+			C.client.transformProperty =
+				'webkitTransform' in s ? 'webkitTransform' :
+				'mozTransform' in s ? 'mozTransform' :
+				'msTransform' in s ? 'msTransform' : 'transform';
+
+			var t = C.client.transformProperty;
+			C.client.transitionEndEvent =
+				t === 'webkitTransform' ? 'webkitTransitionEnd' : 'transitionend';
+
 		},
 
 		update: function () {

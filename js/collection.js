@@ -121,7 +121,7 @@ C.Collection = (function (raf) {
 		moveY: function (y) {
 
 			this.y = y;
-			this.style.webkitTransform = 'translate3d(0px,' + y + 'px, 0px)';
+			this.style[C.client.transformProperty] = 'translate3d(0px,' + y + 'px, 0px)';
 
 		},
 
@@ -266,7 +266,7 @@ C.Collection = (function (raf) {
 				var cty = Math.max(col.upperBound, Math.min(0, col.y + dy));
 
 				target.y -= cty - col.y;
-				target.style.webkitTransform = 'translate3d(0,' + target.y + 'px, 0)';
+				target.style[C.client.transformProperty] = 'translate3d(0,' + target.y + 'px, 0)';
 				target.checkSwap();
 
 				col.y = cty;
@@ -321,9 +321,9 @@ C.Collection = (function (raf) {
 		onTransitionEnd: function (callback, noStrict) {
 
 			var t = this;
-			t.el.on('webkitTransitionEnd', function (e) {
+			t.el.on(C.client.transitionEndEvent, function (e) {
 				if (e.target !== this && !noStrict) return;
-				t.el.off('webkitTransitionEnd');
+				t.el.off(C.client.transitionEndEvent);
 				callback();
 			});
 

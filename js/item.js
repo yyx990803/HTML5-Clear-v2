@@ -59,22 +59,22 @@ C.Item = (function (raf) {
 
 		moveY: function (y) {
 			this.y = y;
-			this.style.webkitTransform = 'translate3d(0px,' + y + 'px,0px)';
+			this.style[C.client.transformProperty] = 'translate3d(0px,' + y + 'px,0px)';
 		},
 
 		moveX: function (x) {
 			this.x = x;
-			this.sliderStyle.webkitTransform = 'translate3d(' + x + 'px,0px,0px)';
+			this.sliderStyle[C.client.transformProperty] = 'translate3d(' + x + 'px,0px,0px)';
 		},
 
 		moveCheck: function (x) {
 			this.checkX = x;
-			this.checkStyle.webkitTransform = 'translate3d(' + x + 'px,0px,0px)';
+			this.checkStyle[C.client.transformProperty] = 'translate3d(' + x + 'px,0px,0px)';
 		},
 
 		moveCross: function (x) {
 			this.crossX = x;
-			this.crossStyle.webkitTransform = 'translate3d(' + x + 'px,0px,0px)';
+			this.crossStyle[C.client.transformProperty] = 'translate3d(' + x + 'px,0px,0px)';
 		},
 
 		// update position based on current order
@@ -233,7 +233,7 @@ C.Item = (function (raf) {
 
 			var t = this;
 
-			t.style.webkitTransform = 'translate3d(' + (-C.client.width - C.ITEM_HEIGHT) + 'px,' + this.y + 'px, 0)';
+			t.style[C.client.transformProperty] = 'translate3d(' + (-C.client.width - C.ITEM_HEIGHT) + 'px,' + this.y + 'px, 0)';
 
 			t.onTransitionEnd(function (t) {
 
@@ -369,9 +369,9 @@ C.Item = (function (raf) {
 		onTransitionEnd: function (callback) {
 
 			var t = this;
-			t.el.on('webkitTransitionEnd', function (e) {
+			t.el.on(C.client.transitionEndEvent, function (e) {
 				if (e.target !== this) return;
-				t.el.off('webkitTransitionEnd');
+				t.el.off(C.client.transitionEndEvent);
 				callback(t);
 			});
 
