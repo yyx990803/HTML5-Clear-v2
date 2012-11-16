@@ -1,6 +1,6 @@
 Copyright (c) 2012 Yuxi Evan You
 
-The interface design of the software is the intellectual property of the creators of the original iOS Clear app, Realmac Software and their partners. The software open sourced in this repository shall be used for technical study only. Owners of copies of the software are free to use, copy, mofidy, merge and distribute the software, but are not permitted to publish, distribute, sublicense, and/or sell copies of the Software.
+The interface design of the software is the intellectual property of the creators of the original iOS Clear app, Realmac Software, Helftone and Impending, Inc. The software open sourced here in this repository is intended to be used for technical reference only. Owners of copies of the software are free to use, copy, mofidy, merge and distribute the software, but are not permitted to engage in commercial acts such as publishing, sublicensing, and/or selling copies of the Software.
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
