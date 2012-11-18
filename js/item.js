@@ -217,13 +217,6 @@ C.Item = (function (raf) {
 
 			t.onTransitionEnd(function (t) {
 
-				if (!t.data.done) {
-					t.collection.count--;
-					if (t.collection.updateCount) {
-						t.collection.updateCount();
-					}
-				}
-
 				t.deleted = true;
 				t.el.remove();
 				t.collection.collapseAt(t.data.order, t);
@@ -349,11 +342,11 @@ C.Item = (function (raf) {
 
 		},
 
-		onTransitionEnd: function (callback) {
+		onTransitionEnd: function (callback, noStrict) {
 
 			var t = this;
 			t.el.on(C.client.transitionEndEvent, function (e) {
-				if (e.target !== this) return;
+				if (e.target !== this && !noStrict) return;
 				t.el.off(C.client.transitionEndEvent);
 				callback(t);
 			});

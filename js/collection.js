@@ -175,9 +175,17 @@ C.Collection = (function (raf) {
 
 			if (delIndex || delIndex === 0) { // if this item is deleted
 
-				//remove its view object
+				// remove its view object
 				items.splice(delIndex, 1);
 				this.updateBounds();
+
+				// update count
+				if (!target.data.done) {
+					this.count--;
+					if (this.updateCount) {
+						this.updateCount();
+					}
+				}
 
 				//update db data
 				C.db.deleteItem(target.data, this.data);
@@ -314,7 +322,12 @@ C.Collection = (function (raf) {
 		onTap: function () {
 
 			// create new item at bottom
-			console.log('new item at bottom!');
+			if (this.hasDoneItems) {
+				// the animation would be a middle fold
+				this.createItemInBetween();
+			} else {
+				this.createItemAtBottom();
+			}
 
 		},
 
@@ -398,7 +411,7 @@ C.Collection = (function (raf) {
 
 		},
 
-		createNewItemAtTop: function () {
+		createItemAtTop: function () {
 
 			// hide and reset dummy item
 			this.topDummy.hide();
@@ -439,6 +452,30 @@ C.Collection = (function (raf) {
 			// passing in noRemember: true. do not remember starting position
 			newItem.onEditStart(true);
 
+		},
+
+		createItemAtBottom: function () {
+
+			var newData = {
+				title: '',
+				order: this.count
+			};
+
+			C.db.addItem(newData, this.data);
+
+			var newItem = this.addItem(newData);
+			this.updateColor();
+			this.updateBounds();
+
+			newItem.el.addClass('dummy-item bottom');
+			setTimeout(function () {
+				newItem.el.find('.slider')[0].style[C.client.transformProperty] = 'rotateX(0deg)';
+				newItem.onTransitionEnd(function () {
+					newItem.el.removeClass('dummy-item bottom');
+					newItem.onEditStart();
+				}, true);
+			}, 1);
+				
 		},
 
 		// listen for webkitTransitionEnd

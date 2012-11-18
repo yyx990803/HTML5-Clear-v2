@@ -136,7 +136,7 @@ C.listCollection = {
 		this.resetDragStates();
 
 		if (this.y >= C.ITEM_HEIGHT) {
-			this.createNewItemAtTop();
+			this.createItemAtTop();
 			return;
 		} else if (this.y <= this.upperBound - C.ITEM_HEIGHT) {
 			this.onPullUp();

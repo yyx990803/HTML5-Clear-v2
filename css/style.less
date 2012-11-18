@@ -342,6 +342,15 @@ html, body {
 			.trans-origin(bottom center);
 		}
 	}
+
+	&.bottom {
+		.perspective-origin(top center);
+		.slider {
+			.transition(.3s ease-in-out, ~"");
+			.trans-origin(top center);
+			.transform(rotateX(-90deg));
+		}
+	}
 }
 
 // Desktop

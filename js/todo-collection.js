@@ -193,7 +193,7 @@ C.TodoCollection.prototype = {
 			this.onPullDown();
 			return; // cancel default bounce back
 		} else if (this.y >= C.ITEM_HEIGHT) {
-			this.createNewItemAtTop();
+			this.createItemAtTop();
 			this.updateCount();
 			return;
 		} else if (this.y <= this.upperBound - C.ITEM_HEIGHT * 2) {
