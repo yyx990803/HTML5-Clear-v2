@@ -318,7 +318,8 @@ C.Item = (function (raf) {
 
 		},
 
-		onEditStart: function () {
+		// noRemember: tell collection don't remember starting position
+		onEditStart: function (noRemember) {
 
 			C.state = C.states.EDITING;
 
@@ -326,7 +327,7 @@ C.Item = (function (raf) {
 			this.field.show().focus();
 			this.el.addClass('edit');
 
-			this.collection.onEditStart(this.data.order);
+			this.collection.onEditStart(this.data.order, noRemember);
 
 		},
 

@@ -63,19 +63,31 @@ C.Collection = (function (raf) {
 			this.newIdFrom = i; // newly created item ID start from this
 
 			while (i--) {
-				li = new this.itemType(items[i]);
-				li.collection = this;
-				li.el
-					.data('id', i)
-					.appendTo(this.el);
-				this.items.push(li);
-				this.hash[i] = li; // assign pointer in hash
-				if (!li.data.done) this.count++;
+				this.addItem(items[i]);
 			}
 
 			this.hasDoneItems = this.items.length > this.count;
-
 			this.updateBounds();
+
+		},
+
+		addItem: function (data) {
+
+			var newItem = new this.itemType(data);
+
+			newItem.collection = this;
+			newItem.updatePosition();
+
+			newItem.el
+				.data('id', this.newIdFrom)
+				.appendTo(this.el);
+
+			this.items.push(newItem);
+			this.hash[this.newIdFrom] = newItem;
+			this.newIdFrom++;
+			if (!newItem.data.done) this.count++;
+
+			return newItem;
 
 		},
 
@@ -327,9 +339,9 @@ C.Collection = (function (raf) {
 
 		},
 
-		onEditStart: function (at) {
+		onEditStart: function (at, noRemember) {
 
-			beforeEditPosition = this.y;
+			beforeEditPosition = noRemember ? 0 : this.y;
 
 			// Reason for using a setTimeout here: (or at least what I think is the case)
 			// It seems in iOS browsers when you trigger the keyboard for the first time,
@@ -343,6 +355,15 @@ C.Collection = (function (raf) {
 				if (!C.client.isTouch) {
 					var ty = -at * C.ITEM_HEIGHT;
 					t.moveY(ty);
+				}
+				if (noRemember) {
+					t.el
+						.removeClass('drag')
+						.addClass('ease-out');
+					t.moveY(0);
+					t.onTransitionEnd(function () {
+						t.el.removeClass('ease-out');
+					});
 				}
 				t.el.addClass('shade');
 			}, 1);
@@ -364,7 +385,45 @@ C.Collection = (function (raf) {
 
 		},
 
-		createNewItem: function (at) {
+		createNewItemAtTop: function () {
+
+			// hide dummy item
+			this.topDummy.hide();
+
+			// move the whole thing up one row
+			this.moveY(this.y - C.ITEM_HEIGHT);
+
+			// move all items down one row
+			this.el.addClass('instant');
+			var i = this.items.length,
+				item;
+			while (i--) {
+				item = this.items[i];
+				item.data.order++;
+				item.moveY(item.y + C.ITEM_HEIGHT);
+			}
+
+			var col = this;
+			setTimeout(function () {
+				col.el.removeClass('instant');
+			}, 1);
+
+			var newData = {
+				title: '',
+				order: 0
+			};
+
+			// add the data to db
+			C.db.addItem(newData, this.data);
+
+			// create the item. It needs to be created from the same data object for binding
+			var newItem = this.addItem(newData);
+
+			this.updateColor();
+			this.updateBounds();
+
+			// passing in noRemember: true. do not remember starting position
+			newItem.onEditStart(true);
 
 		},
 

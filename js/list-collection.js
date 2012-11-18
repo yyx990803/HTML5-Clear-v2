@@ -136,18 +136,13 @@ C.listCollection = {
 		this.resetDragStates();
 
 		if (this.y >= C.ITEM_HEIGHT) {
-
-			this.createNewItem(0);
-
+			this.createNewItemAtTop();
+			return;
 		} else if (this.y <= this.upperBound - C.ITEM_HEIGHT) {
-
 			this.onPullUp();
 			return; // cancel default bounce back
-
 		} else if (this.y <= this.upperBound) {
-
 			// pull up cancelled
-
 			var ltc = C.lastTodoCollection;
 			ltc.el.removeClass('drag').addClass('ease-out');
 			ltc.moveY(C.client.height + C.ITEM_HEIGHT);
@@ -181,10 +176,6 @@ C.listCollection = {
 			t.positionForPulldown();
 		});
 
-	},
-
-	createNewItem: function () {
-		this.base.createNewItem.apply(this, arguments);
 	}
 
 };

@@ -94,6 +94,12 @@ html, body {
 		}
 	}
 
+	&.instant {
+		.item {
+			.transition(0s linear, ~"");
+		}
+	}
+
 	.top-switch, .bottom-switch {
 		position: absolute;
 		top: -@itemHeight;
@@ -161,6 +167,7 @@ html, body {
 }
 
 .item {
+
 	text-shadow: 0 1px 1px rgba(0,0,0,.3);
 	.trans-origin(center center);
 	.transition(.3s @ease, ~","opacity .3s @ease);
@@ -177,7 +184,6 @@ html, body {
 		-moz-transition: background-color .15s @ease, color .15s @ease;
 		-ms-transition: background-color .15s @ease, color .15s @ease;
 		transition: background-color .15s @ease, color .15s @ease;
-		cursor: pointer;
 		position: relative;
 		z-index: 1;
 		height: @itemHeight;
@@ -320,6 +326,7 @@ html, body {
 
 .dummy-item {
 
+	z-index: -1;
 	.perspective(400px);
 	-webkit-transition: opacity .15s ease;
 	-moz-transition: opacity .15s ease;

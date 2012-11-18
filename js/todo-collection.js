@@ -193,7 +193,9 @@ C.TodoCollection.prototype = {
 			this.onPullDown();
 			return; // cancel default bounce back
 		} else if (this.y >= C.ITEM_HEIGHT) {
-			this.createNewItem(0);
+			this.createNewItemAtTop();
+			this.updateCount();
+			return;
 		} else if (this.y <= this.upperBound - C.ITEM_HEIGHT * 2) {
 			this.onPullUp();
 		}
@@ -259,10 +261,6 @@ C.TodoCollection.prototype = {
 
 		C.db.save();
 
-	},
-
-	createNewItem: function () {
-		this.base.createNewItem.apply(this, arguments);
 	},
 
 	positionForPullUp: function () {
