@@ -6,7 +6,7 @@ C.listCollection = {
 
 		C.log('ListCollection: init');
 
-		this.stateType = C.states.LISTS;
+		this.stateType = C.states.LIST_COLLECTION_VIEW;
 		this.base = C.Collection;
 		this.itemType = C.ListItem;
 		this.itemTypeText = 'List';

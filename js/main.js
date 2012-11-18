@@ -3,13 +3,13 @@ var C = {
 	debug: window.location.hash.replace('#','') === 'debug',
 
 	// dom elements
-	$wrapper: 		$('#wrapper'),
-	$log: 			$('#log'),
+	$wrapper: $('#wrapper'),
+	$log: $('#log'),
 
 	// view states
 	states: {
-		LISTS: 		'lists',
-		TODOS: 		'todos'
+		LIST_COLLECTION_VIEW: 'lists',
+		TODO_COLLECTION_VIEW: 'todos'
 	},
 
 	isEditing: false,
@@ -34,12 +34,12 @@ var C = {
 
 		switch (state.view) {
 
-			case C.states.LISTS:
+			case C.states.LIST_COLLECTION_VIEW:
 				C.log('App: init at ListCollection.');
 				C.currentCollection = C.listCollection;
 				break;
 
-			case C.states.TODOS:
+			case C.states.TODO_COLLECTION_VIEW:
 				C.log('App: init at TodoCollection with order: ' + state.order);
 				while (i--) {
 					if (lists[i].order === state.order) {

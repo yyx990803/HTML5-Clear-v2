@@ -2,7 +2,7 @@ C.TodoCollection = function (data, listItem) {
 	
 	C.log('TodoCollection: init <' + data.title + '>');
 
-	this.stateType = C.states.TODOS;
+	this.stateType = C.states.TODO_COLLECTION_VIEW;
 	this.base = C.Collection;
 	this.itemType = C.TodoItem;
 	this.itemTypeText = 'Item';
