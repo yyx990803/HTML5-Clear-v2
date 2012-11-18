@@ -24,6 +24,18 @@
 	transform-origin: @vars;
 }
 
+.perspective (@vars) {
+	-webkit-perspective: @vars;
+	-moz-perspective: @vars;
+	perspective: @vars;
+}
+
+.perspective-origin (@vars) {
+	-webkit-perspective-origin: @vars;
+	-moz-perspective-origin: @vars;
+	perspective-origin: @vars;
+}
+
 .drag {
 	.transition(0s linear, ~","opacity 0s linear ~"!important");
 }
@@ -63,7 +75,7 @@ html, body {
 		position: absolute;
 		width: 100%;
 		text-align: center;
-		top: -@itemHeight * 2;
+		top: -@itemHeight * 2.5;
 	}
 }
 
@@ -100,6 +112,10 @@ html, body {
 		&.down {
 			.transform(rotate(180deg));
 		}
+	}
+
+	.top-switch {
+		display: none;
 	}
 
 	.bottom-switch {
@@ -165,16 +181,16 @@ html, body {
 		position: relative;
 		z-index: 1;
 		height: @itemHeight;
-		
-		.inner {
-			.transform(translate3d(0,0,0));
-			box-sizing: border-box;
-			-moz-box-sizing: border-box;
-			border-top: 1px solid rgba(255,255,255,.07);
-			border-bottom: 1px solid rgba(0,0,0,.1);
-			height: @itemHeight;
-			line-height: @itemHeight;
-		}
+	}
+
+	.inner {
+		.transform(translate3d(0,0,0));
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		border-top: 1px solid rgba(255,255,255,.07);
+		border-bottom: 1px solid rgba(0,0,0,.1);
+		height: @itemHeight;
+		line-height: @itemHeight;
 	}
 
 	.field {
@@ -298,6 +314,24 @@ html, body {
 	&.green {
 		.slider {
 			background-color: #0A3 !important;
+		}
+	}
+}
+
+.dummy-item {
+
+	.perspective(500px);
+	-webkit-transition: opacity .15s ease;
+	-moz-transition: opacity .15s ease;
+	-ms-transition: opacity .15s ease;
+	transition: opacity .15s ease;
+
+	&.top {
+		.perspective-origin(bottom center);
+		top: -@itemHeight;
+		.slider {
+			.transition(0s linear, ~"");
+			.trans-origin(bottom center);
 		}
 	}
 }

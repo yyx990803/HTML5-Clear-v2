@@ -5,6 +5,7 @@ C.TodoCollection = function (data, listItem) {
 	this.stateType = C.states.TODOS;
 	this.base = C.Collection;
 	this.itemType = C.TodoItem;
+	this.itemTypeText = 'Item';
 
 	this.listItem = listItem || C.listCollection.getItemByOrder(data.order);
 
@@ -27,14 +28,21 @@ C.TodoCollection.prototype = {
 					+ '<div class="drawer"><img class="arrow-small" src="img/arrow-small.png"></div>'
 					+ '<span class="text">Pull to Clear</span>'
 				+ '</div>'
+				+ '<div class="item dummy-item top">'
+					+ '<div class="slider" style="background-color:rgb(235,0,23)"><div class="inner">'
+						+ '<span class="title">Pull to Create Item</span>'
+					+ '</div></div>'
+				+ '</div>'
 			+ '</div>');
 
 		this.style = this.el[0].style;
 
+		// top switch
 		this.topSwitch = this.el.find('.top-switch');
 		this.topArrow = this.topSwitch.find('.arrow');
 		this.topText = this.topSwitch.find('.text');
 
+		// bottom switch
 		this.bottomSwitch = this.el.find('.bottom-switch');
 		this.drawer = this.bottomSwitch.find('.drawer');
 		this.smallArrowStyle = this.bottomSwitch.find('.arrow-small')[0].style;
@@ -117,11 +125,15 @@ C.TodoCollection.prototype = {
 		if (this.y >= C.ITEM_HEIGHT * 2) {
 			if (!this.longPullingDown) {
 				this.longPullingDown = true;
+				this.topSwitch.show();
+				this.topDummy.css('opacity', '0');
 			}
 			lc.moveY(this.y - lc.height - C.ITEM_HEIGHT * 2);
 		} else {
 			if (this.longPullingDown) {
 				this.longPullingDown = false;
+				this.topDummy.css('opacity', '1');
+				this.topSwitch.hide();
 				lc.moveY(-lc.height - C.ITEM_HEIGHT * 2);
 			}
 		}
@@ -173,8 +185,7 @@ C.TodoCollection.prototype = {
 
 	onDragEnd: function () {
 
-		this.longPullingDown = false;
-		this.longPullingUp = false;
+		this.resetDragStates();
 
 		if (this.y >= C.ITEM_HEIGHT * 2) {
 			this.onPullDown();
@@ -258,11 +269,15 @@ C.TodoCollection.prototype = {
 		this.moveY(C.client.height + C.ITEM_HEIGHT);
 		this.topText.text(this.data.title);
 		this.topArrow.removeClass('down');
+		this.topDummy
+			.hide()
+			.css('opacity', '1');
 
 	},
 
 	resetTopSwitch: function () {
 
+		this.topSwitch.hide();
 		this.topText.text('Switch to Lists');
 		this.topArrow.removeClass('down');
 

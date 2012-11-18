@@ -19,16 +19,36 @@ C.Collection = (function (raf) {
 			this.y = 0;
 			this.upperBound = 0;
 			this.initiated = false;
+
+			this.data = data || C.db.data;
+			this.items = [];
+			this.render();
+			this.initDummyItems();
+			this.populateItems();
+
+			this.resetDragStates();
+
+		},
+
+		resetDragStates: function () {
+
+			this.pullingDown = false;
+			this.pastPullDownThreshold = false;
+
 			this.longPullingDown = false;
 			this.longPullingUp = false;
 			this.pastLongPullDownThreshold = false;
 			this.pastLongPullUpThreshold = false;
 
-			this.data = data || C.db.data;
-			this.items = [];
-			this.render();
-			this.populateItems();
-			this.appendDummyItem();
+		},
+
+		initDummyItems: function () {
+
+			// top dummy item
+			this.topDummy = this.el.find('.dummy-item.top');
+			this.topDummySlider = this.topDummy.find('.slider');
+			this.topDummyText = this.topDummy.find('.title');
+			this.topDummySliderStyle = this.topDummySlider[0].style;
 
 		},
 
@@ -56,12 +76,6 @@ C.Collection = (function (raf) {
 			this.hasDoneItems = this.items.length > this.count;
 
 			this.updateBounds();
-
-		},
-
-		appendDummyItem: function () {
-
-			this.dummy = $('<div class="item">');
 
 		},
 
@@ -185,6 +199,36 @@ C.Collection = (function (raf) {
 
 			this.moveY(this.y + dy);
 
+			// pulling down, animate pull to create dummy item
+			if (this.y > 0) {
+				if (!this.pullingDown) {
+					this.pullingDown = true;
+					this.topDummy.show();
+				}
+				if (this.y <= C.ITEM_HEIGHT) {
+					if (this.pastPullDownThreshold) {
+						this.pastPullDownThreshold = false;
+						this.topDummyText.text('Pull to Create ' + this.itemTypeText);
+					}
+					var pct = this.y / C.ITEM_HEIGHT;
+					var r = Math.max(0, (1 - pct) * 90);
+					this.topDummySliderStyle[C.client.transformProperty] = 'rotateX(' + r + 'deg)';
+					this.topDummySliderStyle.opacity = pct / 2 + .5;
+				} else {
+					if (!this.pastPullDownThreshold) {
+						this.pastPullDownThreshold = true;
+						this.topDummySliderStyle[C.client.transformProperty] = 'none';
+						this.topDummySliderStyle.opacity = 1;
+						this.topDummyText.text('Release to Create ' + this.itemTypeText);
+					}
+				}
+			} else {
+				if (this.pullingDown) {
+					this.pullingDown = false;
+					this.topDummy.hide();
+				}
+			}
+
 		},
 
 		onDragEnd: function (speed) {
@@ -239,6 +283,12 @@ C.Collection = (function (raf) {
 			function render () {
 				col.moveY(col.y + speed);
 				speed *= friction;
+				if (col.y <= C.ITEM_HEIGHT) {
+					var pct = col.y / C.ITEM_HEIGHT;
+					var r = Math.max(0, (1 - pct) * 90);
+					col.topDummySliderStyle[C.client.transformProperty] = 'rotateX(' + r + 'deg)';
+					col.topDummySliderStyle.opacity = pct / 2 + .5;
+				}
 			}
 
 		},
@@ -265,12 +315,10 @@ C.Collection = (function (raf) {
 
 				var cty = Math.max(col.upperBound, Math.min(0, col.y + dy));
 
-				target.y -= cty - col.y;
-				target.style[C.client.transformProperty] = 'translate3d(0,' + target.y + 'px, 0)';
+				target.moveY(target.y - (cty - col.y));
 				target.checkSwap();
 
-				col.y = cty;
-				col.moveY(col.y);
+				col.moveY(cty);
 
 			}
 

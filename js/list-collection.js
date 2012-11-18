@@ -9,6 +9,7 @@ C.listCollection = {
 		this.stateType = C.states.LISTS;
 		this.base = C.Collection;
 		this.itemType = C.ListItem;
+		this.itemTypeText = 'List';
 
 		// apply shared init
 		this.base.init.apply(this, arguments);
@@ -24,8 +25,15 @@ C.listCollection = {
 	render: function () {
 
 		this.el = $('<div id="list-collection" class="collection">'
-					+ '<div class="credit">Made by Evan You <br> Original iOS app by Realmac</div>'
+						+ '<div class="credit">Made by Evan You <br> Original iOS app by Realmac</div>'
+						+ '<div class="item dummy-item top list-item empty">'
+							+ '<div class="slider" style="background-color:rgb(23,128,247)"><div class="inner">'
+								+ '<span class="title">Pull to Create List</span>'
+								+ '<div class="count">0</div>'
+							+ '</div></div>'
+						+ '</div>'
 					+ '</div>');
+
 		this.style = this.el[0].style;
 
 	},
@@ -97,6 +105,7 @@ C.listCollection = {
 			if (!this.longPullingUp) {
 				this.longPullingUp = true;
 				ltc.el.addClass('drag');
+				ltc.topSwitch.show();
 			}
 			ltc.moveY(this.y + Math.max(this.height + C.ITEM_HEIGHT * 2, C.client.height + C.ITEM_HEIGHT));
 
@@ -115,6 +124,7 @@ C.listCollection = {
 		} else {
 			if (this.longPullingUp) {
 				this.longPullingUp = false;
+				ltc.topSwitch.hide();
 				ltc.moveY(C.client.height + C.ITEM_HEIGHT);
 			}
 		}
@@ -123,8 +133,7 @@ C.listCollection = {
 
 	onDragEnd: function () {
 
-		this.longPullingUp = false;
-		this.pastLongPullDownThreshold = false;
+		this.resetDragStates();
 
 		if (this.y >= C.ITEM_HEIGHT) {
 
