@@ -20,7 +20,9 @@ C.Collection = (function (raf) {
 			this.upperBound = 0;
 			this.initiated = false;
 
+			// the data object points directly to the data inside the DB module.
 			this.data = data || C.db.data;
+
 			this.items = [];
 			this.render();
 			this.initDummyItems();

@@ -97,8 +97,6 @@ C.Item = (function (raf) {
 
 		onTap: function (e) {
 
-			if (C.state === C.states.EDITING) return;
-
 			// check to see if tap is on the text or the item itself
 
 			if (this.open) {
@@ -122,8 +120,6 @@ C.Item = (function (raf) {
 		},
 
 		onDragMove: function (dx) {
-
-			if (C.state === C.states.EDITING) return;
 
 			// the desired x position
 			var tx = this.x + dx;
@@ -318,10 +314,11 @@ C.Item = (function (raf) {
 
 		},
 
-		// noRemember: tell collection don't remember starting position
+		// noRemember:
+		// tells parent collection to ignore starting position and always move to 0 when edit is done.
 		onEditStart: function (noRemember) {
 
-			C.state = C.states.EDITING;
+			C.isEditing = true;
 
 			this.title.hide();
 			this.field.show().focus();
@@ -338,8 +335,9 @@ C.Item = (function (raf) {
 
 			t.collection.onEditDone(function () {
 
+				C.isEditing = false;
+
 				t.el.removeClass('edit');
-				C.state = C.states.TODOS;
 
 				if (!val) {
 					t.del();

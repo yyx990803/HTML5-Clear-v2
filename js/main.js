@@ -6,12 +6,13 @@ var C = {
 	$wrapper: 		$('#wrapper'),
 	$log: 			$('#log'),
 
-	// states
+	// view states
 	states: {
-		LISTS: 		0,
-		TODOS: 		1,
-		EDITING: 	2
+		LISTS: 		'lists',
+		TODOS: 		'todos'
 	},
+
+	isEditing: false,
 
 	ITEM_HEIGHT: 62,
 
@@ -33,18 +34,13 @@ var C = {
 
 		switch (state.view) {
 
-			case C.states.MENU:
-				C.log('App: init at menu.');
-				C.currentCollection = C.menu;
-				break;
-
 			case C.states.LISTS:
-				C.log('App: init at lists.');
+				C.log('App: init at ListCollection.');
 				C.currentCollection = C.listCollection;
 				break;
 
 			case C.states.TODOS:
-				C.log('App: init at list with order: ' + state.order);
+				C.log('App: init at TodoCollection with order: ' + state.order);
 				while (i--) {
 					if (lists[i].order === state.order) {
 						C.currentCollection = new C.TodoCollection(lists[i]);
@@ -54,7 +50,7 @@ var C = {
 				break;
 
 			default:
-				C.log('App: init at lists.');
+				C.log('App: init at ListCollection.');
 				C.currentCollection = C.listCollection;
 				break;
 

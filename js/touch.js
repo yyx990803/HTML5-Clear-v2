@@ -83,6 +83,9 @@ C.touch = (function () {
 		C.$wrapper
 			.on(start, function (e) {
 
+				// no touch events during editng.
+				if (C.isEditing) return;
+
 				// only record two fingers
 				// and ignore additional fingers if already in action
 				if (touches.length >= 2 || currentAction) return;
@@ -95,7 +98,7 @@ C.touch = (function () {
 				var touch = new TouchData(e);
 				touches.push(touch);
 				
-				// process actions
+				// process actions ======================================================
 
 				if (touches.length > 1) {
 					actions.pinch.start();
@@ -107,6 +110,8 @@ C.touch = (function () {
 
 			})
 			.on(move, function (e) {
+
+				if (C.isEditing) return;
 
 				// for mousemove
 				if (!touches.length) return;
@@ -121,7 +126,7 @@ C.touch = (function () {
 					return; // ignore touches not in list
 				}
 
-				//process actions
+				// process actions ======================================================
 
 				actions.itemSort.cancelTimeout();
 
@@ -136,6 +141,8 @@ C.touch = (function () {
 			})
 			.on(end, function (e) {
 
+				if (C.isEditing) return;
+
 				e = t ? e.changedTouches[0] : e;
 				var id = e.identifier || 'mouse';
 				var i = getTouchIndex(id);
@@ -148,7 +155,7 @@ C.touch = (function () {
 					pub.isDown = false;
 				}
 
-				// process actions
+				// process actions ======================================================
 
 				actions.itemSort.cancelTimeout();
 
@@ -161,7 +168,7 @@ C.touch = (function () {
 					currentAction = null;
 				}
 
-				// delete afterwards
+				// delete afterwards.
 				touches.splice(i, 1);
 				
 			});
