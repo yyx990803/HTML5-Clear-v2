@@ -231,6 +231,9 @@ C.Collection = (function (raf) {
 
 		},
 
+		// the default on drag end
+		// bounce the thing back into bounds
+		// only gets called when no action is triggered
 		onDragEnd: function (speed) {
 
 			var col = this;

@@ -144,12 +144,14 @@ C.TodoCollection.prototype = {
 			if (!this.longPullingUp) {
 
 				this.longPullingUp = true;
+
 				var pos = Math.max(C.client.height, this.height + C.ITEM_HEIGHT) + C.ITEM_HEIGHT * 2;
 				this.bottomSwitch[0].style[C.client.transformProperty] = 'translate3d(0px,' + pos + 'px, 0px)';
 				this.bottomSwitch.show();
 
 				if (this.hasDoneItems) {
 					this.bottomSwitch.removeClass('empty');
+					this.drawer.removeClass('full');
 				} else {
 					this.bottomSwitch.addClass('empty');
 				}
