@@ -86,6 +86,16 @@
 
 		},
 
+		onTap: function (e) {
+
+			if (e.target.className === 'text') {
+				this.onEditStart();
+			} else {
+				this.open();
+			}
+			
+		},
+
 		open: function () {
 
 			if (this.collection.inMomentum) return;

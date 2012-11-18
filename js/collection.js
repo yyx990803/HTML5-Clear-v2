@@ -311,6 +311,13 @@ C.Collection = (function (raf) {
 
 		},
 
+		onTap: function () {
+
+			// create new item at bottom
+			console.log('new item at bottom!');
+
+		},
+
 		// need better doc here, target is an Item
 
 		sortMove: function (dir, target) {

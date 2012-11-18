@@ -95,22 +95,6 @@ C.Item = (function (raf) {
 
 		},
 
-		onTap: function (e) {
-
-			// check to see if tap is on the text or the item itself
-
-			if (this.open) {
-				if (e.target.className === 'text') {
-					this.onEditStart();
-				} else {
-					this.open();
-				}
-			} else {
-				if (!this.data.done) this.onEditStart();
-			}
-
-		},
-
 		onDragStart: function () {
 
 			this.slider.addClass('drag');

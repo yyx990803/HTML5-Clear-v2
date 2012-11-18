@@ -68,6 +68,17 @@
 
 		},
 
+		onTap: function () {
+
+			if (!this.data.done) {
+				this.onEditStart();
+			} else {
+				// tapping on a done item is equal to tapping on the collection
+				this.collection.onTap();
+			}
+
+		},
+
 		onDragMove: function (dx) {
 
 			var w = (Math.min(1, Math.max(0, this.x / C.ITEM_HEIGHT)) * 100).toFixed(2);

@@ -160,8 +160,12 @@ C.touch = (function () {
 				actions.itemSort.cancelTimeout();
 
 				if (!currentAction) {
-					if (touches[0].targetItem) {
-						actions.itemTap.trigger(e);
+					if (!touches[0].moved && !C.currentCollection.inMomentum) {
+						if (touches[0].targetItem) {
+							actions.itemTap.trigger(e);
+						} else {
+							actions.collectionTap.trigger();
+						}
 					}
 				} else {
 					actions[currentAction].end();
@@ -230,20 +234,6 @@ C.touch = (function () {
 
 		},
 
-		itemTap: {
-
-			trigger: function (e) {
-
-				if (!touches[0].moved &&
-					!C.currentCollection.inMomentum) {
-
-					touches[0].targetItem.onTap(e);
-				}
-
-			}
-
-		},
-
 		itemSort: {
 
 			timeOut: null,
@@ -306,6 +296,26 @@ C.touch = (function () {
 
 			end: function () {
 
+			}
+
+		},
+
+		itemTap: {
+
+			trigger: function (e) {
+
+				touches[0].targetItem.onTap(e);
+
+			}
+
+		},
+
+		collectionTap: {
+
+			trigger: function () {
+
+				C.currentCollection.onTap();
+				
 			}
 
 		}
