@@ -181,30 +181,22 @@ C.touch = (function () {
 
 	var actions = {
 
-		// TODO remove redundent logic in here
-
 		collectionDrag: {
 
 			check: function () {
-
 				if (Math.abs(touches[0].tdy) > dragThreshold) {
 					currentAction = 'collectionDrag';
 					C.currentCollection.onDragStart();
 				}
-
 			},
 
 			move: function () {
-
 				C.currentCollection.onDragMove(touches[0].dy);
-
 			},
 
 			end: function () {
-
 				var speed = touches[0].dy / touches[0].dt;
 				C.currentCollection.onDragEnd(speed);
-
 			}
 
 		},
@@ -212,24 +204,18 @@ C.touch = (function () {
 		itemDrag: {
 
 			check: function () {
-
 				if (touches[0].targetItem && Math.abs(touches[0].tdx) > dragThreshold) {
 					currentAction = 'itemDrag';
 					touches[0].targetItem.onDragStart();
 				}
-
 			},
 
 			move: function () {
-
 				touches[0].targetItem.onDragMove(touches[0].dx);
-
 			},
 
 			end: function () {
-
 				touches[0].targetItem.onDragEnd();
-
 			}
 
 		},
@@ -241,43 +227,32 @@ C.touch = (function () {
 			delay: 300,
 
 			startTimeout: function () {
-
 				this.timeOut = setTimeout(function () {
 					actions.itemSort.trigger();
 				}, this.delay);
-
 			},
 
 			move: function () {
-
 				touches[0].targetItem.onSortMove(touches[0].dy);
-
 			},
 
 			end: function () {
-
 				this.cancelTimeout();
 				touches[0].targetItem.onSortEnd();
-				
 			},
 
 			trigger: function () {
-
 				this.timeOut = null;
 				if (currentAction) return;
-
 				currentAction = 'itemSort';
 				touches[0].targetItem.onSortStart();
-
 			},
 
 			cancelTimeout: function () {
-
 				if (this.timeOut) {
 					clearTimeout(this.timeOut);
 					this.timeOut = null;
 				}
-
 			}
 
 		},
@@ -285,9 +260,7 @@ C.touch = (function () {
 		pinch: {
 
 			start: function () {
-
 				currentAction = 'pinch';
-
 			},
 
 			move: function (i) {
@@ -303,9 +276,7 @@ C.touch = (function () {
 		itemTap: {
 
 			trigger: function (e) {
-
 				touches[0].targetItem.onTap(e);
-
 			}
 
 		},
@@ -313,9 +284,7 @@ C.touch = (function () {
 		collectionTap: {
 
 			trigger: function () {
-
 				C.currentCollection.onTap();
-				
 			}
 
 		}

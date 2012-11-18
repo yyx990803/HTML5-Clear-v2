@@ -304,6 +304,7 @@ C.Collection = (function (raf) {
 				col.el.removeClass('drag');
 				col.inMomentum = false;
 				col.topDummy.hide();
+				if (col.bottomSwitch) col.bottomSwitch.hide();
 			}
 
 			function render () {
@@ -475,7 +476,13 @@ C.Collection = (function (raf) {
 					newItem.onEditStart();
 				}, true);
 			}, 1);
-				
+
+		},
+
+		createItemInBetween: function () {
+
+
+
 		},
 
 		// listen for webkitTransitionEnd
