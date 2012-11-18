@@ -293,12 +293,13 @@ C.Collection = (function (raf) {
 			function endLoop () {
 				col.el.removeClass('drag');
 				col.inMomentum = false;
+				col.topDummy.hide();
 			}
 
 			function render () {
 				col.moveY(col.y + speed);
 				speed *= friction;
-				if (col.y <= C.ITEM_HEIGHT) {
+				if (col.y >= 0) {
 					var pct = col.y / C.ITEM_HEIGHT;
 					var r = Math.max(0, (1 - pct) * 90);
 					col.topDummySliderStyle[C.client.transformProperty] = 'rotateX(' + r + 'deg)';
