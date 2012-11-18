@@ -376,9 +376,12 @@ C.Collection = (function (raf) {
 				this.moveY(beforeEditPosition);
 			}
 
-			var t = this;
-			t.el.removeClass('shade');
-			t.onTransitionEnd(callback, true);
+			this.el.removeClass('shade');
+			if (this.items.length === 1) {
+				callback();
+			} else {
+				this.onTransitionEnd(callback, true);
+			}
 			// passing in {noStrict: true}
 			// must avoid (e.target === this) checking here because
 			// triggered transition doesn't happen on itself
@@ -387,8 +390,9 @@ C.Collection = (function (raf) {
 
 		createNewItemAtTop: function () {
 
-			// hide dummy item
+			// hide and reset dummy item
 			this.topDummy.hide();
+			this.topDummyText.text('Pull to Create ' + this.itemTypeText);
 
 			// move the whole thing up one row
 			this.moveY(this.y - C.ITEM_HEIGHT);

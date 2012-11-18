@@ -272,6 +272,7 @@ C.TodoCollection.prototype = {
 		this.topDummy
 			.hide()
 			.css('opacity', '1');
+		this.topDummyText.text('Pull to Create ' + this.itemTypeText);
 
 	},
 
