@@ -376,10 +376,15 @@ C.Collection = (function (raf) {
 
 			var t = this;
 			setTimeout(function () {
+
+				// If on desktop, move currently focused item to top.
+				// mobile devices will do auto page re-positioning on focus
+				// and since behavior across different devices will vary,
+				// better leave it alone here.
 				if (!C.client.isTouch) {
-					var ty = -at * C.ITEM_HEIGHT;
-					t.moveY(ty);
+					t.moveY(-at * C.ITEM_HEIGHT);
 				}
+
 				if (noRemember) {
 					t.el
 						.removeClass('drag')
@@ -404,11 +409,11 @@ C.Collection = (function (raf) {
 			if (this.items.length === 1) {
 				callback();
 			} else {
+				// passing in {noStrict: true}
+				// must avoid (e.target === this) checking here because
+				// triggered transition doesn't happen on itself
 				this.onTransitionEnd(callback, true);
 			}
-			// passing in {noStrict: true}
-			// must avoid (e.target === this) checking here because
-			// triggered transition doesn't happen on itself
 
 		},
 
@@ -469,6 +474,18 @@ C.Collection = (function (raf) {
 			this.updateBounds();
 
 			newItem.el.addClass('dummy-item bottom');
+
+			// Focus in advance to get around an iOS caveat:
+			// iOS only allows field focus to be triggered within a call stack
+			// that's directly initiated by user input.
+			newItem.el.find('.field').show().focus();
+
+			// Also, an interesting discovery here:
+			// If a field has transform: rotateX(90deg) when it's focused on,
+			// the iOS keyboard will be triggered but no page re-positioning happens.
+			// So here I have to set the new item's slider transform to be rotateX(89deg)
+			// to properly trigger the page re-positioning.
+
 			setTimeout(function () {
 				newItem.el.find('.slider')[0].style[C.client.transformProperty] = 'rotateX(0deg)';
 				newItem.onTransitionEnd(function () {
@@ -480,8 +497,6 @@ C.Collection = (function (raf) {
 		},
 
 		createItemInBetween: function () {
-
-
 
 		},
 

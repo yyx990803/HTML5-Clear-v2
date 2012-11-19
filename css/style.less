@@ -346,9 +346,9 @@ html, body {
 	&.bottom {
 		.perspective-origin(top center);
 		.slider {
-			.transition(.3s ease-in-out, ~"");
+			.transition(.3s @ease, ~"");
 			.trans-origin(top center);
-			.transform(rotateX(-90deg));
+			.transform(rotateX(-91deg)); // see createItemAtBottom() in collection.js
 		}
 	}
 }

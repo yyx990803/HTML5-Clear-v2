@@ -141,6 +141,8 @@ C.touch = (function () {
 			})
 			.on(end, function (e) {
 
+				console.log('end')
+
 				if (C.isEditing) return;
 
 				e = t ? e.changedTouches[0] : e;
