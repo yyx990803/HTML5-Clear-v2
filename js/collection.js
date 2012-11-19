@@ -483,7 +483,7 @@ C.Collection = (function (raf) {
 			// Also, an interesting discovery here:
 			// If a field has transform: rotateX(90deg) when it's focused on,
 			// the iOS keyboard will be triggered but no page re-positioning happens.
-			// So here I have to set the new item's slider transform to be rotateX(89deg)
+			// So here I have to set the new item's slider transform to be rotateX(-91deg)
 			// to properly trigger the page re-positioning.
 
 			setTimeout(function () {

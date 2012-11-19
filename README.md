@@ -20,7 +20,3 @@ The original iphone app by Realmac: [http://www.realmacsoftware.com/clear/](http
 When I made the original HTML5 Clear, I simply wanted to build something shiny in a short time. The vimeo video covered up most of the bugs, unstableness and dirtiness underneath. It also missed quite some beautiful details of the original iOS app.
 
 So for this version, by adding a lot more visual/motion details and multi-touch gestures, the purpose is mostly challenging my own technical limits. Besides, I really enjoy having something I can slowly polish without having to worry about deadlines.
-
-## Build Dependency
-
-Node.js and UglifyJS
