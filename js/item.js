@@ -6,6 +6,9 @@ C.Item = (function (raf) {
     var leftBound = -C.ITEM_HEIGHT,
         rightBound = C.ITEM_HEIGHT;
 
+    var upperSortMoveThreshold = C.ITEM_HEIGHT * 1.5,
+        lowerSortMoveThreshold = C.ITEM_HEIGHT * 2.5;
+
     return {
 
         init: function (data) {
@@ -239,13 +242,13 @@ C.Item = (function (raf) {
                 cy = c.y,
                 ay = this.y + cy; // the actual on screen y
 
-            if (cy < 0 && ay < 93 && dy < 3) {
-                // upper move trigger is 1.5x line height = 93px
+            if (cy < 0 && ay < upperSortMoveThreshold && dy < 3) {
+                // upper move trigger is 1.5x line height
                 // dy < 3 : makes sure upmove only triggers when user moves the dragged item upwards.
                 // the 3px gives a small buffer for incidental downward movements
                 if (!c.sortMoving) c.sortMove(1, this);
-            } else if (cy > this.collection.upperBound && ay > C.client.height - 155 && dy > -3) {
-                // the lower move trigger needs to count in the extra one line of space, thus an extra 62px
+            } else if (cy > this.collection.upperBound && ay > C.client.height - lowerSortMoveThreshold && dy > -3) {
+                // the lower move trigger needs to count in the extra one line of space, thus an extra item height
                 if (!c.sortMoving) c.sortMove(-1, this);
             } else {
                 c.sortMoving = false;
