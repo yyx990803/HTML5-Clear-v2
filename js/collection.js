@@ -395,7 +395,7 @@ C.Collection = (function (raf) {
                     });
                 }
                 t.el.addClass('shade');
-            }, 1);
+            }, 0);
 
         },
 
@@ -439,7 +439,7 @@ C.Collection = (function (raf) {
             var col = this;
             setTimeout(function () {
                 col.el.removeClass('instant');
-            }, 1);
+            }, 0);
 
             var newData = {
                 title: '',
@@ -492,7 +492,7 @@ C.Collection = (function (raf) {
                     newItem.el.removeClass('dummy-item bottom');
                     newItem.onEditStart();
                 }, true);
-            }, 1);
+            }, 0);
 
         },
 

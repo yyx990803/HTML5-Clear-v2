@@ -353,19 +353,19 @@ html, body {
     }
 }
 
+*:not(input) {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
 // Desktop
 
 body.desktop {
 
     background: url(../img/bg.png) center center no-repeat;
-
-    *:not(input) {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -o-user-select: none;
-        user-select: none;
-    }
 
     img {
         -webkit-user-drag: none;

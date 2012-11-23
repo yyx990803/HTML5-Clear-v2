@@ -85,7 +85,7 @@ C.listCollection = {
             t.el
                 .addClass('drag')
                 .show();
-        }, 1);
+        }, 0);
 
     },
 

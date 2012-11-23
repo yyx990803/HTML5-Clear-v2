@@ -79,7 +79,7 @@ C.TodoCollection.prototype = {
                 // expand items to their right positions
                 t.updatePosition();
 
-            }, 1);
+            }, 0);
 
         }
 
