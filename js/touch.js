@@ -122,12 +122,8 @@ C.touch = (function () {
                 
                 // process actions ======================================================
 
-                if (touches.length === 1) {
-                    if (touches[0].targetItem) {
-                        actions.itemSort.startTimeout();
-                    }
-                } else {
-
+                if (touches.length === 1 && touches[0].targetItem) {
+                    actions.itemSort.startTimeout();
                 }
 
             })
