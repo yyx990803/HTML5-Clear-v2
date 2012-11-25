@@ -35,26 +35,22 @@ C.touch = (function () {
 
     };
 
-    TouchData.prototype = {
+    TouchData.prototype.update = function (e) {
 
-        update: function (e) {
+        this.moved = true;
 
-            this.moved = true;
+        this.dx = e.pageX - this.cx;
+        this.cx = e.pageX;
 
-            this.dx = e.pageX - this.cx;
-            this.cx = e.pageX;
+        this.dy = e.pageY - this.cy;
+        this.cy = e.pageY;
 
-            this.dy = e.pageY - this.cy;
-            this.cy = e.pageY;
+        this.tdx = this.cx - this.ox;
+        this.tdy = this.cy - this.oy;
 
-            this.tdx = this.cx - this.ox;
-            this.tdy = this.cy - this.oy;
-
-            var now = Date.now();
-            this.dt = now - this.ct;
-            this.ct = now;
-
-        }
+        var now = Date.now();
+        this.dt = now - this.ct;
+        this.ct = now;
 
     };
 
@@ -63,6 +59,28 @@ C.touch = (function () {
 
     // current gesture
     var currentAction;
+
+    // pinch data, only records vertical distance between two touches
+    var pinchData = {
+
+        od: null, // starting distance
+        cd: null, // current distance
+        delta: null,
+
+        init: function () {
+            this.od = Math.abs(touches[0].cy - touches[1].cy);
+        },
+
+        update: function () {
+            this.cd = Math.abs(touches[0].cy - touches[1].cy);
+            this.delta = this.cd - this.od;
+        },
+
+        reset: function () {
+            this.od = null;
+            this.cd = null;
+        }
+    };
 
     // whether it's a touch device
     var t           = C.client.isTouch;
@@ -97,15 +115,19 @@ C.touch = (function () {
                 // create touch data
                 var touch = new TouchData(e);
                 touches.push(touch);
+
+                if (touches.length === 2) {
+                    pinchData.init();
+                }
                 
                 // process actions ======================================================
 
-                if (touches.length > 1) {
-                    actions.pinch.start();
-                } else {
+                if (touches.length === 1) {
                     if (touches[0].targetItem) {
                         actions.itemSort.startTimeout();
                     }
+                } else {
+
                 }
 
             })
@@ -126,13 +148,22 @@ C.touch = (function () {
                     return; // ignore touches not in list
                 }
 
+                if (touches.length === 2) {
+                    pinchData.update();
+                }
+
                 // process actions ======================================================
 
                 actions.itemSort.cancelTimeout();
 
                 if (!currentAction) {
-                    actions.collectionDrag.check();
-                    actions.itemDrag.check();
+                    if (touches.length === 1) {
+                        actions.collectionDrag.check();
+                        actions.itemDrag.check();
+                    } else {
+                        actions.pinchIn.check();
+                        actions.pinchOut.check();
+                    }
                 } else {
                     // passing in i to let pinch move handler know which finger is which
                     actions[currentAction].move(i);
@@ -169,11 +200,14 @@ C.touch = (function () {
                     }
                 } else {
                     actions[currentAction].end();
-                    currentAction = null;
+                    if (touches.length === 1) {
+                        currentAction = null; // reset if it's the last finger
+                    }
                 }
 
-                // delete afterwards.
+                // delete/reset afterwards.
                 touches.splice(i, 1);
+                pinchData.reset();
                 
             });
 
@@ -224,7 +258,7 @@ C.touch = (function () {
 
             timeOut: null,
 
-            delay: 300,
+            delay: 500,
 
             startTimeout: function () {
                 this.timeOut = setTimeout(function () {
@@ -257,18 +291,50 @@ C.touch = (function () {
 
         },
 
-        pinch: {
+        pinchIn: {
 
-            start: function () {
-                currentAction = 'pinch';
+            check: function () {
+                if (pinchData.delta < -dragThreshold) {
+                    currentAction = 'pinchIn';
+                }
             },
 
             move: function (i) {
+                console.log('pinch in!')
+                var touch = touches[i];
+                if (i === 0) { // first finger
 
+                } else { // second one
+
+                }
             },
 
             end: function () {
 
+            }
+
+        },
+
+        pinchOut: {
+
+            check: function () {
+                if (pinchData.delta > dragThreshold) {
+                    currentAction = 'pinchOut';
+                }
+            },
+
+            move: function (i) {
+                console.log('pinch out!')
+                var touch = touches[i];
+                if (i === 0) { // first finger
+
+                } else { // second one
+
+                }
+            },
+
+            end: function () {
+                
             }
 
         },

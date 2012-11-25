@@ -205,6 +205,10 @@ C.Collection = (function (raf) {
                 this.moveY(this.upperBound);
             }
 
+            if (this.y > 0 && !noMove) {
+                this.moveY(0);
+            }
+
         },
 
         onDragStart: function () {
