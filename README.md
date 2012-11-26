@@ -1,5 +1,7 @@
 # WORK IN PROGRESS
 
+See it in action [here](http://clear2.youyuxi.com).
+
 ## What is this?
 
 This is a remake of the [original HTML5 Clear](https://raw.github.com/yyx990803/HTML5-Clear).
