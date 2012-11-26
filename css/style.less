@@ -9,8 +9,7 @@
 }
 
 // due to limitations of less, extra vars need an escaped comma in front of it: ~","
-// also no extra value needs a dummy parameter ~""
-.transition (@vars, @extra) {
+.transition (@vars, @extra:~"") {
     -webkit-transition: -webkit-transform @vars @extra;
     -moz-transition: -moz-transform @vars @extra;
     -ms-transition: -ms-transform @vars @extra;
@@ -41,7 +40,7 @@
 }
 
 .ease-out {
-    .transition(.3s cubic-bezier(0,.5,.5,1) ~"!important", ~"");
+    .transition(.3s cubic-bezier(0,.5,.5,1) ~"!important");
 }
 
 html, body {
@@ -96,7 +95,7 @@ html, body {
 
     &.instant {
         .item {
-            .transition(0s linear, ~"");
+            .transition(0s linear);
         }
     }
 
@@ -113,7 +112,7 @@ html, body {
         width: 30px;
         height: 30px;
         vertical-align: middle;
-        .transition(.18s ease-in-out, ~"");
+        .transition(.18s ease-in-out);
 
         &.down {
             .transform(rotate(180deg));
@@ -243,7 +242,7 @@ html, body {
     }
 
     &.sorting {
-        .transition(0s linear ~"!important", ~"");
+        .transition(0s linear ~"!important");
         .slider {
             box-shadow: 0 2px 16px rgba(0,0,0,.25);
             .transform(scale(1.05) ~"!important");
@@ -252,9 +251,9 @@ html, body {
 
     &.sorting-trans {
         z-index: 999 !important;
-        .transition(.12s ease-out, ~"");
+        .transition(.12s ease-out);
         .slider {
-            .transition(.12s ease-out, ~"");
+            .transition(.12s ease-out);
         }
     }
 
@@ -338,7 +337,7 @@ html, body {
         .perspective-origin(bottom center);
         top: -@itemHeight;
         .slider {
-            .transition(0s linear, ~"");
+            .transition(0s linear);
             .trans-origin(bottom center);
         }
     }
@@ -346,7 +345,7 @@ html, body {
     &.bottom {
         .perspective-origin(top center);
         .slider {
-            .transition(.3s @ease, ~"");
+            .transition(.3s @ease);
             .trans-origin(top center);
             .transform(rotateX(-91deg)); // see createItemAtBottom() in collection.js
         }
