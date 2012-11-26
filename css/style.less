@@ -1,5 +1,9 @@
+// Variables ==================================================================
+
 @itemHeight: 62px;
 @ease: cubic-bezier(.67, .18, .30, .86);
+
+// mixins =====================================================================
 
 .transform (@vars) {
     -webkit-transform: @vars;
@@ -8,12 +12,18 @@
     transform: @vars;
 }
 
-// due to limitations of less, extra vars need an escaped comma in front of it: ~","
-.transition (@vars, @extra:~"") {
-    -webkit-transition: -webkit-transform @vars @extra;
-    -moz-transition: -moz-transform @vars @extra;
-    -ms-transition: -ms-transform @vars @extra;
-    transition: transform @vars @extra;
+.transition (@vars) {
+    -webkit-transition: -webkit-transform @vars;
+    -moz-transition: -moz-transform @vars;
+    -ms-transition: -ms-transform @vars;
+    transition: transform @vars;
+}
+
+.transition (@vars, @extra) {
+    -webkit-transition: -webkit-transform @vars, @extra;
+    -moz-transition: -moz-transform @vars, @extra;
+    -ms-transition: -ms-transform @vars, @extra;
+    transition: transform @vars, @extra;
 }
 
 .trans-origin (@vars) {
@@ -35,13 +45,17 @@
     perspective-origin: @vars;
 }
 
+// transition classes =========================================================
+
 .drag {
-    .transition(0s linear, ~","opacity 0s linear ~"!important");
+    .transition(0s linear, opacity 0s linear ~"!important");
 }
 
 .ease-out {
     .transition(.3s cubic-bezier(0,.5,.5,1) ~"!important");
 }
+
+// actual stuff ===============================================================
 
 html, body {
     margin: 0;
@@ -80,7 +94,7 @@ html, body {
 
 .collection {
     .transform(translate3d(0,0,0));
-    .transition(.3s @ease, ~","opacity .3s @ease);
+    .transition(.3s @ease, opacity .3s @ease);
     position: absolute;
     width: 100%;
     top: 0;
@@ -169,7 +183,7 @@ html, body {
 
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
     .trans-origin(center center);
-    .transition(.3s @ease, ~","opacity .3s @ease);
+    .transition(.3s @ease, opacity .3s @ease);
     position: absolute;
     z-index: 0;
     width: 100%;
@@ -360,7 +374,7 @@ html, body {
     user-select: none;
 }
 
-// Desktop
+// Desktop ====================================================================
 
 body.desktop {
 
@@ -383,7 +397,8 @@ body.desktop {
         display: inline;
     }
 
-    .field { // weird input element positioning difference between mobile and desktop
+    // weird input element positioning difference between mobile and desktop
+    .field {
         top: 0;
         padding-left: 10px;
     }
