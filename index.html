@@ -9,10 +9,31 @@
 	</head>
 	<body>
 
+		<p id="notice" style="display: none; font-family: Courier, Monospace, serif; font-size: 12px; font-weight: normal; color: #333; position: absolute; left: 25px; bottom: 15px; width: 300px">Work in Progress. If you get lost, add #debug to url then refresh (which forces using default data) and look at the How to Use list.</p>
+
 		<div id="wrapper">
 		</div>
 
 		<a id="fork-ribbon" href="https://github.com/yyx990803/HTML5-Clear-v2"><img style="position: absolute; top: 0; right: 0; border: 0;" src="img/fork.png" alt="Fork me on GitHub"></a>
+
+		<script type="text/javascript">
+
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-27321530-1']);
+			_gaq.push(['_setDomainName', 'youyuxi.com']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+
+			if (!('ontouchstart' in window)) {
+				document.getElementById('notice').style.display = 'block';
+			}
+
+		</script>
 
 		<script src="js/zepto.js"></script>
 		<script src="js/main.js"></script>

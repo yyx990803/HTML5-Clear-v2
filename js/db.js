@@ -78,12 +78,54 @@ C.db = (function () {
                 items: [
                     {
 
-                        title: 'Things to do',
+                        title: 'How to Use',
                         order: 0,
                         items: [
                             {
                                 order: 0,
-                                title: 'Buy some milk'
+                                title: 'Swipe right to complete'
+                            },
+                            {
+                                order: 1,
+                                title: 'Swipe left to delete'
+                            },
+                            {
+                                order: 2,
+                                title: 'Tap to edit'
+                            },
+                            {
+                                order: 3,
+                                title: 'Long tap to reorder'
+                            },
+                            {
+                                order: 4,
+                                title: 'Pull down to create new item'
+                            },
+                            {
+                                order: 5,
+                                title: 'Or tap in empty space below'
+                            },
+                            {
+                                order: 6,
+                                title: 'Pull down more to go back'
+                            },
+                            {
+                                order: 7,
+                                title: 'Pull up to clear'
+                            },
+                            {
+                                order: 8,
+                                title: 'Pinch is still WIP.'
+                            }
+                        ]
+                    },
+                    {
+                        title: 'This is a demo',
+                        order: 1,
+                        items: [
+                            {
+                                order: 0,
+                                title: 'About HTML5'
                             },
                             {
                                 order: 1,
@@ -140,30 +182,12 @@ C.db = (function () {
                         ]
                     },
                     {
-                        title: 'This is a demo',
-                        order: 1,
-                        items: [
-                            {
-                                order: 0,
-                                title: 'Test'
-                            },
-                            {
-                                order: 1,
-                                title: 'Test'
-                            },
-                            {
-                                order: 2,
-                                title: 'Test'
-                            }
-                        ]
-                    },
-                    {
                         title: 'By Evan You',
                         order: 2,
                         items: [
                             {
                                 order: 0,
-                                title: 'Test'
+                                title: '@youyuxi'
                             }
                         ]
                     },
