@@ -25,7 +25,8 @@ sed -i.bak 's/<!-- MIN -->/<script src="js\/min.js"><\/script>/' $BASEDIR/deploy
 
 echo "\033[32m[minify]\033[0m source:" $BASEDIR"/js/"
 echo "\033[32m[minify]\033[0m output:" $BASEDIR"/deploy/js/min.js"
-cat $BASEDIR/js/zepto.js \
+uglifyjs \
+$BASEDIR/js/zepto.js \
 $BASEDIR/js/main.js \
 $BASEDIR/js/client.js \
 $BASEDIR/js/db.js \
@@ -36,7 +37,7 @@ $BASEDIR/js/list-collection.js \
 $BASEDIR/js/list-item.js \
 $BASEDIR/js/todo-collection.js \
 $BASEDIR/js/todo-item.js \
-| uglifyjs -v -o $BASEDIR/deploy/js/min.js
+-v -o $BASEDIR/deploy/js/min.js
 
 #remove stuff no longer needed for deploy
 
