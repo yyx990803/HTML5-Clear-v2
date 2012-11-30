@@ -290,46 +290,66 @@ C.touch = (function () {
         pinchIn: {
 
             check: function () {
+                // pinch in is only available for todoCollection
+                if (C.currentCollection.stateType === C.states.LIST_COLLECTION_VIEW) return;
+
                 if (pinchData.delta < -dragThreshold) {
                     currentAction = 'pinchIn';
+                    C.currentCollection.onPinchInStart();
                 }
             },
 
             move: function (i) {
-                console.log('pinch in!')
+
+                // avoid extra triggering when one finger is lifted
+                if (touches.length === 1) return;
+
                 var touch = touches[i];
-                if (i === 0) { // first finger
+                C.currentCollection.onPinchInMove(i, touch);
 
-                } else { // second one
-
-                }
             },
 
             end: function () {
 
+                if (touches.length === 1) return;
+
+                if (pinchData.cd <= pinchData.od * .5) {
+                    C.currentCollection.onPinchInEnd();
+                } else {
+                    C.currentCollection.onPinchInCancel();
+                }
             }
 
         },
 
         pinchOut: {
 
+            at: null,
+
             check: function () {
                 if (pinchData.delta > dragThreshold) {
                     currentAction = 'pinchOut';
+                    C.currentCollection.onPinchOutStart();
                 }
             },
 
             move: function (i) {
-                console.log('pinch out!')
+
+                if (touches.length === 1) return;
+
                 var touch = touches[i];
-                if (i === 0) { // first finger
-
-                } else { // second one
-
-                }
+                C.currentCollection.onPinchOutMove(i, touch);
             },
 
             end: function () {
+
+                if (touches.length === 1) return;
+
+                if (pinchData.delta > C.ITEM_HEIGHT) {
+                    C.currentCollection.onPinchOutEnd();
+                } else {
+                    C.currentCollection.onPinchOutCancel();
+                }
                 
             }
 

@@ -417,6 +417,22 @@ C.Collection = (function (raf) {
 
         },
 
+        onPinchOutStart: function () {
+            console.log('pinchOut start');
+        },
+
+        onPinchOutMove: function (i, touch) {
+            
+        },
+
+        onPinchOutCancel: function () {
+            console.log('pinchOut cancel');
+        },
+
+        onPinchOutEnd: function () {
+            console.log('pinchOut end');
+        },
+
         createItemAtTop: function () {
 
             // hide and reset dummy item

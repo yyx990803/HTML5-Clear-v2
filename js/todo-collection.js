@@ -263,6 +263,22 @@ C.TodoCollection.prototype = {
 
     },
 
+    onPinchInStart: function () {
+        console.log('pinchIn start');
+    },
+
+    onPinchInMove: function (i, touch) {
+
+    },
+
+    onPinchInEnd: function () {
+        console.log('pinchIn end');
+    },
+
+    onPinchInCancel: function () {
+        console.log('pinchIn cancelled');
+    },
+
     positionForPullUp: function () {
 
         this.el.addClass('drag');
