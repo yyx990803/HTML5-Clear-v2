@@ -4,3 +4,10 @@ Create New Item
 
 Navigation
 - pinch inwards to close TodoCollection
+
+Compatibility
+- Android keyboard issues
+
+Deployment
+- Homescreen Icons for iOS
+- App Cache Manifest
