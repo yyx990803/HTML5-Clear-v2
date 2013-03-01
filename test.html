@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+            #container {
+                width: 320px;
+                -webkit-perspective: 800;
+                position: relative;
+                top: 100px;
+                left: 100px;
+            }
+            .test {
+                background-color: #ff7733;
+                width: 320px;
+                height: 62px;
+                box-sizing: border-box;
+                padding: 0 12px;
+                line-height: 62px;
+                color: #fff;
+                font-family: Helvetica Neue;
+            }
+            .unfold {
+                width: 320px;
+                height: 62px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                overflow: hidden;
+            }
+            .unfold .mask {
+                overflow: hidden;
+                position: absolute;
+                left: 0;
+                height: 50%;
+                width: 100%;
+            }
+            .unfold-top .mask {
+                top: 0;
+            }
+            .unfold-bot .mask {
+                bottom: 0;
+            }
+            .unfold-top {
+                -webkit-transform: rotateX(-45deg);
+            }
+            .unfold-bot {
+                -webkit-transform: rotateX(45deg);
+            }
+            .unfold-bot .test {
+                position: relative;
+                top: -100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div class="unfold unfold-top">
+                <div class="mask">
+                    <div class="test">123123</div>
+                </div>
+            </div>
+            <div class="unfold unfold-bot">
+                <div class="mask">
+                    <div class="test">123123</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
