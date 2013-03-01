@@ -5,6 +5,30 @@
 
 // mixins =====================================================================
 
+.box-shadow (@vars) {
+    -webkit-box-shadow: @vars;
+    -moz-box-shadow: @vars;
+    box-shadow: @vars;
+}
+
+.box-sizing (@vars) {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.perspective (@vars) {
+    -webkit-perspective: @vars;
+    -moz-perspective: @vars;
+    perspective: @vars;
+}
+
+.perspective-origin (@vars) {
+    -webkit-perspective-origin: @vars;
+    -moz-perspective-origin: @vars;
+    perspective-origin: @vars;
+}
+
 .transform (@vars) {
     -webkit-transform: @vars;
     -moz-transform: @vars;
@@ -33,16 +57,12 @@
     transform-origin: @vars;
 }
 
-.perspective (@vars) {
-    -webkit-perspective: @vars;
-    -moz-perspective: @vars;
-    perspective: @vars;
-}
-
-.perspective-origin (@vars) {
-    -webkit-perspective-origin: @vars;
-    -moz-perspective-origin: @vars;
-    perspective-origin: @vars;
+.user-select (@vars) {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 // transition classes =========================================================
@@ -180,7 +200,6 @@ html, body {
 }
 
 .item {
-
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
     .trans-origin(center center);
     .transition(.3s @ease, opacity .3s @ease);
@@ -193,10 +212,7 @@ html, body {
     height: @itemHeight;
 
     .slider {
-        -webkit-transition: background-color .15s @ease, color .15s @ease;
-        -moz-transition: background-color .15s @ease, color .15s @ease;
-        -ms-transition: background-color .15s @ease, color .15s @ease;
-        transition: background-color .15s @ease, color .15s @ease;
+        .transition(background-color .15s @ease, color .15s @ease);
         position: relative;
         z-index: 1;
         height: @itemHeight;
@@ -204,8 +220,7 @@ html, body {
 
     .inner {
         .transform(translate3d(0,0,0));
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
+        .box-sizing(border-box);
         border-top: 1px solid rgba(255,255,255,.07);
         border-bottom: 1px solid rgba(0,0,0,.1);
         height: @itemHeight;
@@ -258,7 +273,7 @@ html, body {
     &.sorting {
         .transition(0s linear ~"!important");
         .slider {
-            box-shadow: 0 2px 16px rgba(0,0,0,.25);
+            .box-shadow(0 2px 16px rgba(0,0,0,.25));
             .transform(scale(1.05) ~"!important");
         }
     }
@@ -309,16 +324,13 @@ html, body {
     }
 
     .line {
+        .transition(width 0s linear, background-color .15s @ease);
         position: absolute;
         height: 2px;
         left: 0;
-        top: 12px;
+        bottom: 9px;
         width: 0%;
         background-color: #fff;
-        -webkit-transition: width 0s linear, background-color .15s @ease;
-        -moz-transition: width 0s linear, background-color .15s @ease;
-        -ms-transition: width 0s linear, background-color .15s @ease;
-        transition: width 0s linear, background-color .15s @ease;
     }
 
     &.done {
@@ -342,10 +354,7 @@ html, body {
 
     z-index: -1;
     .perspective(400px);
-    -webkit-transition: opacity .15s ease;
-    -moz-transition: opacity .15s ease;
-    -ms-transition: opacity .15s ease;
-    transition: opacity .15s ease;
+    .transition(opacity .15s ease);
 
     &.top {
         .perspective-origin(bottom center);
@@ -367,11 +376,7 @@ html, body {
 }
 
 *:not(input) {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+    .user-select(none);
 }
 
 // Desktop ====================================================================
