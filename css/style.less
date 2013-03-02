@@ -5,12 +5,6 @@
 
 // mixins =====================================================================
 
-.box-shadow (@vars) {
-    -webkit-box-shadow: @vars;
-    -moz-box-shadow: @vars;
-    box-shadow: @vars;
-}
-
 .box-sizing (@vars) {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -19,48 +13,42 @@
 
 .perspective (@vars) {
     -webkit-perspective: @vars;
-    -moz-perspective: @vars;
     perspective: @vars;
 }
 
 .perspective-origin (@vars) {
     -webkit-perspective-origin: @vars;
-    -moz-perspective-origin: @vars;
     perspective-origin: @vars;
 }
 
 .transform (@vars) {
     -webkit-transform: @vars;
-    -moz-transform: @vars;
-    -ms-transform: @vars;
     transform: @vars;
+}
+
+.transform-style (@vars) {
+    -webkit-transform-style: @vars;
+    transform-style: @vars;
 }
 
 .transition (@vars) {
     -webkit-transition: -webkit-transform @vars;
-    -moz-transition: -moz-transform @vars;
-    -ms-transition: -ms-transform @vars;
     transition: transform @vars;
 }
 
 .transition (@vars, @extra) {
     -webkit-transition: -webkit-transform @vars, @extra;
-    -moz-transition: -moz-transform @vars, @extra;
-    -ms-transition: -ms-transform @vars, @extra;
     transition: transform @vars, @extra;
 }
 
 .trans-origin (@vars) {
     -webkit-transform-origin: @vars;
-    -moz-transform-origin: @vars;
-    -ms-transform-origin: @vars;
     transform-origin: @vars;
 }
 
 .user-select (@vars) {
     -webkit-user-select: none;
     -moz-user-select: none;
-    -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
 }
@@ -81,7 +69,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 19px;
     font-weight: bold;
     color: #fff;
@@ -210,6 +198,8 @@ html, body {
     left: 0;
     opacity: 1;
     height: @itemHeight;
+    line-height: @itemHeight;
+    .box-sizing(border-box);
 
     .slider {
         .transition(background-color .15s @ease, color .15s @ease);
@@ -224,13 +214,12 @@ html, body {
         border-top: 1px solid rgba(255,255,255,.07);
         border-bottom: 1px solid rgba(0,0,0,.1);
         height: @itemHeight;
-        line-height: @itemHeight;
     }
 
     .field {
         cursor: default;
         display: none;
-        font-family: Helvetica, Arial, sans-serif;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         font-size: 19px;
         font-weight: bold;
         color: #fff;
@@ -273,7 +262,7 @@ html, body {
     &.sorting {
         .transition(0s linear ~"!important");
         .slider {
-            .box-shadow(0 2px 16px rgba(0,0,0,.25));
+            box-shadow: 0 2px 16px rgba(0,0,0,.25);
             .transform(scale(1.05) ~"!important");
         }
     }
@@ -372,6 +361,14 @@ html, body {
             .trans-origin(top center);
             .transform(rotateX(-91deg)); // see createItemAtBottom() in collection.js
         }
+    }
+}
+
+.unfold-dummy {
+    .inner {
+        .transform-style(preserve-3d);
+        .transition(.3s @ease);
+        height: 100%;
     }
 }
 
