@@ -41,7 +41,7 @@
     transition: transform @vars, @extra;
 }
 
-.trans-origin (@vars) {
+.transform-origin (@vars) {
     -webkit-transform-origin: @vars;
     transform-origin: @vars;
 }
@@ -189,7 +189,7 @@ html, body {
 
 .item {
     text-shadow: 0 1px 1px rgba(0,0,0,.3);
-    .trans-origin(center center);
+    .transform-origin(center center);
     .transition(.3s @ease, opacity .3s @ease);
     position: absolute;
     z-index: 0;
@@ -342,7 +342,7 @@ html, body {
 .dummy-item {
 
     z-index: -1;
-    .perspective(400px);
+    .perspective(400);
     .transition(opacity .15s ease);
 
     &.top {
@@ -350,7 +350,7 @@ html, body {
         top: -@itemHeight;
         .slider {
             .transition(0s linear);
-            .trans-origin(bottom center);
+            .transform-origin(bottom center);
         }
     }
 
@@ -358,17 +358,52 @@ html, body {
         .perspective-origin(top center);
         .slider {
             .transition(.3s @ease);
-            .trans-origin(top center);
+            .transform-origin(top center);
             .transform(rotateX(-91deg)); // see createItemAtBottom() in collection.js
         }
     }
 }
 
 .unfold-dummy {
+    .perspective(400);
     .inner {
         .transform-style(preserve-3d);
         .transition(.3s @ease);
+        .transform(translate3d(0, 0, -@itemHeight / 2 + 5px));
         height: 100%;
+    }
+    .unfold {
+        width: 100%;
+        height: 50%;
+        position: absolute;
+        left: 0;
+        overflow: hidden;
+        .transition(.3s @ease, opacity .3s @ease);
+        &.top {
+            opacity: .5;
+            .transform-origin(bottom center);
+            .transform(rotateX(-90deg));
+            bottom: 50%;
+        }
+        &.bot {
+            opacity: .65;
+            .transform-origin(top center);
+            .transform(rotateX(90deg));
+            top: 50%;
+            .item {
+                position: relative;
+                top: -100%;
+            }
+        }
+    }
+    &.open {
+        .unfold.top, .unfold.bot {
+            .transform(none);
+            opacity: 1;
+        }
+        .inner {
+            .transform(none);
+        }
     }
 }
 
