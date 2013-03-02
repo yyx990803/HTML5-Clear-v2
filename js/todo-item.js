@@ -32,17 +32,17 @@
 
         render: function () {
 
-            this.el = $('<div class="item todo-item' + (this.data.done ? ' done' : '') + '" style="z-index:' + this.data.order + '">'
-                    + '<div class="slider">'
-                        + '<div class="inner">'
-                            + '<span class="title">'
-                                + '<span class="text">' + this.data.title + '</span>'
-                                + '<span class="line"></span>'
-                            + '</span>'
-                            + '<input class="field" type="text" value="' + this.data.title + '">'
-                        + '</div>'
-                    + '</div>'
-                + '</div>');
+            this.el = $('<div class="item todo-item' + (this.data.done ? ' done' : '') + '" style="z-index:' + this.data.order + '">\
+                    <div class="slider">\
+                        <div class="inner">\
+                            <span class="title">\
+                                <span class="text">' + this.data.title + '</span>\
+                                <span class="line"></span>\
+                            </span>\
+                            <input class="field" type="text" value="' + this.data.title + '">\
+                        </div>\
+                    </div>\
+                </div>');
 
             this.lineStyle = this.el.find('.line')[0].style;
             if (this.data.done) this.lineStyle.width = '100%';

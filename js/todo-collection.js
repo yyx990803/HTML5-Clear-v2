@@ -20,20 +20,20 @@ C.TodoCollection.prototype = {
 
     render: function () {
 
-        this.el = $('<div class="collection">'
-                + '<div class="top-switch">'
-                    + '<img class="arrow" src="img/arrow.png"> <span class="text">Switch To Lists</span>'
-                + '</div>'
-                + '<div class="bottom-switch">'
-                    + '<div class="drawer"><img class="arrow-small" src="img/arrow-small.png"></div>'
-                    + '<span class="text">Pull to Clear</span>'
-                + '</div>'
-                + '<div class="item dummy-item top">'
-                    + '<div class="slider" style="background-color:rgb(235,0,23)"><div class="inner">'
-                        + '<span class="title">Pull to Create Item</span>'
-                    + '</div></div>'
-                + '</div>'
-            + '</div>');
+        this.el = $('<div class="collection">\
+                <div class="top-switch">\
+                    <img class="arrow" src="img/arrow.png"> <span class="text">Switch To Lists</span>\
+                </div>\
+                <div class="bottom-switch">\
+                    <div class="drawer"><img class="arrow-small" src="img/arrow-small.png"></div>\
+                    <span class="text">Pull to Clear</span>\
+                </div>\
+                <div class="item dummy-item top">\
+                    <div class="slider" style="background-color:rgb(235,0,23)"><div class="inner">\
+                        <span class="title">Pull to Create Item</span>\
+                    </div></div>\
+                </div>\
+            </div>');
 
         this.style = this.el[0].style;
 

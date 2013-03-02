@@ -24,15 +24,15 @@ C.listCollection = {
 
     render: function () {
 
-        this.el = $('<div id="list-collection" class="collection">'
-                        + '<div class="credit">Made by Evan You <br> Original iOS app by Realmac</div>'
-                        + '<div class="item dummy-item top list-item empty">'
-                            + '<div class="slider" style="background-color:rgb(23,128,247)"><div class="inner">'
-                                + '<span class="title">Pull to Create List</span>'
-                                + '<div class="count">0</div>'
-                            + '</div></div>'
-                        + '</div>'
-                    + '</div>');
+        this.el = $('<div id="list-collection" class="collection">\
+                        <div class="credit">Made by Evan You <br> Original iOS app by Realmac</div>\
+                        <div class="item dummy-item top list-item empty">\
+                            <div class="slider" style="background-color:rgb(23,128,247)"><div class="inner">\
+                                <span class="title">Pull to Create List</span>\
+                                <div class="count">0</div>\
+                            </div></div>\
+                        </div>\
+                    </div>');
 
         this.style = this.el[0].style;
 

@@ -49,17 +49,15 @@
 
         render: function () {
 
-            this.el = $('<div class="item list-item'
-                + (this.count ? '' : ' empty')
-                + '">'
-                    + '<div class="slider">'
-                        + '<div class="inner">'
-                            + '<span class="title"><span class="text">' + this.data.title + '</span></span>'
-                            + '<div class="count">' + this.count + '</div>'
-                            + '<input class="field" type="text" value="' + this.data.title + '">'
-                        + '</div>'
-                    + '</div>'
-                + '</div>');
+            this.el = $('<div class="item list-item' + (this.count ? '' : ' empty') + '">\
+                    <div class="slider">\
+                        <div class="inner">\
+                            <span class="title"><span class="text">' + this.data.title + '</span></span>\
+                            <div class="count">' + this.count + '</div>\
+                            <input class="field" type="text" value="' + this.data.title + '">\
+                        </div>\
+                    </div>\
+                </div>');
 
             this.countEl =this.el.find('.count');
 
