@@ -1,6 +1,6 @@
 # WORK IN PROGRESS
 
-See it in action [here](http://clear.evanyou.me).
+See it in action: [http://clear.evanyou.me](http://clear.evanyou.me).
 
 ## What is this?
 
@@ -11,9 +11,10 @@ The original iphone app by Realmac: [http://www.realmacsoftware.com/clear/](http
 
 ## What's New?
 
+- Offline Mode (add to homescreen)
 - Local storage
 - More robust structure
-- More robust touch events handling
+- Better touch events handling
 - More features such as long drag up/down
 - Multitouch (WIP)
 
