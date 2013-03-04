@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html manifest="offline.appcache">
 	<head>
 		<title>Clear</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
+		<link rel="apple-touch-icon" href="apple-touch-icon.png">
 		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
 	</head>
 	<body>
@@ -19,8 +20,8 @@
 		<script type="text/javascript">
 
 			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-27321530-1']);
-			_gaq.push(['_setDomainName', 'youyuxi.com']);
+			_gaq.push(['_setAccount', 'UA-38965494-1']);
+			_gaq.push(['_setDomainName', 'clear.evanyou.me']);
 			_gaq.push(['_trackPageview']);
 
 			(function() {
@@ -33,6 +34,16 @@
 				document.getElementById('notice').style.display = 'block';
 			}
 
+		</script>
+
+		<script>
+			var appCache = window.applicationCache;
+			if (appCache) {
+				appCache.update();
+				if (appCache.status == window.applicationCache.UPDATEREADY) {
+  					appCache.swapCache();  // The fetch was successful, swap in the new cache.
+				}
+			}
 		</script>
 
 		<script src="js/zepto.js"></script>
