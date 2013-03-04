@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="offline.appcache">
+<html>
 	<head>
 		<title>HTML5 Clear</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -37,13 +37,18 @@
 		</script>
 
 		<script>
-			var appCache = window.applicationCache;
-			if (appCache) {
-				appCache.update();
-				if (appCache.status == window.applicationCache.UPDATEREADY) {
-  					appCache.swapCache();  // The fetch was successful, swap in the new cache.
-				}
-			}
+		window.addEventListener('load', function(e) {
+
+		  	window.applicationCache.addEventListener('updateready', function(e) {
+		    	if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+		    		window.applicationCache.swapCache();
+		    		if (confirm('A new version of the app is available. Load it?')) {
+		        		window.location.reload();
+		      		}
+		    	}
+		  	}, false);
+
+		}, false);
 		</script>
 
 		<script src="js/zepto.js"></script>

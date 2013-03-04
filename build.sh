@@ -22,6 +22,8 @@ echo "\033[32m[minify]\033[0m rewriting script tag in" $BASEDIR"/deploy/template
 sed -i.bak '/<script.*\/script>/d' $BASEDIR/deploy/index.html
 #2. replace <!-- MIN --> tag with min.js
 sed -i.bak 's/<!-- MIN -->/<script src="js\/min.js"><\/script>/' $BASEDIR/deploy/index.html
+#3. add appcache manifest
+sed -i.bak 's/<html>/<html manifest="offline.appcache">/' $BASEDIR/deploy/index.html
 
 #minify javascript with uglifyjs
 
