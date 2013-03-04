@@ -1,6 +1,6 @@
 # WORK IN PROGRESS
 
-See it in action [here](http://clear2.youyuxi.com).
+See it in action [here](http://clear.evanyou.me).
 
 ## What is this?
 
