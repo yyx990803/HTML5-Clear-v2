@@ -1,25 +1,21 @@
-# WORK IN PROGRESS
+# HTML5 Clear
 
-See it in action: [http://clear.evanyou.me](http://clear.evanyou.me).
+Work in progress. See `TODO.md` for features not implemented yet. See it in action: [http://clear.evanyou.me](http://clear.evanyou.me).
 
-## What is this?
+You can also watch [the original HTML5 Clear video](https://vimeo.com/37182785).
 
-This is a remake of the [original HTML5 Clear](https://raw.github.com/yyx990803/HTML5-Clear).
+The [original iOS app](http://www.realmacsoftware.com/clear/) is designed and developed by [Realmac Software](http://www.realmacsoftware.com/) in collaboration with [Helftone](http://helftone.com) and [Impending, Inc.](http://impending.com). This project is simply a personal attempt to test my limit in building intricate interfaces with HTML5.
 
-The original iphone app by Realmac: [http://www.realmacsoftware.com/clear/](http://www.realmacsoftware.com/clear/)
+### Notes
 
+- Works offline (add to iOS homescreen)
+- Uses local storage
 
-## What's New?
+### Load it as a Chrome packaged app:
 
-- Offline Mode (add to homescreen)
-- Local storage
-- More robust structure
-- Better touch events handling
-- More features such as long drag up/down
-- Multitouch (WIP)
+You might need to use Chrome Canary or enable the `Experimental Extension APIs` flag to load this as a Chrome packaged app.
 
-## Why do it again?
-
-When I made the original HTML5 Clear, I simply wanted to build something shiny in a short time. The vimeo video covered up most of the bugs, unstableness and dirtiness underneath. It also missed quite some beautiful details of the original iOS app.
-
-So for this version, by adding a lot more visual/motion details and multi-touch gestures, the purpose is mostly challenging my own technical limits. Besides, I really enjoy having something I can slowly polish without having to worry about deadlines.
+- clone the repo, checkout branch `chrome-app`
+- In Chrome, open `Tools -> Extensions`
+- check `Developer Mode`
+- Click `Load unpacked extension` and load this project
