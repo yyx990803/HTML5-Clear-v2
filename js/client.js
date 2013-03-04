@@ -4,6 +4,8 @@ C.client = (function () {
 
         isTouch: ('ontouchstart' in window),
 
+        isChromeApp: ('chrome' in window),
+
         init: function () {
 
             C.log('Client: init');
@@ -12,7 +14,7 @@ C.client = (function () {
 
                 this.width = 320;
                 this.height = 548;
-                $(document.body).addClass('desktop');
+                if (!client.isChromeApp) $(document.body).addClass('desktop');
 
             }
 

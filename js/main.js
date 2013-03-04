@@ -22,52 +22,55 @@ var C = {
 
         // init some components
         C.client.init();
-        C.db.init(C.debug);
-        C.touch.init();
-        C.listCollection.init();
+        C.db.init(C.debug, function () {
 
-        // restore state
-        var data = C.db.data,
-            state = data.state,
-            lists = data.items,
-            i = lists.length;
+            C.touch.init();
+            C.listCollection.init();
 
-        switch (state.view) {
+            // restore state
+            var data = C.db.data,
+                state = data.state,
+                lists = data.items,
+                i = lists.length;
 
-            case C.states.LIST_COLLECTION_VIEW:
-                C.log('App: init at ListCollection.');
-                C.currentCollection = C.listCollection;
-                break;
+            switch (state.view) {
 
-            case C.states.TODO_COLLECTION_VIEW:
-                C.log('App: init at TodoCollection with order: ' + state.order);
-                while (i--) {
-                    if (lists[i].order === state.order) {
-                        C.currentCollection = new C.TodoCollection(lists[i]);
-                        break;
+                case C.states.LIST_COLLECTION_VIEW:
+                    C.log('App: init at ListCollection.');
+                    C.currentCollection = C.listCollection;
+                    break;
+
+                case C.states.TODO_COLLECTION_VIEW:
+                    C.log('App: init at TodoCollection with order: ' + state.order);
+                    while (i--) {
+                        if (lists[i].order === state.order) {
+                            C.currentCollection = new C.TodoCollection(lists[i]);
+                            break;
+                        }
                     }
-                }
-                break;
+                    break;
 
-            default:
-                C.log('App: init at ListCollection.');
-                C.currentCollection = C.listCollection;
-                break;
+                default:
+                    C.log('App: init at ListCollection.');
+                    C.currentCollection = C.listCollection;
+                    break;
 
-        }
+            }
 
-        C.currentCollection.load(0, true); // passing in (position:0) and (noAnimation:true)
+            C.currentCollection.load(0, true); // passing in (position:0) and (noAnimation:true)
 
-        if (!C.listCollection.initiated) {
-            // If we started with a TodoCollection, load ListCollection and position it for pulldown
-            C.listCollection.positionForPulldown();
-            C.listCollection.load();
-        } else {
-            // otherwise, load the last used todoCollection
-            C.lastTodoCollection = new C.TodoCollection(lists[state.lastTodoCollection || 0]);
-            C.lastTodoCollection.load(C.client.height + C.ITEM_HEIGHT, true);
-            C.lastTodoCollection.positionForPullUp();
-        }
+            if (!C.listCollection.initiated) {
+                // If we started with a TodoCollection, load ListCollection and position it for pulldown
+                C.listCollection.positionForPulldown();
+                C.listCollection.load();
+            } else {
+                // otherwise, load the last used todoCollection
+                C.lastTodoCollection = new C.TodoCollection(lists[state.lastTodoCollection || 0]);
+                C.lastTodoCollection.load(C.client.height + C.ITEM_HEIGHT, true);
+                C.lastTodoCollection.positionForPullUp();
+            }
+
+        });
 
     },
 

@@ -1,43 +1,62 @@
 C.db = (function () {
 
-    var supported = ('localStorage' in window) && ('JSON' in window);
-    var localStorageKey = 'html5-clear';
+    var supported = ('localStorage' in window) && ('JSON' in window),
+        localStorageKey = C.client.isChromeApp ? 'html5-clear' : 'html5-clear-chrome',
+        chromeStorage = C.client.isChromeApp ? chrome.storage.sync : null;
 
     var db = {
 
-        init: function (force) {
+        init: function (force, callback) {
 
             C.log('DB: init');
 
-            if (supported && !force) {
-                var raw = localStorage.getItem(localStorageKey);
-                if (raw) {
-                    this.data = JSON.parse(raw);
-                    if (!this.data) {
-                        this.useDefaultData();
-                    } else {
-                         C.log('DB: using stored data.');
-                    }
-                } else {
-                    this.useDefaultData();
-                }
+            if (chromeStorage) {
+                // Chrome package app
+                chromeStorage.get(localStorageKey, function (data) {
+                    db.parseRaw(data[localStorageKey], callback);
+                });
+            } else if (supported && !force) {
+                // normal browser / webview
+                db.parseRaw(localStorage.getItem(localStorageKey), callback);
             } else {
-                this.useDefaultData();
+                db.useDefaultData(callback);
             }
             
+        },
+
+        parseRaw: function (raw, callback) {
+            if (raw) {
+                this.data = JSON.parse(raw);
+                if (this.data) {
+                    C.log('DB: using stored data.');
+                    callback();
+                } else {
+                    this.useDefaultData(callback);
+                }
+            } else {
+                this.useDefaultData(callback);
+            }
         },
 
         save: function () {
 
             var start = Date.now();
 
-            if (!supported) return;
-            var raw = JSON.stringify(this.data);
-            localStorage.setItem(localStorageKey, raw);
-
-            var used = Date.now() - start;
-
-            C.log('DB: saved in ' + used + 'ms');
+            if (chromeStorage) {
+                var saveOptions = {};
+                saveOptions[localStorageKey] = JSON.stringify(this.data);
+                chromeStorage.set(saveOptions, done);
+            } else if (supported) {
+                localStorage.setItem(localStorageKey, JSON.stringify(this.data));
+                done();
+            } else {
+                return;
+            }
+            
+            function done () {
+                var used = Date.now() - start;
+                C.log('DB: saved in ' + used + 'ms');
+            }
 
         },
 
@@ -64,7 +83,7 @@ C.db = (function () {
 
         },
 
-        useDefaultData: function () {
+        useDefaultData: function (callback) {
 
             C.log('DB: using default data.');
 
@@ -249,6 +268,7 @@ C.db = (function () {
             };
 
             this.save();
+            callback();
 
         }
 

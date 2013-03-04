@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "HTML5 Clear",
+  "version": "1",
+  "minimum_chrome_version": "23",
+  "icons": {
+    "16": "apple-touch-icon-precomposed.png",
+    "128": "apple-touch-icon-precomposed.png"
+  },
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "permissions": [
+    "storage"
+  ]
+}
