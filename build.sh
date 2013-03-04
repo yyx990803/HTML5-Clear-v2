@@ -12,7 +12,7 @@ mkdir $BASEDIR/deploy/css
 cp $BASEDIR/css/style.css $BASEDIR/deploy/css/style.css
 cp -R $BASEDIR/img $BASEDIR/deploy/img
 cp $BASEDIR/index.html $BASEDIR/deploy/index.html
-cp $BASEDIR/apple-touch-icon.png $BASEDIR/deploy/apple-touch-icon.png
+cp $BASEDIR/apple-touch-icon-precomposed.png $BASEDIR/deploy/apple-touch-icon-precomposed.png
 cp $BASEDIR/offline.appcache $BASEDIR/deploy/offline.appcache
 
 #rewrite index.html for min.js
