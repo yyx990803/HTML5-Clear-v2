@@ -525,17 +525,7 @@ C.Collection = (function (raf) {
             this.updateColor();
             this.updateBounds();
 
-            // push done items 1 slot down
-            var i = this.items.length,
-                item;
-
-            while (i--) {
-                item = this.items[i];
-                if (item.data.done) {
-                    item.data.order++;
-                    item.moveY(item.y + C.ITEM_HEIGHT);
-                }
-            }
+            
 
             // dummy
             var lastUndone = this.getItemByOrder(this.count - 1),
@@ -548,10 +538,23 @@ C.Collection = (function (raf) {
 
             newItem.el
                 .addClass('drag')
-                .css('opacity', .01); // hack hack hack...
-            newItem.el.find('.field').show().focus();
+                .css('opacity', .01) // hack hack hack...
+                .find('.field').show().focus(); // trigger keyboard in advance
 
+            var col = this;
             setTimeout(function () {
+                // push done items 1 slot down
+                var i = col.items.length,
+                    item;
+
+                while (i--) {
+                    item = col.items[i];
+                    if (item.data.done) {
+                        item.data.order++;
+                        item.moveY(item.y + C.ITEM_HEIGHT);
+                    }
+                }
+
                 dummy.el.addClass('open');
                 dummy.el.on(C.client.transitionEndEvent, function () {
                     dummy.el.off(C.client.transitionEndEvent);
@@ -563,7 +566,7 @@ C.Collection = (function (raf) {
                         dummy = null;
                     }, 0);
                 });
-            }, 0);
+            }, 100);
 
         },
 

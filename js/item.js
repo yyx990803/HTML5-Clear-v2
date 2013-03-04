@@ -198,7 +198,8 @@ C.Item = (function (raf) {
                 } else {
                     item.moveX(0);
                     item.slider.removeClass('drag');
-
+                    item.checkStyle.opacity = 0;
+                    
                     if (doneCallback) doneCallback();
 
                 }

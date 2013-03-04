@@ -32,6 +32,7 @@ $BASEDIR/js/client.js \
 $BASEDIR/js/db.js \
 $BASEDIR/js/touch.js \
 $BASEDIR/js/item.js \
+$BASEDIR/js/unfold-dummy.js \
 $BASEDIR/js/collection.js \
 $BASEDIR/js/list-collection.js \
 $BASEDIR/js/list-item.js \
