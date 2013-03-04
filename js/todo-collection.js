@@ -65,11 +65,19 @@ C.TodoCollection.prototype = {
 
         } else {
 
-            if (t.initiated) t.el.remove();
+            if (t.initiated) {
+                t.el.remove();
+            }
 
             // move to match the position of the ListItem
             t.moveY(at * C.ITEM_HEIGHT + C.listCollection.y);
-            t.el.appendTo(C.$wrapper);
+            // squeeze all items at top
+            var i = t.items.length;
+            while (i--) { t.items[i].moveY(0) }
+
+            t.el
+                .appendTo(C.$wrapper)
+                .removeClass('drag');
 
             // wait for repaint
             setTimeout(function () {
