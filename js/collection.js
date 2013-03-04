@@ -513,6 +513,57 @@ C.Collection = (function (raf) {
         },
 
         createItemInBetween: function () {
+            
+            var newData = {
+                title: '',
+                order: this.count
+            };
+
+            C.db.addItem(newData, this.data);
+
+            var newItem = this.addItem(newData);
+            this.updateColor();
+            this.updateBounds();
+
+            // push done items 1 slot down
+            var i = this.items.length,
+                item;
+
+            while (i--) {
+                item = this.items[i];
+                if (item.data.done) {
+                    item.data.order++;
+                    item.moveY(item.y + C.ITEM_HEIGHT);
+                }
+            }
+
+            // dummy
+            var lastUndone = this.getItemByOrder(this.count - 1),
+                color = lastUndone.el.find('.slider').css('background-color'),
+                dummy = new C.UnfoldDummy({
+                    order: this.count,
+                    color: color
+                });
+            this.el.append(dummy.el);
+
+            newItem.el
+                .addClass('drag')
+                .css('opacity', .01); // hack hack hack...
+            newItem.el.find('.field').show().focus();
+
+            setTimeout(function () {
+                dummy.el.addClass('open');
+                dummy.el.on(C.client.transitionEndEvent, function () {
+                    dummy.el.off(C.client.transitionEndEvent);
+                    newItem.el.css('opacity', '');
+                    setTimeout(function () {
+                        newItem.el.removeClass('drag')
+                        newItem.onEditStart();
+                        dummy.el.remove();
+                        dummy = null;
+                    }, 0);
+                });
+            }, 0);
 
         },
 
