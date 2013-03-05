@@ -89,6 +89,10 @@ C.Collection = (function (raf) {
             this.newIdFrom++;
             if (!newItem.data.done) this.count++;
 
+            if (this.updateCount) {
+                this.updateCount();
+            }
+
             return newItem;
 
         },
