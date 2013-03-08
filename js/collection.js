@@ -512,7 +512,7 @@ C.Collection = (function (raf) {
                     newItem.el.removeClass('dummy-item bottom');
                     newItem.onEditStart();
                 }, true);
-            }, 0);
+            }, 50);
 
         },
 
@@ -528,8 +528,6 @@ C.Collection = (function (raf) {
             var newItem = this.addItem(newData);
             this.updateColor();
             this.updateBounds();
-
-            
 
             // dummy
             var lastUndone = this.getItemByOrder(this.count - 1),
@@ -570,7 +568,7 @@ C.Collection = (function (raf) {
                         dummy = null;
                     }, 0);
                 });
-            }, 100);
+            }, 50);
 
         },
 
