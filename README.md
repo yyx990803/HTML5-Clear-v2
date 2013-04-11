@@ -19,3 +19,8 @@ You might need to use Chrome Canary or enable the `Experimental Extension APIs` 
 - In Chrome, open `Tools -> Extensions`
 - check `Developer Mode`
 - Click `Load unpacked extension` and load this project
+
+### Author
+
+Twitter: [@youyuxi](https://twitter.com/youyuxi)
+新浪微博: [@尤小右](http://weibo.com/arttechdesign)
