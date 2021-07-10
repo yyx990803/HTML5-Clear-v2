@@ -13,7 +13,7 @@ cp $BASEDIR/css/style.css $BASEDIR/deploy/css/style.css
 cp -R $BASEDIR/img $BASEDIR/deploy/img
 cp $BASEDIR/index.html $BASEDIR/deploy/index.html
 cp $BASEDIR/apple-touch-icon-precomposed.png $BASEDIR/deploy/apple-touch-icon-precomposed.png
-cp $BASEDIR/offline.appcache $BASEDIR/deploy/offline.appcache
+#cp $BASEDIR/offline.appcache $BASEDIR/deploy/offline.appcache
 
 # rewrite index.html
 
@@ -23,10 +23,10 @@ sed -i.bak '/<script.*\/script>/d' $BASEDIR/deploy/index.html
 #2. replace <!-- MIN --> tag with min.js
 sed -i.bak 's/<!-- MIN -->/<script src="js\/min.js"><\/script>/' $BASEDIR/deploy/index.html
 #3. add appcache manifest
-sed -i.bak 's/<html>/<html manifest="offline.appcache">/' $BASEDIR/deploy/index.html
+#sed -i.bak 's/<html>/<html manifest="offline.appcache">/' $BASEDIR/deploy/index.html
 
 # rewrite appcache version
-sed -i.bak 's/# build: */# build: '$(date +%s)'/' $BASEDIR/deploy/offline.appcache
+#sed -i.bak 's/# build: */# build: '$(date +%s)'/' $BASEDIR/deploy/offline.appcache
 
 #minify javascript with uglifyjs
 
@@ -53,7 +53,7 @@ echo "\033[33m[cleanup]\033[0m removing stuff no longer needed..."
 #1. remove index.html backup
 rm $BASEDIR/deploy/index.html.bak
 #2. remove appcache backup
-rm $BASEDIR/deploy/offline.appcache.bak
+#rm $BASEDIR/deploy/offline.appcache.bak
 #3. remove .DS_Store (if any)
 find $BASEDIR/deploy -name .DS_Store -exec rm {} \;
 
